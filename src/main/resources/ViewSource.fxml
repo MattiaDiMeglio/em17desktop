@@ -1,0 +1,789 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.chart.PieChart?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.121"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewSourceController" fx:id="mainAnchorPane">
+    <!-- Schermata DashBoard -->
+    <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- top della schermata, contenente latoolbar superiore -->
+        <top>
+            <VBox prefHeight="-1.0" prefWidth="-1.0" spacing="20">
+                <children>
+                    <ToolBar style="-fx-background-color: grey" >
+                        <items>
+                            <!-- TextField che farà da barra di ricerca, con corrispondente bottone -->
+                            <TextField fx:id="dashBoardSearchTextField" minWidth="310"></TextField>
+                            <Button fx:id="dashBoardSearchButton" text="cerca"></Button>
+                            <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL" prefHeight="-Infinity" prefWidth="0.0"> </Separator>
+                            <!-- Bottone di inserimento nuovo evento -->
+                            <Button fx:id="dashBoardInsertButton" mnemonicParsing="false"
+                                    style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
+                                <graphic>
+                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@image/Add_32px.png" />
+                                        </image>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                            <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL"
+                                       prefHeight="-Infinity" prefWidth="0.0" />
+                        </items>
+                    </ToolBar>
+                </children>
+            </VBox>
+        </top>
+        <!-- center della schermata, contenente lo slideshow -->
+        <center>
+            <HBox fx:id="slideshow" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" alignment="CENTER">
+                <children>
+                    <!-- icona "left", sarà il bottone per scorrere verso sx.-->
+                    <Button fx:id="dashBoardSlideShowLeftButton" mnemonicParsing="false"
+                            style="-fx-background-color: inherit" AnchorPane.leftAnchor="0.0">
+                        <graphic>
+                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@image/Sort Left_96px.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <GridPane HBox.hgrow="ALWAYS" fx:id="slideshowImmagine" alignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" >
+                        <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
+                        <Button GridPane.columnIndex="1" fx:id="dashBoardImage1Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
+                            <graphic>
+                                <ImageView fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@image/Picture_80px.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
+                        <Button GridPane.columnIndex="2" fx:id="dashBoardImage2Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
+                            <graphic>
+                                <ImageView fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@image/Picture_80px.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </GridPane>
+                    <!-- icona "right", sarà il bottone per scorrere verso sx. -->
+                    <Button  fx:id="dashBoardSlideShowRightButton" mnemonicParsing="false"
+                             style="-fx-background-color: inherit" AnchorPane.rightAnchor="0.0">
+                        <graphic>
+                            <ImageView pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@image/Sort Right_96px.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </children>
+            </HBox>
+        </center>
+        <!-- bottom della schermata, contenente il tabpane dei grafici-->
+        <bottom><!-- TabPane che andrà a contenere i Grafici -->
+            <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+                <!-- Prima tab del Tab Pane, conenente una VBox con un Linechart al suo interno -->
+                <Tab style="-fx-header-color: white" text="primo">
+                    <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <LineChart VBox.vgrow="ALWAYS" fx:id="dashBoardGraph1LineChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <xAxis>
+                                    <NumberAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                </yAxis>
+                            </LineChart>
+                        </VBox>
+                    </AnchorPane>
+                </Tab>
+                <Tab style="-fx-header-color: white" text="primo">
+                    <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <PieChart VBox.vgrow="ALWAYS" fx:id="dashBoardGraph2PieChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+                            </PieChart>
+                        </VBox>
+                    </AnchorPane>
+                </Tab>
+            </TabPane>
+        </bottom>
+    </BorderPane>
+
+    <!-- Schermata EventList -->
+    <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- top della schermata, contenente latoolbar superiore -->
+        <top>
+            <VBox prefHeight="-1.0" prefWidth="-1.0" spacing="20">
+                <children>
+                    <ToolBar style="-fx-background-color: grey" >
+                        <items>
+                            <!-- TextField che farà da barra di ricerca, con corrispondente bottone -->
+                            <TextField fx:id="eventListSearchTextField" minWidth="310"></TextField>
+                            <Button fx:id="eventListSearchButton" text="cerca"></Button>
+                            <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL" prefHeight="-Infinity" prefWidth="0.0"> </Separator>
+                            <!-- Bottone di inserimento nuovo evento -->
+                            <Button fx:id="eventListInsertButton" mnemonicParsing="false"
+                                    style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
+                                <graphic>
+                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@image/Add_32px.png" />
+                                        </image>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                            <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL"
+                                       prefHeight="-Infinity" prefWidth="0.0" />
+                        </items>
+                    </ToolBar>
+                </children>
+            </VBox>
+        </top>
+        <!-- left della schermata, contenentei risultati della ricerca-->
+        <left>
+            <VBox AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-color: blue">
+                <ScrollPane minWidth="400" >
+                    <VBox prefHeight="-1.0" prefWidth="-1.0" spacing="30">
+                        <padding>
+                            <Insets bottom="10.0" left="5.0" right="5.0" top="10.0"/>
+                        </padding>
+                        <children>
+                            <VBox>
+                                <padding>
+                                    <Insets bottom="2.0" left="12.0" right="5.0" top="5.0"/>
+                                </padding>
+                                <!-- Checkbox "seleziona tutto" -->
+                                <CheckBox fx:id="eventListSelectAllCheckBox" text="Selziona Tutto"></CheckBox>
+                            </VBox>
+                            <!-- L'Hbox seguente ed i prossimi vanno contati come singolo "elemento"
+                             in quanto rappresentano un singolo risultato di ricerca-->
+                            <HBox fx:id="eventListResult1HBox" spacing="2">
+                                <!-- CheckBox per selezionare l'elemento, translato di 80 in y  -->
+                                <CheckBox fx:id="eventListSelezione1CheckBox" translateY="80"/>
+                                <!-- Immagine del risultato (locandina) -->
+                                <Button fx:id="eventListResult1Button" mnemonicParsing="false"
+                                        style="-fx-background-color: inherit" >
+                                    <graphic>
+                                        <ImageView fitHeight="200.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/Picture_80px.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <!-- Vbox posizionata affianco all'immagine, che contiene le label con le info principali -->
+                                <VBox>
+                                    <!--TODO le label non sono cliccabili, bisogna inserirci un bottone attorno -->
+                                    <!-- Label contenente il nome dell'evento -->
+                                    <Label fx:id="eventListResult1TitoloLabel" translateY="20" textFill="blue" underline="true"  text="Evento1"> <font>
+                                        <Font size="20.0"/>
+                                    </font></Label>
+                                    <!-- Etichetta Location -->
+                                    <Label fx:id="eventListResult1LocationLabel" translateY="40" text="Location1"></Label>
+                                    <!-- Etichetta Data -->
+                                    <Label fx:id="eventListResult1DateLabel" translateY="40" text="Date1"></Label>
+                                    <!-- Hbox che contiene due etichette affiancate, modifica e cancella -->
+                                    <HBox spacing="20">
+                                        <!-- label per la modifica -->
+                                        <Label fx:id="eventListResult1ModifyLabel" translateY="50" text="Modifica" underline="true" textFill="blue"></Label>
+                                        <!-- label per la cancellazione-->
+                                        <Label fx:id="eventListResult1DeleteLabel" translateY="50" text="Cancella" underline="true" textFill="blue"></Label>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="2">
+
+                                <CheckBox fx:id="eventListSelezione2CheckBox" translateY="80"/>
+                                <Button fx:id="eventListResult2Button" mnemonicParsing="false"
+                                        style="-fx-background-color: inherit" >
+                                    <graphic>
+                                        <ImageView fitHeight="200.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/Picture_80px.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <VBox>
+                                    <!-- Label contenente il nome dell'evento -->
+                                    <Label fx:id="eventListResult2TitoloLabel" translateY="20" textFill="blue" underline="true"  text="Evento2"> <font>
+                                        <Font size="20.0"/>
+                                    </font></Label>
+                                    <!-- Etichetta Location -->
+                                    <Label fx:id="eventListResult2LocationLabel" translateY="40" text="Location2"></Label>
+                                    <!-- Etichetta Data -->
+                                    <Label fx:id="eventListResult2DateLabel" translateY="40" text="Date2"></Label>
+                                    <!-- Hbox che contiene due etichette affiancate, modifica e cancella -->
+                                    <HBox spacing="20">
+                                        <!-- label per la modifica -->
+                                        <Label fx:id="eventListResult2ModifyLabel" translateY="50" text="Modifica" underline="true" textFill="blue"></Label>
+                                        <!-- label per la cancellazione-->
+                                        <Label fx:id="eventListResult2DeleteLabel" translateY="50" text="Cancella" underline="true" textFill="blue"></Label>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                            <HBox spacing="2">
+                                <CheckBox fx:id="eventListSelezione3CheckBox" translateY="80"/>
+                                <Button fx:id="eventListResult3Button" mnemonicParsing="false"
+                                        style="-fx-background-color: inherit" >
+                                    <graphic>
+                                        <ImageView fitHeight="200.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/Picture_80px.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <VBox>
+                                    <!-- Label contenente il nome dell'evento -->
+                                    <Label fx:id="eventListResult3TitoloLabel" translateY="20" textFill="blue" underline="true"  text="Evento3"> <font>
+                                        <Font size="20.0"/>
+                                    </font></Label>
+                                    <!-- Etichetta Location -->
+                                    <Label fx:id="eventListResult3LocationLabel" translateY="40" text="Location3"></Label>
+                                    <!-- Etichetta Data -->
+                                    <Label fx:id="eventListResult3DateLabel" translateY="40" text="Date3"></Label>
+                                    <!-- Hbox che contiene due etichette affiancate, modifica e cancella -->
+                                    <HBox spacing="20">
+                                        <!-- label per la modifica -->
+                                        <Label fx:id="eventListResult3ModifyLabel" translateY="50" text="Modifica" underline="true" textFill="blue"></Label>
+                                        <!-- label per la cancellazione-->
+                                        <Label fx:id="eventListResult3DeleteLabel" translateY="50" text="Cancella" underline="true" textFill="blue"></Label>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                            <HBox spacing="2">
+                                <CheckBox fx:id="eventListSelezione4CheckBox" translateY="80"/>
+                                <Button fx:id="eventListResult4Button" mnemonicParsing="false"
+                                        style="-fx-background-color: inherit" >
+                                    <graphic>
+                                        <ImageView fitHeight="200.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/Picture_80px.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <VBox>
+                                    <!-- Label contenente il nome dell'evento -->
+                                    <Label fx:id="eventListResult4TitoloLabel" translateY="20" textFill="blue" underline="true"  text="Evento4"> <font>
+                                        <Font size="20.0"/>
+                                    </font></Label>
+                                    <!-- Etichetta Location -->
+                                    <Label fx:id="eventListResult4LocationLabel" translateY="40" text="Location4"></Label>
+                                    <!-- Etichetta Data -->
+                                    <Label fx:id="eventListResult4DateLabel" translateY="40" text="Date4"></Label>
+                                    <!-- Hbox che contiene due etichette affiancate, modifica e cancella -->
+                                    <HBox spacing="20">
+                                        <!-- label per la modifica -->
+                                        <Label fx:id="eventListResult4ModifyLabel" translateY="50" text="Modifica" underline="true" textFill="blue"></Label>
+                                        <!-- label per la cancellazione-->
+                                        <Label fx:id="eventListResult4DeleteLabel" translateY="50" text="Cancella" underline="true" textFill="blue"></Label>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                            <HBox spacing="2">
+                                <CheckBox fx:id="eventListSelezione5CheckBox" translateY="80"/>
+                                <Button fx:id="eventListResult5Button" mnemonicParsing="false"
+                                        style="-fx-background-color: inherit" >
+                                    <graphic>
+                                        <ImageView fitHeight="200.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/Picture_80px.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <VBox>
+                                    <!-- Label contenente il nome dell'evento -->
+                                    <Label fx:id="eventListResult5TitoloLabel" translateY="20" textFill="blue" underline="true"  text="Evento5"> <font>
+                                        <Font size="20.0"/>
+                                    </font></Label>
+                                    <!-- Etichetta Location -->
+                                    <Label fx:id="eventListResult5LocationLabel" translateY="40" text="Location5"></Label>
+                                    <!-- Etichetta Data -->
+                                    <Label fx:id="eventListResult5DateLabel" translateY="40" text="Date5"></Label>
+                                    <!-- Hbox che contiene due etichette affiancate, modifica e cancella -->
+                                    <HBox spacing="20">
+                                        <!-- label per la modifica -->
+                                        <Label fx:id="eventListResult5ModifyLabel" translateY="50" text="Modifica" underline="true" textFill="blue"></Label>
+                                        <!-- label per la cancellazione-->
+                                        <Label fx:id="eventListResult5DeleteLabel" translateY="50" text="Cancella" underline="true" textFill="blue"></Label>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                            <HBox spacing="2">
+                                <CheckBox fx:id="eventListSelezione6CheckBox" translateY="80"/>
+                                <Button fx:id="eventListResult6Button" mnemonicParsing="false"
+                                        style="-fx-background-color: inherit" >
+                                    <graphic>
+                                        <ImageView fitHeight="200.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/Picture_80px.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <VBox>
+                                    <!-- Label contenente il nome dell'evento -->
+                                    <Label fx:id="eventListResult6TitoloLabel" translateY="20" textFill="blue" underline="true"  text="Evento6"> <font>
+                                        <Font size="20.0"/>
+                                    </font></Label>
+                                    <!-- Etichetta Location -->
+                                    <Label fx:id="eventListResult6LocationLabel" translateY="40" text="Location6"></Label>
+                                    <!-- Etichetta Data -->
+                                    <Label fx:id="eventListResult6DateLabel" translateY="40" text="Date6"></Label>
+                                    <!-- Hbox che contiene due etichette affiancate, modifica e cancella -->
+                                    <HBox spacing="20">
+                                        <!-- label per la modifica -->
+                                        <Label fx:id="eventListResult6ModifyLabel" translateY="50" text="Modifica" underline="true" textFill="blue"></Label>
+                                        <!-- label per la cancellazione-->
+                                        <Label fx:id="eventListResult6DeleteLabel" translateY="50" text="Cancella" underline="true" textFill="blue"></Label>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                        </children>
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+        </left>
+        <!-- center della schermata, contenente la tabpane con i grafici-->
+        <center>
+            <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+                <!-- Prima tab del Tab Pane, conenente una VBox con un Linechart al suo interno -->
+                <Tab style="-fx-header-color: white" text="primo">
+                    <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <LineChart VBox.vgrow="ALWAYS" fx:id="eventListGraph1LineChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <xAxis>
+                                    <NumberAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                </yAxis>
+                            </LineChart>
+                        </VBox>
+                    </AnchorPane>
+                </Tab>
+            </TabPane>
+        </center>
+    </BorderPane>
+
+    <!-- Schermata Event -->
+    <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
+        <center>
+            <VBox HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <VBox translateX="20">
+                    <Label fx:id="eventoTitleLabel"  translateY="20"   text="Evento1">
+                        <font>
+                            <Font size="45.0"/>
+                        </font>
+                    </Label>
+                    <!-- label  "Location:" col il rispettivo testo modificabile "EventLocationText",
+                         dove verrà inserito il nome della location-->
+                    <Label translateX="160" translateY="-14" text="Location: "></Label>
+                    <Text fx:id="eventLocationText" translateY="-35" translateX="230" text="locazione1"></Text>
+                    <!-- Hbox contenente le due label delle date con i rispettivi testi da modificare -->
+                    <HBox translateY="-34" spacing="4">
+                        <Label text="data inizio:"></Label>
+                        <Text fx:id="eventoDataInizioText" text="data Inizio"></Text>
+                        <Label text="data fine:" translateX="10"></Label>
+                        <Text fx:id="eventoDataFineText" text="data fine" translateX="10"></Text>
+                    </HBox>
+                    <!-- TextArea che andrà ad ospitare la descrizione dell'evento -->
+                    <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox  alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <TextArea disable="true" VBox.vgrow="ALWAYS" fx:id="eventTextArea" text="piripiripillo"></TextArea>
+
+                        </VBox>
+                    </AnchorPane>
+                    <!-- Hbox contenente le label, rispettivamente, di prezzo, max visitatori
+                     e biglietti venduti-->
+                    <HBox spacing="5">
+                        <Label text="Prezzo:" translateX="10"></Label>
+                        <Text fx:id="eventoPrezzoText" text="prezzo" translateX="10"></Text>
+                        <Label text="Max Visitatori:" translateX="20"></Label>
+                        <Text fx:id="eventoMaxVisitatoriText" text="Max Visitatori" translateX="20"></Text>
+                        <Label text="Biglietti Venduti:" translateX="30"></Label>
+                        <Text fx:id="eventoBigliettiVendutiText" text="Biglietti Venduti" translateX="30"></Text>
+                    </HBox>
+                    <HBox fx:id="eventSlideshow" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" alignment="CENTER">
+                        <children>
+                            <!-- icona "left", sarà il bottone per scorrere verso sx.-->
+                            <Button fx:id="eventSlideShowLeftButton" mnemonicParsing="false"
+                                    style="-fx-background-color: inherit" AnchorPane.leftAnchor="0.0">
+                                <graphic>
+                                    <ImageView pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@image/Sort Left_96px.png" />
+                                        </image>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                            <GridPane HBox.hgrow="ALWAYS" fx:id="eventSlideshowImmagine" alignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" >
+                                <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
+                                <Button GridPane.columnIndex="1" fx:id="eventImage1Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
+                                    <graphic>
+                                        <ImageView fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/Picture_80px.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
+                                <Button GridPane.columnIndex="2" fx:id="eventImage2Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
+                                    <graphic>
+                                        <ImageView fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/Picture_80px.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </GridPane>
+                            <!-- icona "right", sarà il bottone per scorrere verso sx. -->
+                            <Button  fx:id="eventSlideShowRightButton" mnemonicParsing="false"
+                                     style="-fx-background-color: inherit" AnchorPane.rightAnchor="0.0">
+                                <graphic>
+                                    <ImageView pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@image/Sort Right_96px.png" />
+                                        </image>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                        </children>
+                    </HBox>
+                    <padding>
+                        <Insets bottom="50.0" left="0.0" right="0.0" top="10.0"/>
+                    </padding>
+                </VBox>
+
+
+                <!-- TabPane dove andranno inseriti i grafici e le eventuali rabelle -->
+                <TabPane fx:id="eventoTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" >
+                    <!-- Tab1 -->
+                    <Tab fx:id="eventoTab1Tab" style="-fx-header-color: white" text="primo">
+                        <!-- In questa prima tab c'è un VBOX contenente una linechart come segnaposto -->
+                        <VBox alignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <LineChart fx:id="eventoGrafico1LineChart" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <xAxis>
+                                    <NumberAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                </yAxis>
+                            </LineChart>
+                        </VBox>
+                    </Tab>
+                </TabPane>
+            </VBox>
+        </center>
+        <!-- left della schermata, contenente la barra laterale-->
+        <left>
+            <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" style="-fx-background-color: darkgray">
+                <padding>
+                    <Insets bottom="5.0" left="12.0" right="12.0" top="5.0"/>
+                </padding>
+                <!-- ImageView contenente la foto di Locandina-->
+                <ImageView fx:id="eventPlaybillImageView" fitHeight="300.0" fitWidth="280.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <!-- L'url dell'immagine è momentaneo e contenuto in resources/image. Sostituire da view -->
+                        <Image url="@image/Picture_80px.png" />
+                    </image>
+                </ImageView>
+                <Separator/>
+                <!-- Bottone per la modifica dell'evento corrente -->
+                <Button fx:id="eventModifyButton" mnemonicParsing="false" style="-fx-background-color: inherit" text="Modifica" textFill="white">
+                    <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@image/Edit File_32px.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Separator/>
+                <!-- Bottone per la Cancellazione dell'evento corrente -->
+                <Button fx:id="eventoDeleteButton" mnemonicParsing="false" style="-fx-background-color: inherit" text="Cancella" textFill="white">
+                    <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@image/Waste_32px.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Separator/>
+                <Button fx:id="eventoBackButton" mnemonicParsing="false" style="-fx-background-color: inherit" text="Torna alla DashBoard" textFill="white">
+                    <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@image/Back To_32px.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Separator/>
+            </VBox>
+        </left>
+
+    </BorderPane>
+
+    <!-- Schermata Login -->
+    <BorderPane AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" >
+        <center>
+            <VBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <!-- Label superiore, col nome dell'applicativo-->
+                <Label text="EM-17">
+                    <font>
+                        <Font size="45.0"/>
+                    </font>
+                </Label>
+                <!-- Vbox centrale, contenente il form-->
+                <VBox style="-fx-background-color:white; -fx-border-color: black" maxWidth="700" maxHeight="600" alignment="TOP_LEFT">
+                    <padding>
+                        <Insets top="100.0" left="100" right="100" bottom="100"/>
+                    </padding>
+                    <Label translateX="-20" translateY="-20" text="Login">
+                        <font>
+                            <Font size="25.0"/>
+                        </font>
+                    </Label>
+                    <!-- label e textfield username-->
+                    <Label translateY="-10" text="UserName" fx:id="userLabel"></Label>
+                    <TextField translateY="-10" fx:id="userName"></TextField>
+                    <!-- label e passwordfield password-->
+                    <Label text="Password" fx:id="passLabel"></Label>
+                    <PasswordField fx:id="password"></PasswordField >
+                    <!-- bottone "recupero password" -->
+                    <Button fx:id="recoveryLabelButton" translateX="-20" text="Password Dimenticata" underline="true" style="-fx-text-fill: blue; -fx-background-color: inherit">
+                    </Button>
+                    <!-- bottone login-->
+                    <Button fx:id="loginButton" translateY="10" translateX="450" alignment="BOTTOM_RIGHT" text="Login"></Button>
+
+                </VBox>
+            </VBox>
+        </center>
+    </BorderPane>
+
+    <!-- Schermata Recupero Password -->
+    <BorderPane AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" >
+        <center>
+            <VBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <!-- Label superiore, col nome dell'applicativo-->
+                <Label text="EM-17">
+                    <font>
+                        <Font size="45.0"/>
+                    </font>
+                </Label>
+                <!-- Vbox centrale, contenente il form-->
+                <VBox style="-fx-background-color:white; -fx-border-color: black" maxWidth="700" maxHeight="600" alignment="TOP_LEFT">
+                    <padding>
+                        <Insets top="100.0" left="100" right="100" bottom="100"/>
+                    </padding>
+                    <Label translateX="-20" translateY="-20" text="Recupero Password">
+                        <font>
+                            <Font size="25.0"/>
+                        </font>
+                    </Label>
+                    <!-- label e textfield username-->
+                    <Label translateY="-10" text="Inserire l'Email" fx:id="recoveryLabel"></Label>
+                    <TextField translateY="-10" fx:id="recoveryEmail"></TextField>
+                    <!-- Hbox contenente i due bottoni-->
+                    <HBox>
+                        <!-- bottone per tornare indietro-->
+                        <Button fx:id="recoveryBackButton" translateY="10" alignment="BOTTOM_RIGHT" text="Indietro"></Button>
+                        <!-- bottone per l'invio della mail-->
+                        <Button fx:id="recoveryButton" translateY="10" translateX="370" alignment="BOTTOM_RIGHT" text="Invia"></Button>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </center>
+    </BorderPane>
+
+    <!-- Schermata Inserimento-->
+    <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
+        <center>
+            <VBox HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <VBox translateX="20" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" >
+                    <!-- Hbox contenente le etichette e textbox di inserimento del nome evento e location -->
+                    <HBox spacing="50">
+                        <VBox>
+                            <Label text="Nome Evento"></Label>
+                            <TextField fx:id="insertNameLabel"></TextField>
+                        </VBox>
+                        <VBox >
+                            <Label text="Nome Location"></Label>
+                            <TextField fx:id="insertLocationLabel"></TextField>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="20">
+                        <VBox>
+                            <Label text="Data Inizio"></Label>
+                            <DatePicker fx:id="insertInizioDataPicker"></DatePicker>
+
+                        </VBox>
+                        <VBox>
+                            <Label text="Data fine"></Label>
+                            <DatePicker fx:id="insertFineDataPicker"></DatePicker>
+
+                        </VBox>
+                        <VBox>
+                            <Label text="N° Massimo di Visitatori"></Label>
+                            <TextField fx:id="insertMaxGuestsLabel"></TextField>
+                        </VBox>
+                    </HBox>
+                    <Label text="Descrizione Evento"></Label>
+                    <!-- TextArea che andrà ad ospitare la descrizione dell'evento -->
+                    <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox  alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <TextArea VBox.vgrow="ALWAYS" fx:id="insertTextArea"></TextArea>
+                        </VBox>
+                    </AnchorPane>
+
+                    <HBox fx:id="insertSlideshow" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" alignment="CENTER">
+                        <children>
+                            <!-- icona "left", sarà il bottone per scorrere verso sx.-->
+                            <Button fx:id="insertSlideShowLeftButton" mnemonicParsing="false"
+                                    style="-fx-background-color: inherit" AnchorPane.leftAnchor="0.0">
+                                <graphic>
+                                    <ImageView pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@image/Sort Left_96px.png" />
+                                        </image>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                            <GridPane HBox.hgrow="ALWAYS" fx:id="insertSlideshowImmagine" alignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" >
+                                <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
+                                <Button GridPane.columnIndex="1" fx:id="insertImage1Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
+                                    <graphic>
+                                        <ImageView fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/Picture_80px.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
+                                <Button GridPane.columnIndex="2" fx:id="insertImage2Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
+                                    <graphic>
+                                        <ImageView fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@image/Picture_80px.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </GridPane>
+                            <!-- icona "right", sarà il bottone per scorrere verso sx. -->
+                            <Button  fx:id="insertSlideShowRightButton" mnemonicParsing="false"
+                                     style="-fx-background-color: inherit" AnchorPane.rightAnchor="0.0">
+                                <graphic>
+                                    <ImageView pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@image/Sort Right_96px.png" />
+                                        </image>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                        </children>
+                    </HBox>
+                    <padding>
+                        <Insets bottom="50.0" left="0.0" right="0.0" top="10.0"/>
+                    </padding>
+
+                    <HBox spacing="20">
+                        <Button fx:id="insertUploadButton" text="Upload Galleria"></Button>
+                        <VBox>
+                            <HBox>
+                                <Label text="Uploading: "></Label>
+                                <Label fx:id="insertPercentageLabel" text="x"></Label>
+                            </HBox>
+                            <ProgressBar ></ProgressBar>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <HBox spacing="20">
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                    <Button AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" text="Indietro" fx:id="insertCancelButton"></Button>
+                    <VBox HBox.hgrow="ALWAYS"></VBox>
+                    <Button style=" -fx-background-color: #199ED9; -fx-text-fill: white"  AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" text="Conferma" fx:id="insertConfirmButton">
+                    </Button>
+                </HBox>
+
+
+            </VBox>
+        </center>
+        <!-- left della schermata, contenente la barra laterale-->
+        <left>
+            <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" style="-fx-background-color: darkgray">
+                <padding>
+                    <Insets bottom="5.0" left="12.0" right="12.0" top="5.0"/>
+                </padding>
+                <!-- ImageView contenente la foto di Locandina-->
+                <ImageView fx:id="insertPlaybillImageView" fitHeight="300.0" fitWidth="280.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <!-- L'url dell'immagine è momentaneo e contenuto in resources/image. Sostituire da view -->
+                        <Image url="@image/Picture_80px.png" />
+                    </image>
+                </ImageView>
+                <Separator/>
+                <!-- Bottone per la modifica dell'evento corrente -->
+                <Button fx:id="insertPlayBillLabel" mnemonicParsing="false" style="-fx-background-color: inherit" text="Carica Locandina" textFill="white">
+                    <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@image/Edit File_32px.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Separator/>
+            </VBox>
+        </left>
+
+
+    </BorderPane>
+
+</AnchorPane>
