@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/em17desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/em17desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/em17desktop.iml" filepath="$PROJECT_DIR$/em17desktop.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/em17desktop_main.iml" filepath="$PROJECT_DIR$/.idea/modules/em17desktop_main.iml" group="em17desktop" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/em17desktop_test.iml" filepath="$PROJECT_DIR$/.idea/modules/em17desktop_test.iml" group="em17desktop" />
     </modules>
