@@ -1,22 +1,18 @@
 package controller;
 
 
-
 import com.google.api.core.SettableApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
-import javafx.event.EventTarget;
 import model.EventModel;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
 
@@ -25,8 +21,14 @@ public class DBController {
     private static final String DATABASE_URL = "https://ingws-20.firebaseio.com/";
     private DatabaseReference database;
     private String ris;
+    private static DBController instance = new DBController();
+    EventController eventController;
 
-    public DBController() {
+    public static DBController getInstance() {
+        return instance;
+    }
+
+    protected DBController() {
         initializeDatabase();
     }
 
@@ -68,48 +70,112 @@ public class DBController {
 
         System.out.println("Collegamento al database...");
         //Scelgo la root di partenza del database
-        database = FirebaseDatabase.getInstance().getReference("luogo");
+        database = FirebaseDatabase.getInstance().getReference();
 
-        try {
-            System.out.println("try");
-            risultatoQuery("cacca");
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("cerco  nel database...");
-        //System.out.println(risultatoQuery("bob"));
 
     }
 
 
-    private void risultatoQuery(String string) throws ExecutionException, InterruptedException {
-        final SettableApiFuture<String> tcs = SettableApiFuture.create();
-
-
-      //  Query query = database.child("Eventi").equalTo("EventoX1");
-
-        database.orderByChild("Eventi").addChildEventListener(new ChildEventListener() {
+    public void dashBoard() throws ExecutionException, InterruptedException {
+        database.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
-                System.out.println("sonodrento");
-                if(snapshot.child("Eventi").getValue() != null) {
-                    EventModel event = new EventModel();
-                    event.setLocandina(snapshot.child("Eventi").getChildren().iterator().next().child("copertina").getValue().toString());
-                    event.setNomeEvento(snapshot.child("Eventi").getChildren().iterator().next().child("nome").getValue().toString());
-                    event.setAttivo((boolean) snapshot.child("Eventi").getChildren().iterator().next().child("attivo").getValue());
-                    /*event.setDataInizio((Date) snapshot.child("Eventi").getChildren().iterator().next().child("data").child("inizio").getValue());
-                    event.setDataFine((Date) snapshot.child("Eventi").getChildren().iterator().next().child("data").child("fine").getValue());*/
-                    event.setDescrizione(snapshot.child("Eventi").getChildren().iterator().next().child("descrizione").getValue().toString());
-                    System.out.println(event.getLocandina());
-                    System.out.println(snapshot.child("Eventi").getChildren().iterator().next().getValue().toString());
-                    //event.setNomeEvento(snapshot.child("Eventi").child("nome").getValue().toString());
-                    System.out.println("caccaculo" + event.getNomeEvento() + " " + event.isAttivo() +  " " + event.getDescrizione());
-                } else {
-                    System.out.println("andreachiattissimo");
+                eventController = EventController.getInstance();//ottengo l'instanza di event controller
+                EventModel event = new EventModel();//creo un nuovo event model
+                int i = 0;
+                int j=0;
+                try {
+
+                    i=0;
+                    List<String> locationName = new ArrayList<>();
+                    Iterable<DataSnapshot> location = snapshot.getChildren();//ottengo l'iterable location, posizionato al root
+                    //ottengo i nomi delle location
+                    while (location.iterator().hasNext()) {
+                        locationName.add(location.iterator().next().child("nome").getValue().toString());
+                        System.out.println("location: " +  locationName.get(i));
+                        i++;
+                    }
+
+                    i=0;
+                    List<String> locationAdd = new ArrayList<>();
+                    location = snapshot.getChildren();//riposiziono l'iterable al root
+                    //ottengo il nome delle location
+                    while (location.iterator().hasNext()) {
+                        locationName.add(location.iterator().next().child("indirizzo").getValue().toString());
+                        //System.out.println("location: " +  locationAdd.get(i));
+                        i++;
+                    }
+
+
+                    i=0;
+                    location = snapshot.getChildren();//iterable al root
+                    while (location.iterator().hasNext()) {
+                        j=0;
+                        //per ogni location posiziono un'iterable sotto eventi, in modo da ottenere i dati di tutti gli eventi
+                        Iterable<DataSnapshot> eventi = location.iterator().next().child("Eventi").getChildren();
+                        //ottengo il nome di tutti gli eventi
+                        while (eventi.iterator().hasNext()) {
+                            event.setIndex(j);
+                            event.setNomeLocation(locationName.get(i));
+                            //event.setLocationAddress(locationAdd.get(i));
+                            event.setNomeEvento(eventi.iterator().next().child("nome").getValue().toString());
+                            System.out.println("nome evento" + event.getIndex() + ", in loc" + event.getNomeLocation() + i + ": " + event.getNomeEvento());
+                            eventController.setListaEventi(event);
+                            j++;
+                        }
+                        i++;
+                    }
+
+                    location = snapshot.getChildren();//iterable al root
+                    while (location.iterator().hasNext()) {
+                        j=0;
+                        //per ogni location posiziono un'iterable sotto eventi, in modo da ottenere i dati di tutti gli eventi
+                        Iterable<DataSnapshot> eventi = location.iterator().next().child("Eventi").getChildren();
+                        //ottengo il valore di attività di tutti gli eventi
+                        while (eventi.iterator().hasNext()) {
+                            //eventController.getListaEventi().get(j).setLocationAddress(locationAdd.get(i));
+                            eventController.getListaEventi().get(j).setAttivo((boolean) eventi.iterator().next().child("attivo").getValue());
+                            System.out.println("attivo: " + eventController.getListaEventi().get(j).isAttivo() );
+                            j++;
+                        }
+                        i++;
+                    }
+                    i=0;
+
+                    location = snapshot.getChildren();//iterable al root
+                    while (location.iterator().hasNext()) {
+                        j=0;
+                        //per ogni location posiziono un'iterable sotto eventi, in modo da ottenere i dati di tutti gli eventi
+                        Iterable<DataSnapshot> eventi = location.iterator().next().child("Eventi").getChildren();
+                        //ottengo la locandina di tutti gli eventi
+                        while (eventi.iterator().hasNext()) {
+                            eventController.getListaEventi().get(j).setLocandina(eventi.iterator().next().child("copertina").getValue().toString());
+                            System.out.println("locandina: " + eventController.getListaEventi().get(j).getLocandina() );
+                            j++;
+                        }
+                        i++;
+                    }
+                    i=0;
+
+                    location = snapshot.getChildren();//iterable al root
+                    while (location.iterator().hasNext()) {
+                        j=0;
+                        //per ogni location posiziono un'iterable sotto eventi, in modo da ottenere i dati di tutti gli eventi
+                        Iterable<DataSnapshot> eventi = location.iterator().next().child("Eventi").getChildren();
+                        //ottengo la descrizione tutti gli eventi
+                        while (eventi.iterator().hasNext()) {
+                            eventController.getListaEventi().get(j).setDescrizione(eventi.iterator().next().child("descrizione").getValue().toString());
+                            System.out.println("Descrizione: " + eventController.getListaEventi().get(j).getDescrizione() );                            j++;
+                        }
+                        i++;
+                    }
+
+
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
+
+                eventController.setListaEventi(event);
 
             }
 
@@ -138,7 +204,7 @@ public class DBController {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                if(!snapshot.exists()){
+                if (!snapshot.exists()) {
                     System.out.println("no");
                 }
             }
@@ -149,9 +215,7 @@ public class DBController {
             }
         });
 
-        System.out.println("aspetto");
-
-        return ;
+        return;
     }
 
 

@@ -79,7 +79,7 @@
                         <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
                         <Button GridPane.columnIndex="1" fx:id="dashBoardImage1Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
                             <graphic>
-                                <ImageView fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fx:id="dashboardImage1" fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@image/Picture_80px.png" />
                                     </image>

@@ -16,6 +16,7 @@ public class EventModel extends Observable{
 
 
         List<Settori> listaSettori;
+        private int index;
         private String nomeEvento;
         private boolean attivo;
         private String locandina;
@@ -23,6 +24,7 @@ public class EventModel extends Observable{
         private Date dataFine;
         private String descrizione;
         private String nomeLocation;
+        private String locationAddress;
         private int maxVisitatori;
         private double riduzioneAnziani;
         private double riduzioneBambini;
@@ -41,7 +43,15 @@ public class EventModel extends Observable{
             notifyObservers(); //notifica gli observer
         }
 
-        public boolean isAttivo() {
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public boolean isAttivo() {
             return attivo;
         }
 
@@ -112,7 +122,15 @@ public class EventModel extends Observable{
             notifyObservers(); //notifica gli observer
         }
 
-        public int getMaxVisitatori() {
+    public String getLocationAddress() {
+        return locationAddress;
+    }
+
+    public void setLocationAddress(String locationAddress) {
+        this.locationAddress = locationAddress;
+    }
+
+    public int getMaxVisitatori() {
             return maxVisitatori;
         }
 

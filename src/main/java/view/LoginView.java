@@ -47,9 +47,9 @@ public class LoginView implements Observer {
      */
     public LoginView(TextField usernameField, PasswordField passwordField, Button loginButton, Button recoveryButton, ViewSourceController viewSourceController){
         this.usernameField=usernameField;
-        usernameField.setText("andreabravaccino@gmail.com");
+        usernameField.setText("mat.dimeglio@gmail.com");
         this.passwordField=passwordField;
-        passwordField.setText("obravacci970");
+        passwordField.setText("SaltaPicchio3");
         this.loginButton=loginButton;
         this.viewSourceController = viewSourceController;
         this.recoveryButton = recoveryButton;

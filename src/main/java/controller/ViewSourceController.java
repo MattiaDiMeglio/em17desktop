@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import model.EventModel;
 import model.LoginModel;
@@ -14,6 +15,8 @@ import view.DashBoardView;
 import view.LoginView;
 import view.RecoveryView;
 import view.charts.PieChartClass;
+
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -33,6 +36,7 @@ public class ViewSourceController {
     private AnchorPane mainAnchorPane;
     @FXML
     private Button dashBoardImage1Button;
+    @FXML private ImageView dasboardImage1;
     @FXML
     private Button dashBoardImage2Button;
     @FXML
@@ -145,8 +149,8 @@ public class ViewSourceController {
     /**
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
-    public void toDashBoardView() {
-        DashBoardView.fromView(dashBoardImage1Button);
+    public void toDashBoardView() throws ExecutionException, InterruptedException {
+        DashBoardView.fromView(dashBoardImage1Button, dasboardImage1);
         changeView(dashBoardBox);
         System.out.println("cambioToDashBoard");
 

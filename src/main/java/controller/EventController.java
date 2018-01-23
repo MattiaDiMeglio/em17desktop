@@ -3,14 +3,15 @@ package controller;
 
 import model.EventModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventController {
 
-    EventController instance = new EventController();
-    List<EventModel> listaEventi;
+    private static EventController instance = new EventController();
+    List<EventModel> listaEventi = new ArrayList<>();
 
-    public EventController getInstance() {
+    public static EventController getInstance() {
         return instance;
     }
 

@@ -1,6 +1,7 @@
 package view;
 
 import controller.DBController;
+import controller.EventController;
 import controller.ViewSourceController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -8,11 +9,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import model.EventModel;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Classe view per la schermata DashBoard, nonché main dell'applicativo.
@@ -81,7 +87,6 @@ public class DashBoardView extends Application implements Observer {
         this.primaryStage.show();
         this.primaryStage.centerOnScreen();
         this.primaryStage.setTitle("Em-17");
-        DBController dbController = new DBController();
         this.primaryStage.setOnCloseRequest(event -> {
             ViewSourceController viewSourceController = new ViewSourceController();
             viewSourceController.shutdown();
@@ -107,8 +112,15 @@ public class DashBoardView extends Application implements Observer {
 
     }
 
-    public static void fromView(Button bottone){
+    public static void fromView(Button bottone, ImageView image1) throws ExecutionException, InterruptedException {
+        DBController dbController = DBController.getInstance();
+        dbController.dashBoard();
+        EventController eventController = EventController.getInstance();
+        List<EventModel> lista = eventController.getListaEventi();
+       /* System.out.println(lista.get(0).getLocandina().toString());
+        Image image = new Image(lista.get(0).getLocandina().toString());
+        image1.setImage(image);
 
-         bottone.setDisable(true);
+        bottone.setDisable(true);*/
     }
 }
