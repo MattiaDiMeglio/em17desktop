@@ -100,7 +100,7 @@ public class DBController {
                         Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
                         while (eventi.iterator().hasNext()) {
                             DataSnapshot eventiSnap = eventi.iterator().next();
-
+                            System.out.println("seichiatto");
                             EventModel event = new EventModel();//creo un nuovo event model
                             event.setIndex(i);
                             event.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());

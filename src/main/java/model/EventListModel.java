@@ -1,5 +1,6 @@
 package model;
 
+import javafx.application.Platform;
 import model.EventModel;
 
 import java.util.ArrayList;
@@ -25,8 +26,11 @@ public class EventListModel extends Observable{
 
     public void setListaEventi(EventModel evento) {
         this.listaEventi.add(evento);
-        setChanged();
-        notifyObservers(listaEventi.size());
+        Platform.runLater(() -> {
+            setChanged();
+            notifyObservers();
+        });
+
     }
 
     public void deleteList (){

@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.EventListModel;
 import model.EventModel;
@@ -70,7 +73,7 @@ public class ViewSourceController extends Application {
     @FXML
     private Button recoveryBackButton;
     @FXML
-    private GridPane slideshowImmagine;
+    private HBox dashSlide;
     @FXML
     private ComboBox dashboardYearComboBox1;
     @FXML
@@ -243,18 +246,20 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
-        new DashBoardView(slideshowImmagine, dashBoardGraph2PieChart, dashBoardYearComboBox2, dashBoardGraph1LineChart, dashboardYearComboBox1, this);
-        System.out.println("nnn" + slideshowImmagine.toString());
+        new DashBoardView( dashBoardGraph2PieChart, dashBoardYearComboBox2, dashBoardGraph1LineChart, dashboardYearComboBox1, this);
         changeView(dashBoardBox);
         System.out.println("cambioToDashBoard");
         DBController dbController = DBController.getInstance();
         dbController.dashBoard();
     }
 
-    public void createSlide (int i, Button button){
+    @FXML  public void createSlide (int i, Button button){
 
+        System.out.println("sdfnpoasnipnipniaf");
+        HBox hBox = new HBox();
+        dashSlide.setAlignment(Pos.CENTER);
+        dashSlide.getChildren().add(button);
 
-        slideshowImmagine.add(button, i, 1);
     }
 
 
