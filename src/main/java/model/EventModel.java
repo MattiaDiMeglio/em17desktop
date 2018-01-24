@@ -11,7 +11,7 @@ public class EventModel extends Observable {
 
     private Integer ticketSold;
 
-    private Integer totTickets;
+    private Integer maxVisitatori;
 
     public void notifyMyObservers() {
         setChanged();
@@ -35,7 +35,6 @@ public class EventModel extends Observable {
     private String descrizione;
     private String nomeLocation;
     private String locationAddress;
-    private int maxVisitatori;
     private double riduzioneAnziani;
     private double riduzioneBambini;
     private double riduzioneStudenti;
@@ -138,16 +137,6 @@ public class EventModel extends Observable {
         this.locationAddress = locationAddress;
     }
 
-    public int getMaxVisitatori() {
-        return maxVisitatori;
-    }
-
-    public void setMaxVisitatori(int maxVisitatori) {
-        this.maxVisitatori = maxVisitatori;
-        setChanged(); //attiva il flag per gli observer
-        notifyObservers(); //notifica gli observer
-    }
-
     public double getRiduzioneAnziani() {
         return riduzioneAnziani;
     }
@@ -186,11 +175,11 @@ public class EventModel extends Observable {
         return Double.valueOf(ticketSold);
     }
 
-    public void setTotTickets(Integer totTickets) {
-        this.totTickets = totTickets;
+    public void setMaxVisitatori(Integer maxVisitatori) {
+        this.maxVisitatori = maxVisitatori;
     }
 
-    public Double getTotTickets() {
-        return Double.valueOf(totTickets);
+    public Double getMaxVisitatori() {
+        return Double.valueOf(maxVisitatori);
     }
 }

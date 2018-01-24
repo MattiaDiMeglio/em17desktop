@@ -1,7 +1,6 @@
 package controller;
 
 
-import com.google.api.core.SettableApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -15,9 +14,7 @@ import java.io.InputStream;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -115,7 +112,7 @@ public class DBController {
 
                             EventModel event = new EventModel();//creo un nuovo event model
                             event.setIndex(i);
-                            event.setTotTickets(totTickets);
+                            event.setMaxVisitatori(totTickets);
                             event.setTicketSold(ticketSold);
                             event.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
                             event.setNomeLocation(locationSnap.child("nome").getValue().toString());

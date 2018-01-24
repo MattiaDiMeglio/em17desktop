@@ -78,7 +78,7 @@ public class PieChartClass implements Observer {
         this.pieChart = pieChart;
 
         EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
-        EventListModel.getInstance().getListaEventi().get(index).notifyMyObservers();
+        EventListModel.getInstance().getListaEventi().get(index).notifyMyObservers(); // todo da vedere se va bene questa chiamata
     }
 
     @Override
@@ -97,7 +97,7 @@ public class PieChartClass implements Observer {
         } else {
             System.out.println("event");
             EventModel eventModel = (EventModel) o;
-            Double ticketsPerc = (eventModel.getTicketSold() / eventModel.getTotTickets()) * 100;
+            Double ticketsPerc = (eventModel.getTicketSold() / eventModel.getMaxVisitatori()) * 100;
             pieChart.getData().get(0).setName(round(ticketsPerc, 2) + "%\nBiglietti Venduti");
             pieChart.getData().get(0).setPieValue(ticketsPerc);
             pieChart.getData().get(1).setName((100 - round(ticketsPerc, 2) + "%\nBiglietti non Venduti"));
