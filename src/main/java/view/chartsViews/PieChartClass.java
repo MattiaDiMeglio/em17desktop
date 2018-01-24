@@ -58,14 +58,12 @@ public class PieChartClass implements Observer {
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
                 ChartsController.populateCharts(String.valueOf(newValue));
             }
-
-           /* @Override public void changed(ObservableValue ov, String t, String t1) {
-                System.out.println(ov);
-                System.out.println(t);
-                System.out.println(t1);
-            }*/
         });
         PieChartClassModel.getInstance().addObserver(this);
+    }
+
+    public PieChartClass(PieChart eventGraph2PieChart) {
+
     }
 
     @Override

@@ -41,8 +41,6 @@ public class LineChartClass implements Observer {
      * @param dashboardYearComboBox1
      */
     public LineChartClass(LineChart lineChart, ComboBox dashboardYearComboBox1) {
-
-
         lineChart.setTitle("Vendita biglietti");
         lineChart.getXAxis().setAnimated(false);
 
@@ -77,6 +75,38 @@ public class LineChartClass implements Observer {
                 lineChart.setTitle("Vendita biglietti " + String.valueOf(newValue));
             }
         });
+
+        LineChartClassModel.getInstance().addObserver(this);
+    }
+
+    public LineChartClass(LineChart lineChart) {
+        lineChart.setTitle("Vendita biglietti");
+        lineChart.getXAxis().setAnimated(false);
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Biglietti venduti");
+
+        datas = new ArrayList<>();
+
+        datas.add(new XYChart.Data("Gen", 0));
+        datas.add(new XYChart.Data("Feb", 0));
+        datas.add(new XYChart.Data("Mar", 0));
+        datas.add(new XYChart.Data("Apr", 0));
+        datas.add(new XYChart.Data("Mag", 0));
+        datas.add(new XYChart.Data("Giu", 0));
+        datas.add(new XYChart.Data("Lug", 0));
+        datas.add(new XYChart.Data("Ago", 0));
+        datas.add(new XYChart.Data("Set", 0));
+        datas.add(new XYChart.Data("Ott", 0));
+        datas.add(new XYChart.Data("Nov", 0));
+        datas.add(new XYChart.Data("Dic", 0));
+
+        for (XYChart.Data<String, Number> data : datas) {
+            series.getData().add(data);
+        }
+
+        lineChart.getData().add(series);
+
 
         LineChartClassModel.getInstance().addObserver(this);
     }

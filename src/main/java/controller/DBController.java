@@ -85,7 +85,7 @@ public class DBController {
 
 
     public void dashBoard() throws ExecutionException, InterruptedException {
-        database.addListenerForSingleValueEvent(new ValueEventListener(){
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
 
 
             @Override
@@ -97,12 +97,26 @@ public class DBController {
                     while (location.iterator().hasNext()) {
                         DataSnapshot locationSnap = location.iterator().next();
 
+                        Iterable<DataSnapshot> settori = locationSnap.child("settori").getChildren();
+                        Integer totTickets = 0;
+                        while (settori.iterator().hasNext()) {
+                            totTickets = totTickets + Integer.valueOf(settori.iterator().next().getValue().toString());
+                        }
                         Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
                         while (eventi.iterator().hasNext()) {
                             DataSnapshot eventiSnap = eventi.iterator().next();
-                            System.out.println("seichiatto");
+
+                            Integer ticketSold = 0;
+                            Iterable<DataSnapshot> eventiIteable = eventiSnap.child("biglietti").getChildren();
+                            while (eventiIteable.iterator().hasNext()) {
+                                DataSnapshot bigliettiSnap = eventiIteable.iterator().next();
+                                ticketSold = ticketSold + Integer.valueOf(bigliettiSnap.child("accessi").getValue().toString());
+                            }
+
                             EventModel event = new EventModel();//creo un nuovo event model
                             event.setIndex(i);
+                            event.setTotTickets(totTickets);
+                            event.setTicketSold(ticketSold);
                             event.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
                             event.setNomeLocation(locationSnap.child("nome").getValue().toString());
                             event.setNomeEvento(eventiSnap.child("nome").getValue().toString());
@@ -134,6 +148,8 @@ public class DBController {
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
                 } catch (NullPointerException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -21,6 +21,7 @@ import model.EventListModel;
 import model.EventModel;
 import model.LoginModel;
 import view.DashBoardView;
+import view.EventView;
 import view.LoginView;
 import view.RecoveryView;
 import view.chartsViews.LineChartClass;
@@ -42,8 +43,8 @@ public class ViewSourceController extends Application {
 
     /**
      * Attributo stage, che rappresenta lo stage principale dell'applicazione
-     * @see javafx.stage.Stage
      *
+     * @see javafx.stage.Stage
      */
     private Stage primaryStage;
 
@@ -80,6 +81,10 @@ public class ViewSourceController extends Application {
     private ComboBox dashBoardYearComboBox2;
     @FXML
     private LineChart dashBoardGraph1LineChart;
+    @FXML
+    private LineChart eventoGrafico1LineChart;
+    @FXML
+    private PieChart eventGraph2PieChart;
 
 
     /**
@@ -112,6 +117,7 @@ public class ViewSourceController extends Application {
 
     /**
      * Main dell'applicazione, richiama il metono launch che fa partire la schermata di javafx
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -125,10 +131,10 @@ public class ViewSourceController extends Application {
      * Selezionata la scena, setta Resizable a falso, in modo che la dimensione schermata non possa essere modificata,
      * mostra e centra la schermata. Ne setta il titolo e la imposta a pieno schermo
      *
+     * @param primaryStage stage primario dell'applicativo
      * @see javafx.scene.Parent
      * @see javafx.scene.Scene
      * @see javafx.fxml.FXMLLoader
-     * @param primaryStage stage primario dell'applicativo
      */
 
     @Override
@@ -207,9 +213,7 @@ public class ViewSourceController extends Application {
         dashBoardYearComboBox2.getSelectionModel().selectFirst();
 
 
-
     }
-
 
 
     /**
@@ -246,14 +250,15 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
-        new DashBoardView( dashBoardGraph2PieChart, dashBoardYearComboBox2, dashBoardGraph1LineChart, dashboardYearComboBox1, this);
+        new DashBoardView(dashBoardGraph2PieChart, dashBoardYearComboBox2, dashBoardGraph1LineChart, dashboardYearComboBox1, this);
         changeView(dashBoardBox);
         System.out.println("cambioToDashBoard");
         DBController dbController = DBController.getInstance();
         dbController.dashBoard();
     }
 
-    @FXML  public void createSlide (int i, Button button){
+    @FXML
+    public void createSlide(int i, Button button) {
 
         System.out.println("sdfnpoasnipnipniaf");
         HBox hBox = new HBox();
@@ -262,6 +267,10 @@ public class ViewSourceController extends Application {
 
     }
 
+    public void toEventView() {
+        EventView eventView = new EventView(eventoGrafico1LineChart, eventGraph2PieChart);
+        changeView(eventBox);
+    }
 
     public void shutdown() {
 
