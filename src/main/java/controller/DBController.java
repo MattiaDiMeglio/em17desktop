@@ -102,15 +102,23 @@ public class DBController {
                         Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
                         while (eventi.iterator().hasNext()) {
                             DataSnapshot eventiSnap = eventi.iterator().next();
-
+                            EventModel event = new EventModel();//creo un nuovo event model
                             Integer ticketSold = 0;
+                            event.initializeTicketPerMonth();
                             Iterable<DataSnapshot> eventiIteable = eventiSnap.child("biglietti").getChildren();
                             while (eventiIteable.iterator().hasNext()) {
                                 DataSnapshot bigliettiSnap = eventiIteable.iterator().next();
-                                ticketSold = ticketSold + Integer.valueOf(bigliettiSnap.child("accessi").getValue().toString());
+                                Integer accesses = Integer.valueOf(bigliettiSnap.child("accessi").getValue().toString());
+                                ticketSold = ticketSold + accesses;
+
+                                String eventEndDate = bigliettiSnap.child("data vendita").getValue().toString();
+                                Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
+
+                               event.addOneSoldPerMonth(eventEndTime.getMonth(), accesses);
+
                             }
 
-                            EventModel event = new EventModel();//creo un nuovo event model
+
                             event.setIndex(i);
                             event.setMaxVisitatori(totTickets);
                             event.setTicketSold(ticketSold);

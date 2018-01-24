@@ -14,6 +14,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import model.EventListModel;
+import model.EventModel;
 import model.chartsModels.LineChartClassModel;
 
 import java.util.ArrayList;
@@ -41,32 +43,8 @@ public class LineChartClass implements Observer {
      * @param dashboardYearComboBox1
      */
     public LineChartClass(LineChart lineChart, ComboBox dashboardYearComboBox1) {
+        initializeLineChart(lineChart);
         lineChart.setTitle("Vendita biglietti");
-        lineChart.getXAxis().setAnimated(false);
-
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Biglietti venduti");
-
-        datas = new ArrayList<>();
-
-        datas.add(new XYChart.Data("Gen", 0));
-        datas.add(new XYChart.Data("Feb", 0));
-        datas.add(new XYChart.Data("Mar", 0));
-        datas.add(new XYChart.Data("Apr", 0));
-        datas.add(new XYChart.Data("Mag", 0));
-        datas.add(new XYChart.Data("Giu", 0));
-        datas.add(new XYChart.Data("Lug", 0));
-        datas.add(new XYChart.Data("Ago", 0));
-        datas.add(new XYChart.Data("Set", 0));
-        datas.add(new XYChart.Data("Ott", 0));
-        datas.add(new XYChart.Data("Nov", 0));
-        datas.add(new XYChart.Data("Dic", 0));
-
-        for (XYChart.Data<String, Number> data : datas) {
-            series.getData().add(data);
-        }
-
-        lineChart.getData().add(series);
 
         dashboardYearComboBox1.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
@@ -79,44 +57,57 @@ public class LineChartClass implements Observer {
         LineChartClassModel.getInstance().addObserver(this);
     }
 
-    public LineChartClass(LineChart lineChart) {
+    public LineChartClass(LineChart lineChart, int index) {
+        initializeLineChart(lineChart);
         lineChart.setTitle("Vendita biglietti");
-        lineChart.getXAxis().setAnimated(false);
 
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Biglietti venduti");
-
-        datas = new ArrayList<>();
-
-        datas.add(new XYChart.Data("Gen", 0));
-        datas.add(new XYChart.Data("Feb", 0));
-        datas.add(new XYChart.Data("Mar", 0));
-        datas.add(new XYChart.Data("Apr", 0));
-        datas.add(new XYChart.Data("Mag", 0));
-        datas.add(new XYChart.Data("Giu", 0));
-        datas.add(new XYChart.Data("Lug", 0));
-        datas.add(new XYChart.Data("Ago", 0));
-        datas.add(new XYChart.Data("Set", 0));
-        datas.add(new XYChart.Data("Ott", 0));
-        datas.add(new XYChart.Data("Nov", 0));
-        datas.add(new XYChart.Data("Dic", 0));
-
-        for (XYChart.Data<String, Number> data : datas) {
-            series.getData().add(data);
-        }
-
-        lineChart.getData().add(series);
-
-
-        LineChartClassModel.getInstance().addObserver(this);
+        EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
+        EventListModel.getInstance().getListaEventi().get(index).notifyMyObservers(); // todo da vedere se va bene questa chiamata
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        Integer[] vendite = LineChartClassModel.getInstance().getTicketsSaled();
+        Integer[] vendite;
+        if (o instanceof LineChartClassModel) {
+            vendite = LineChartClassModel.getInstance().getTicketsSaled();
 
-        for(int i =0;i<datas.size();i++){
+        }else {
+            EventModel eventModel = (EventModel) o;
+            vendite = ((EventModel) o).getTicketsSoldPerMonth();
+        }
+
+        for (int i = 0; i < datas.size(); i++) {
             datas.get(i).setYValue(vendite[i]);
+        }
+    }
+
+    private void initializeLineChart(LineChart lineChart){
+        lineChart.getXAxis().setAnimated(false);
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Biglietti venduti");
+        if (lineChart.getData().isEmpty()) {
+            datas = new ArrayList<>();
+
+            datas.add(new XYChart.Data("Gen", 0));
+            datas.add(new XYChart.Data("Feb", 0));
+            datas.add(new XYChart.Data("Mar", 0));
+            datas.add(new XYChart.Data("Apr", 0));
+            datas.add(new XYChart.Data("Mag", 0));
+            datas.add(new XYChart.Data("Giu", 0));
+            datas.add(new XYChart.Data("Lug", 0));
+            datas.add(new XYChart.Data("Ago", 0));
+            datas.add(new XYChart.Data("Set", 0));
+            datas.add(new XYChart.Data("Ott", 0));
+            datas.add(new XYChart.Data("Nov", 0));
+            datas.add(new XYChart.Data("Dic", 0));
+
+            for (XYChart.Data<String, Number> data : datas) {
+                series.getData().add(data);
+            }
+
+            lineChart.getData().add(series);
+
         }
     }
 }

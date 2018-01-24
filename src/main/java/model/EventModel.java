@@ -38,6 +38,7 @@ public class EventModel extends Observable {
     private double riduzioneAnziani;
     private double riduzioneBambini;
     private double riduzioneStudenti;
+    private Integer[] ticketsSoldPerMonth = new Integer[12];
 
 
     public List<Settori> getListaSettori() {
@@ -181,5 +182,23 @@ public class EventModel extends Observable {
 
     public Double getMaxVisitatori() {
         return Double.valueOf(maxVisitatori);
+    }
+
+    public void addOneSoldPerMonth(Integer num, Integer accesses) {
+        ticketsSoldPerMonth[num] = ticketsSoldPerMonth[num] + accesses;
+        setChanged();
+        notifyObservers();
+    }
+
+    public Integer[] getTicketsSoldPerMonth() {
+        return ticketsSoldPerMonth;
+    }
+
+    public void initializeTicketPerMonth(){
+        for (int i = 0; i< ticketsSoldPerMonth.length; i++){
+            ticketsSoldPerMonth[i] = 0;
+        }
+        setChanged();
+        notifyObservers();
     }
 }

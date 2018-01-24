@@ -18,6 +18,8 @@ public class EventView implements Observer {
         //new LineChartClass(eventoGrafico1LineChart);
         new PieChartClass(eventGraph2PieChart, index);
 
+        new LineChartClass(eventoGrafico1LineChart, index);
+
         System.out.println("creata la view");
     }
 
