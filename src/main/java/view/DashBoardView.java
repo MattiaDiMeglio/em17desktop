@@ -1,17 +1,18 @@
 package view;
 
 import controller.DBController;
-import controller.EventController;
 import controller.ViewSourceController;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.EventListModel;
 import model.EventModel;
 
 import java.io.IOException;
@@ -31,72 +32,38 @@ import java.util.concurrent.ExecutionException;
  *
  * @author ingSW20
  */
-public class DashBoardView extends Application implements Observer {
+public  class  DashBoardView implements Observer {
 
-    /**
-     * Attributo stage, che rappresenta lo stage principale dell'applicazione
-     * @see javafx.stage.Stage
-     *
-     */
-    private Stage primaryStage;
+    GridPane slideshowImmagine;
+    EventModel eventModel = new EventModel();
 
-    /**
-     * Main dell'applicazione, richiama il metono launch che fa partire la schermata di javafx
-     * @param args
-     */
-    public static void main(String[] args) {
-        launch(args);
+
+    private class DashBillBoard{
+        Button button;
+        private int index;
+        private String url;
+    }
+
+    public DashBoardView(GridPane slideshowImmagine){
+        EventListModel eventListModel = EventListModel.getInstance();
+        eventListModel.addObserver(this);
+        this.slideshowImmagine = slideshowImmagine;
+        System.out.println("nono");
+
     }
 
 
-    /**
-     * Metodo start ereditato da Application. Seleziona lo stage da far partire,
-     * carica l'FXML tramite FXMLLoader. Carica il root e se questo non è vuoto,
-     * setta la nuova scena.
-     * Selezionata la scena, setta Resizable a falso, in modo che la dimensione schermata non possa essere modificata,
-     * mostra e centra la schermata. Ne setta il titolo e la imposta a pieno schermo
-     *
-     * @see javafx.scene.Parent
-     * @see javafx.scene.Scene
-     * @see javafx.fxml.FXMLLoader
-     * @param primaryStage stage primario dell'applicativo
-     */
-    @Override
-    public void start(Stage primaryStage) {
-
-        this.primaryStage = primaryStage;
-        //carica il file fxml da cui prendere le info sulla grafica. Il file ViewSource.fxml contiene tutte le scermate
-        //in sequenza
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewSource.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void slideShow(GridPane slideshowImmagine){
+        List<EventModel> lista = EventListModel.getInstance().getListaEventi();
+        int i = lista.size() -1;
+        if (!lista.isEmpty()) {
+            Button button = new Button();
+            button.setGraphic(new ImageView(lista.get(i).getLocandina()));
+            button.setId("dashImageButton" + i);
+            // DashBillBoard billBoard = new DashBillBoard(lista.get(i).getIndex(), button);
+            System.out.println(lista.get(i).getLocandina());
+            //slideshowImmagine.addColumn(1 , new Button());
         }
-
-        //root del fxml, che si basa su una struttura ad albero
-        if (root != null) {
-            this.primaryStage.setScene(new Scene(root));
-        }
-
-        //schermata non ridimensionabile
-        this.primaryStage.setResizable(true);
-        this.primaryStage.setMinHeight(800);
-        this.primaryStage.setMinWidth(800);
-        this.primaryStage.show();
-        this.primaryStage.centerOnScreen();
-        this.primaryStage.setTitle("Em-17");
-        this.primaryStage.setOnCloseRequest(event -> {
-            ViewSourceController viewSourceController = new ViewSourceController();
-            viewSourceController.shutdown();
-            Platform.exit();
-
-        });
-
-
-
-
     }
 
     /**
@@ -109,18 +76,9 @@ public class DashBoardView extends Application implements Observer {
      *
      */
     public void update(Observable o, Object arg) {
-
+        System.out.println("ajasjaodnjsdif");
+        slideShow(slideshowImmagine);
     }
 
-    public static void fromView(Button bottone, ImageView image1) throws ExecutionException, InterruptedException {
-        DBController dbController = DBController.getInstance();
-        dbController.dashBoard();
-        EventController eventController = EventController.getInstance();
-        List<EventModel> lista = eventController.getListaEventi();
-       /* System.out.println(lista.get(0).getLocandina().toString());
-        Image image = new Image(lista.get(0).getLocandina().toString());
-        image1.setImage(image);
 
-        bottone.setDisable(true);*/
-    }
 }

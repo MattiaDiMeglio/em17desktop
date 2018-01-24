@@ -28,6 +28,8 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.chart.PieChart?>
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.chart.CategoryAxis?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewSourceController" fx:id="mainAnchorPane">
     <!-- Schermata DashBoard -->
@@ -76,26 +78,6 @@
                         </graphic>
                     </Button>
                     <GridPane HBox.hgrow="ALWAYS" fx:id="slideshowImmagine" alignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" >
-                        <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
-                        <Button GridPane.columnIndex="1" fx:id="dashBoardImage1Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
-                            <graphic>
-                                <ImageView fx:id="dashboardImage1" fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@image/Picture_80px.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                        <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
-                        <Button GridPane.columnIndex="2" fx:id="dashBoardImage2Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
-                            <graphic>
-                                <ImageView fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@image/Picture_80px.png" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </Button>
                     </GridPane>
                     <!-- icona "right", sarà il bottone per scorrere verso sx. -->
                     <Button  fx:id="dashBoardSlideShowRightButton" mnemonicParsing="false"
@@ -118,9 +100,10 @@
                 <Tab style="-fx-header-color: white" text="primo">
                     <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <LineChart VBox.vgrow="ALWAYS" fx:id="dashBoardGraph1LineChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <ComboBox fx:id="dashboardYearComboBox1" prefWidth="200.0" promptText="choose" />
+                            <LineChart  VBox.vgrow="ALWAYS" fx:id="dashBoardGraph1LineChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <xAxis>
-                                    <NumberAxis side="BOTTOM" />
+                                    <CategoryAxis side="BOTTOM"></CategoryAxis>
                                 </xAxis>
                                 <yAxis>
                                     <NumberAxis side="LEFT" />
@@ -132,6 +115,7 @@
                 <Tab style="-fx-header-color: white" text="primo">
                     <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <ComboBox fx:id="dashBoardYearComboBox2" prefWidth="200.0" promptText="choose" />
                             <PieChart VBox.vgrow="ALWAYS" fx:id="dashBoardGraph2PieChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
                             </PieChart>

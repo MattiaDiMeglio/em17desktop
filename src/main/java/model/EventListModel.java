@@ -1,21 +1,21 @@
-package controller;
-
+package model;
 
 import model.EventModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public class EventController {
+public class EventListModel extends Observable{
 
-    private static EventController instance = new EventController();
+    private static EventListModel instance = new EventListModel();
     List<EventModel> listaEventi = new ArrayList<>();
 
-    public static EventController getInstance() {
+    public static EventListModel getInstance() {
         return instance;
     }
 
-    protected EventController (){
+    protected EventListModel (){
     };
 
 
@@ -25,6 +25,8 @@ public class EventController {
 
     public void setListaEventi(EventModel evento) {
         this.listaEventi.add(evento);
+        setChanged();
+        notifyObservers(listaEventi.size());
     }
 
     public void deleteList (){

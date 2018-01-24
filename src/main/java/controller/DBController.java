@@ -6,12 +6,17 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
+import controller.chartsController.ChartsController;
+import model.EventListModel;
 import model.EventModel;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -22,7 +27,7 @@ public class DBController {
     private DatabaseReference database;
     private String ris;
     private static DBController instance = new DBController();
-    EventController eventController;
+    EventListModel eventListModel;
 
     public static DBController getInstance() {
         return instance;
@@ -70,128 +75,66 @@ public class DBController {
 
         System.out.println("Collegamento al database...");
         //Scelgo la root di partenza del database
-        database = FirebaseDatabase.getInstance().getReference();
+        database = FirebaseDatabase.getInstance().getReference("luogo");
+
+        ChartsController.database = database;
 
 
     }
 
 
     public void dashBoard() throws ExecutionException, InterruptedException {
-        database.addChildEventListener(new ChildEventListener() {
+        database.addListenerForSingleValueEvent(new ValueEventListener(){
+
+
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
-                eventController = EventController.getInstance();//ottengo l'instanza di event controller
-                EventModel event = new EventModel();//creo un nuovo event model
-                int i = 0;
-                int j=0;
+            public void onDataChange(DataSnapshot snapshot) {
                 try {
-
-                    i=0;
-                    List<String> locationName = new ArrayList<>();
-                    Iterable<DataSnapshot> location = snapshot.getChildren();//ottengo l'iterable location, posizionato al root
-                    //ottengo i nomi delle location
+                    Iterable<DataSnapshot> location = snapshot.getChildren();
+                    eventListModel = EventListModel.getInstance();//ottengo l'instanza di event controller
+                    int i = 0;
                     while (location.iterator().hasNext()) {
-                        locationName.add(location.iterator().next().child("nome").getValue().toString());
-                        System.out.println("location: " +  locationName.get(i));
-                        i++;
-                    }
+                        DataSnapshot locationSnap = location.iterator().next();
 
-                    i=0;
-                    List<String> locationAdd = new ArrayList<>();
-                    location = snapshot.getChildren();//riposiziono l'iterable al root
-                    //ottengo il nome delle location
-                    while (location.iterator().hasNext()) {
-                        locationName.add(location.iterator().next().child("indirizzo").getValue().toString());
-                        //System.out.println("location: " +  locationAdd.get(i));
-                        i++;
-                    }
-
-
-                    i=0;
-                    location = snapshot.getChildren();//iterable al root
-                    while (location.iterator().hasNext()) {
-                        j=0;
-                        //per ogni location posiziono un'iterable sotto eventi, in modo da ottenere i dati di tutti gli eventi
-                        Iterable<DataSnapshot> eventi = location.iterator().next().child("Eventi").getChildren();
-                        //ottengo il nome di tutti gli eventi
+                        Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
                         while (eventi.iterator().hasNext()) {
-                            event.setIndex(j);
-                            event.setNomeLocation(locationName.get(i));
-                            //event.setLocationAddress(locationAdd.get(i));
-                            event.setNomeEvento(eventi.iterator().next().child("nome").getValue().toString());
-                            System.out.println("nome evento" + event.getIndex() + ", in loc" + event.getNomeLocation() + i + ": " + event.getNomeEvento());
-                            eventController.setListaEventi(event);
-                            j++;
+                            DataSnapshot eventiSnap = eventi.iterator().next();
+
+                            EventModel event = new EventModel();//creo un nuovo event model
+                            event.setIndex(i);
+                            event.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
+                            event.setNomeLocation(locationSnap.child("nome").getValue().toString());
+                            event.setNomeEvento(eventiSnap.child("nome").getValue().toString());
+                            event.setAttivo((boolean) eventiSnap.child("attivo").getValue());
+                            event.setDescrizione(eventiSnap.child("descrizione").getValue().toString());
+                            event.setLocandina(eventiSnap.child("copertina").getValue().toString());
+                            DataSnapshot dataSnapshot = eventiSnap.child("data");
+                            String eventStartDate = dataSnapshot.child("inizio").getValue().toString();
+                            try {
+                                Date eventStarttTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventStartDate);
+                                event.setDataInizio(eventStarttTime);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            String eventEndDate = dataSnapshot.child("fine").getValue().toString();
+                            try {
+                                Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
+                                event.setDataInizio(eventEndTime);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            eventListModel.setListaEventi(event);
+                            i++;
+
                         }
-                        i++;
+
+
                     }
-
-                    location = snapshot.getChildren();//iterable al root
-                    while (location.iterator().hasNext()) {
-                        j=0;
-                        //per ogni location posiziono un'iterable sotto eventi, in modo da ottenere i dati di tutti gli eventi
-                        Iterable<DataSnapshot> eventi = location.iterator().next().child("Eventi").getChildren();
-                        //ottengo il valore di attività di tutti gli eventi
-                        while (eventi.iterator().hasNext()) {
-                            //eventController.getListaEventi().get(j).setLocationAddress(locationAdd.get(i));
-                            eventController.getListaEventi().get(j).setAttivo((boolean) eventi.iterator().next().child("attivo").getValue());
-                            System.out.println("attivo: " + eventController.getListaEventi().get(j).isAttivo() );
-                            j++;
-                        }
-                        i++;
-                    }
-                    i=0;
-
-                    location = snapshot.getChildren();//iterable al root
-                    while (location.iterator().hasNext()) {
-                        j=0;
-                        //per ogni location posiziono un'iterable sotto eventi, in modo da ottenere i dati di tutti gli eventi
-                        Iterable<DataSnapshot> eventi = location.iterator().next().child("Eventi").getChildren();
-                        //ottengo la locandina di tutti gli eventi
-                        while (eventi.iterator().hasNext()) {
-                            eventController.getListaEventi().get(j).setLocandina(eventi.iterator().next().child("copertina").getValue().toString());
-                            System.out.println("locandina: " + eventController.getListaEventi().get(j).getLocandina() );
-                            j++;
-                        }
-                        i++;
-                    }
-                    i=0;
-
-                    location = snapshot.getChildren();//iterable al root
-                    while (location.iterator().hasNext()) {
-                        j=0;
-                        //per ogni location posiziono un'iterable sotto eventi, in modo da ottenere i dati di tutti gli eventi
-                        Iterable<DataSnapshot> eventi = location.iterator().next().child("Eventi").getChildren();
-                        //ottengo la descrizione tutti gli eventi
-                        while (eventi.iterator().hasNext()) {
-                            eventController.getListaEventi().get(j).setDescrizione(eventi.iterator().next().child("descrizione").getValue().toString());
-                            System.out.println("Descrizione: " + eventController.getListaEventi().get(j).getDescrizione() );                            j++;
-                        }
-                        i++;
-                    }
-
-
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
-
-                eventController.setListaEventi(event);
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
-
             }
 
             @Override
@@ -200,20 +143,6 @@ public class DBController {
             }
         });
 
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                if (!snapshot.exists()) {
-                    System.out.println("no");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-
-            }
-        });
 
         return;
     }
