@@ -78,6 +78,7 @@ public class DBController {
         database = FirebaseDatabase.getInstance().getReference("luogo");
 
         ChartsController.database = database;
+        ChartsController.populateCharts("2018");
 
 
     }

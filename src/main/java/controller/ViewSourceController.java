@@ -203,8 +203,6 @@ public class ViewSourceController extends Application {
         dashBoardYearComboBox2.getItems().setAll(year, year4, year3, year2, year1);
         dashBoardYearComboBox2.getSelectionModel().selectFirst();
 
-        new PieChartClass(dashBoardGraph2PieChart, dashBoardYearComboBox2);
-        new LineChartClass(dashBoardGraph1LineChart, dashboardYearComboBox1);
 
 
     }
@@ -245,12 +243,18 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
-        new DashBoardView(slideshowImmagine);
+        new DashBoardView(slideshowImmagine, dashBoardGraph2PieChart, dashBoardYearComboBox2, dashBoardGraph1LineChart, dashboardYearComboBox1, this);
         System.out.println("nnn" + slideshowImmagine.toString());
         changeView(dashBoardBox);
         System.out.println("cambioToDashBoard");
         DBController dbController = DBController.getInstance();
         dbController.dashBoard();
+    }
+
+    public void createSlide (int i, Button button){
+
+
+        slideshowImmagine.add(button, i, 1);
     }
 
 
