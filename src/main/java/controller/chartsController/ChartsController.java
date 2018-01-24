@@ -37,9 +37,6 @@ public class ChartsController {
                         while (settori.iterator().hasNext()) {
                             totTickets = totTickets + Integer.valueOf(settori.iterator().next().getValue().toString());
                         }
-                        // System.out.println("tot biglietti " + totTickets);
-
-                        //maxTickets = maxTickets + totTickets;
 
                         // prendo la root degli eventi
                         Iterable<DataSnapshot> eventi = luoghi.child("Eventi").getChildren();
@@ -51,7 +48,6 @@ public class ChartsController {
                             LocalDate localDate = evetDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                             String ticketEvent = String.valueOf(localDate.getYear());
 
-                         //   System.out.println(ticketEvent);
                             if (year.equals(ticketEvent)) {
                                 maxTickets = maxTickets + totTickets;
                             }
@@ -77,16 +73,13 @@ public class ChartsController {
                             }
                         }
 
-
                     } catch (NullPointerException | ParseException | IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
                 }
 
-                //System.out.println("max: " + maxTickets + " venduti: " + ticketSold);
                 PieChartClassModel.getInstance().setMaxTickets(Double.valueOf(maxTickets));
                 PieChartClassModel.getInstance().setTicketsSold(Double.valueOf(ticketSold));
-                LineChartClassModel.getInstance().notifyObservers();
             }
 
             @Override

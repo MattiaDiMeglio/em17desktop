@@ -34,5 +34,7 @@ public class LineChartClassModel extends Observable {
         for (int i =0;i<ticketsSaled.length;i++){
             ticketsSaled[i] = 0;
         }
+        setChanged();
+        notifyObservers();
     }
 }

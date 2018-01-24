@@ -71,7 +71,6 @@ public class PieChartClass implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         Double ticketsPerc = (PieChartClassModel.getInstance().getTicketsSold() / PieChartClassModel.getInstance().getMaxTickets()) * 100;
-        System.out.println(ticketsPerc);
         slice1.setName(round(ticketsPerc,2) + "%\nBiglietti Venduti");
         slice1.setPieValue(ticketsPerc);
         slice2.setName((100 - round(ticketsPerc,2) + "%\nBiglietti non Venduti"));

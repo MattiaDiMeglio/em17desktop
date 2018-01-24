@@ -27,15 +27,8 @@ import java.util.Observer;
  * @author Andrea Bravaccino
  */
 public class LineChartClass implements Observer {
-    List<XYChart.Data<String, Number>> datas;
-    /**
-     * series containing chart values
-     */
-    private XYChart.Series<String, Number> series;
-    /**
-     * variable to count visible entries (max 10)
-     */
-    private int numberOfVisibleEntries = 0;
+    private List<XYChart.Data<String, Number>> datas;
+
     /**
      * X axis variable
      */
@@ -50,9 +43,10 @@ public class LineChartClass implements Observer {
     public LineChartClass(LineChart lineChart, ComboBox dashboardYearComboBox1) {
 
 
-        lineChart.setTitle("Vendita biglietti 2018");
+        lineChart.setTitle("Vendita biglietti");
         lineChart.getXAxis().setAnimated(false);
-        series = new XYChart.Series<>();
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Biglietti venduti");
 
         datas = new ArrayList<>();
@@ -80,6 +74,7 @@ public class LineChartClass implements Observer {
             @Override
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
                 ChartsController.populateCharts(String.valueOf(newValue));
+                lineChart.setTitle("Vendita biglietti " + String.valueOf(newValue));
             }
         });
 
@@ -92,7 +87,6 @@ public class LineChartClass implements Observer {
 
         for(int i =0;i<datas.size();i++){
             datas.get(i).setYValue(vendite[i]);
-            System.out.println(datas.get(i).getYValue());
         }
     }
 }
