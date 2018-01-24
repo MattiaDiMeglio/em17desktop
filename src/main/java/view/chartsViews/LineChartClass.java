@@ -18,10 +18,7 @@ import model.EventListModel;
 import model.EventModel;
 import model.chartsModels.LineChartClassModel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * this class is responsible for creating and managing the chart dedicated for cpu load
@@ -30,12 +27,9 @@ import java.util.Observer;
  */
 public class LineChartClass implements Observer {
     private List<XYChart.Data<String, Number>> datas;
+    private XYChart.Series<String, Number> series;
 
-    /**
-     * X axis variable
-     */
-    private NumberAxis xAxis;
-
+    private LineChart lineChart;
     /**
      * the constructor is responsible for initialize the chart (lower and upper buonds, name, color)
      *
@@ -43,7 +37,8 @@ public class LineChartClass implements Observer {
      * @param dashboardYearComboBox1
      */
     public LineChartClass(LineChart lineChart, ComboBox dashboardYearComboBox1) {
-        initializeLineChart(lineChart);
+        this.lineChart = lineChart;
+        initializeLineChart();
         lineChart.setTitle("Vendita biglietti");
 
         dashboardYearComboBox1.valueProperty().addListener(new ChangeListener<Integer>() {
@@ -58,7 +53,8 @@ public class LineChartClass implements Observer {
     }
 
     public LineChartClass(LineChart lineChart, int index) {
-        initializeLineChart(lineChart);
+        this.lineChart = lineChart;
+        initializeLineChart();
         lineChart.setTitle("Vendita biglietti");
 
         EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
@@ -81,7 +77,7 @@ public class LineChartClass implements Observer {
         }
     }
 
-    private void initializeLineChart(LineChart lineChart){
+    private void initializeLineChart(){
         lineChart.getXAxis().setAnimated(false);
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
@@ -108,6 +104,9 @@ public class LineChartClass implements Observer {
 
             lineChart.getData().add(series);
 
+        }else {
+            this.series = (XYChart.Series<String, Number>) lineChart.getData().get(0);
+            this.datas = Collections.singletonList(this.series.getData().get(0));
         }
     }
 }
