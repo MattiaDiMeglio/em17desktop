@@ -12,6 +12,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ComboBox;
+import model.EventListModel;
+import model.EventModel;
 import model.chartsModels.PieChartClassModel;
 
 import java.util.Observable;
@@ -33,12 +35,13 @@ public class PieChartClass implements Observer {
      */
     private PieChart.Data slice2;
 
+    private PieChart pieChart;
 
     /**
      * the constructor takes care of initializing two slices (used and unused space) and set
      * proprieties of chart (legend visibility, animations and sizes
      *
-     * @param pieChart is the type of chart for cpu load
+     * @param pieChart               is the type of chart for cpu load
      * @param dashboardYearComboBox2
      */
     public PieChartClass(PieChart pieChart, ComboBox dashboardYearComboBox2) {
@@ -62,20 +65,47 @@ public class PieChartClass implements Observer {
         PieChartClassModel.getInstance().addObserver(this);
     }
 
-    public PieChartClass(PieChart eventGraph2PieChart) {
+    public PieChartClass(PieChart pieChart, int index) {
+        if (pieChart.getData().isEmpty()) {
+            slice1 = new PieChart.Data("Biglietti venduti", 0);
+            slice2 = new PieChart.Data("Biglietti non venduti", 0);
+            pieChart.getData().add(slice1);
+            pieChart.getData().add(slice2);
+        }
+        pieChart.setTitle("Vendita biglietti");
+        pieChart.animatedProperty().setValue(false);
+        pieChart.legendVisibleProperty().setValue(false);
+        this.pieChart = pieChart;
 
+        EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
+        EventListModel.getInstance().getListaEventi().get(index).notifyMyObservers();
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        Double ticketsPerc = (PieChartClassModel.getInstance().getTicketsSold() / PieChartClassModel.getInstance().getMaxTickets()) * 100;
-        slice1.setName(round(ticketsPerc,2) + "%\nBiglietti Venduti");
-        slice1.setPieValue(ticketsPerc);
-        slice2.setName((100 - round(ticketsPerc,2) + "%\nBiglietti non Venduti"));
-        slice2.setPieValue(100 - ticketsPerc);
+        System.out.println("sono in update pie");
 
-        slice1.getNode().setStyle("-fx-pie-color: #bbdefb");
-        slice2.getNode().setStyle("-fx-pie-color: #78909c");
+        if (o instanceof PieChartClassModel) {
+            System.out.println("dash");
+            Double ticketsPerc = (PieChartClassModel.getInstance().getTicketsSold() / PieChartClassModel.getInstance().getMaxTickets()) * 100;
+            slice1.setName(round(ticketsPerc, 2) + "%\nBiglietti Venduti");
+            slice1.setPieValue(ticketsPerc);
+            slice2.setName((100 - round(ticketsPerc, 2) + "%\nBiglietti non Venduti"));
+            slice2.setPieValue(100 - ticketsPerc);
+            slice1.getNode().setStyle("-fx-pie-color: #bbdefb");
+            slice2.getNode().setStyle("-fx-pie-color: #78909c");
+        } else {
+            System.out.println("event");
+            EventModel eventModel = (EventModel) o;
+            Double ticketsPerc = (eventModel.getTicketSold() / eventModel.getTotTickets()) * 100;
+            pieChart.getData().get(0).setName(round(ticketsPerc, 2) + "%\nBiglietti Venduti");
+            pieChart.getData().get(0).setPieValue(ticketsPerc);
+            pieChart.getData().get(1).setName((100 - round(ticketsPerc, 2) + "%\nBiglietti non Venduti"));
+            pieChart.getData().get(1).setPieValue(100 - ticketsPerc);
+
+            pieChart.getData().get(0).getNode().setStyle("-fx-pie-color: #bbdefb");
+            pieChart.getData().get(1).getNode().setStyle("-fx-pie-color: #78909c");
+        }
     }
 
     private double round(double value, int places) {

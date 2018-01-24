@@ -2,6 +2,8 @@ package controller;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -263,12 +265,19 @@ public class ViewSourceController extends Application {
         System.out.println("sdfnpoasnipnipniaf");
         HBox hBox = new HBox();
         dashSlide.setAlignment(Pos.CENTER);
-        dashSlide.getChildren().add(button);
 
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                toEventView(i);
+            }
+        });
+
+        dashSlide.getChildren().add(button);
     }
 
-    public void toEventView() {
-        EventView eventView = new EventView(eventoGrafico1LineChart, eventGraph2PieChart);
+    public void toEventView(int index) {
+        EventView eventView = new EventView(eventoGrafico1LineChart, eventGraph2PieChart, index);
         changeView(eventBox);
     }
 

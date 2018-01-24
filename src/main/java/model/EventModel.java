@@ -13,6 +13,11 @@ public class EventModel extends Observable {
 
     private Integer totTickets;
 
+    public void notifyMyObservers() {
+        setChanged();
+        notifyObservers();
+    }
+
     private class Settori {
         private String nome;
         private int prezzo;
@@ -177,15 +182,15 @@ public class EventModel extends Observable {
         this.ticketSold = ticketSold;
     }
 
-    public Integer getTicketSold() {
-        return ticketSold;
+    public Double getTicketSold() {
+        return Double.valueOf(ticketSold);
     }
 
     public void setTotTickets(Integer totTickets) {
         this.totTickets = totTickets;
     }
 
-    public Integer getTotTickets() {
-        return totTickets;
+    public Double getTotTickets() {
+        return Double.valueOf(totTickets);
     }
 }

@@ -14,9 +14,11 @@ import java.util.Observer;
  * Implementa Observer, come definito dall'architettura MVC implementata per il progetto
  */
 public class EventView implements Observer {
-    public EventView(LineChart eventoGrafico1LineChart, PieChart eventGraph2PieChart) {
+    public EventView(LineChart eventoGrafico1LineChart, PieChart eventGraph2PieChart, int index) {
         //new LineChartClass(eventoGrafico1LineChart);
-        new PieChartClass(eventGraph2PieChart);
+        new PieChartClass(eventGraph2PieChart, index);
+
+        System.out.println("creata la view");
     }
 
     @Override
