@@ -58,7 +58,8 @@ public class LineChartClass implements Observer {
         lineChart.setTitle("Vendita biglietti");
 
         EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
-        EventListModel.getInstance().getListaEventi().get(index).notifyMyObservers(); // todo da vedere se va bene questa chiamata
+
+        update(EventListModel.getInstance().getListaEventi().get(index), null);
     }
 
     @Override

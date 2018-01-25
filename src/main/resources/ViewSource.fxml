@@ -482,7 +482,7 @@
                 <!-- TabPane dove andranno inseriti i grafici e le eventuali rabelle -->
                 <TabPane fx:id="eventoTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" >
                     <!-- Tab1 -->
-                    <Tab fx:id="eventoTab1Tab" style="-fx-header-color: white" text="primo">
+                    <Tab fx:id="eventoTab1Tab" style="-fx-header-color: white" text="Vendite">
                         <!-- In questa prima tab c'è un VBOX contenente una linechart come segnaposto -->
                         <VBox alignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <LineChart fx:id="eventoGrafico1LineChart" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -496,12 +496,12 @@
                         </VBox>
                     </Tab>
                     <Tab style="-fx-header-color: white" text="primo">
-                        <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+
                             <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <PieChart VBox.vgrow="ALWAYS" fx:id="eventGraph2PieChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 </PieChart>
                             </VBox>
-                        </AnchorPane>
+
                     </Tab>
                 </TabPane>
             </VBox>
