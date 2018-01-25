@@ -1,34 +1,18 @@
 package view;
 
-import controller.DBController;
+import controller.SlideShowController;
 import controller.ViewSourceController;
-import controller.chartsController.ChartsController;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
 import model.EventListModel;
-import model.EventModel;
 import view.chartsViews.LineChartClass;
 import view.chartsViews.PieChartClass;
 
-import javax.swing.event.ListDataEvent;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Observable;
 import java.util.Observer;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Classe view per la schermata DashBoard, nonché main dell'applicativo.
@@ -43,49 +27,27 @@ import java.util.concurrent.ExecutionException;
  */
 public  class  DashBoardView implements Observer {
 
-    List<DashBillBoard> imageList = new ArrayList<>();
     ViewSourceController viewSourceController;
-    GridPane slideshowImmagine;
     EventListModel eventListModel = EventListModel.getInstance();
+    SlideShowController slideShowController = new SlideShowController();
+    HBox dashSlide;
     int i = 0;
 
 
-    private class DashBillBoard{
-        Button button;
-        private int index;
-        private String url;
-    }
 
-    public DashBoardView(PieChart dashBoardGraph2PieChart, ComboBox dashBoardYearComboBox2, LineChart dashBoardGraph1LineChart, ComboBox dashboardYearComboBox1, ViewSourceController viewSourceController){
+    public DashBoardView(HBox dashSlide, PieChart dashBoardGraph2PieChart, ComboBox dashBoardYearComboBox2, LineChart dashBoardGraph1LineChart, ComboBox dashboardYearComboBox1, ViewSourceController viewSourceController){
         this.viewSourceController=viewSourceController;
         eventListModel.addObserver(this);
-        this.slideshowImmagine = slideshowImmagine;
         new PieChartClass(dashBoardGraph2PieChart, dashBoardYearComboBox2);
         new LineChartClass(dashBoardGraph1LineChart, dashboardYearComboBox1);
-
+        this.dashSlide = dashSlide;
         System.out.println("nono");
 
 
     }
 
 
-    private void slideShow(){
 
-        DashBillBoard dashBillBoard = new DashBillBoard();
-        dashBillBoard.button = new Button();
-        ImageView imageView = new ImageView();
-        imageView.setFitHeight(120);
-        imageView.setFitWidth(120);
-        Image image = new Image( eventListModel.getListaEventi().get(i).getLocandina());
-        imageView.setImage(image);
-        dashBillBoard.button.setGraphic( imageView );
-        imageList.add(dashBillBoard);
-
-        viewSourceController.createSlide(i, dashBillBoard.button);
-        i++;
-        System.out.println("creato");
-
-    }
 
     /**
      * metodo update ereditato da Observer
@@ -97,7 +59,9 @@ public  class  DashBoardView implements Observer {
      *
      */
     public void update(Observable o, Object arg) {
-        slideShow();
+        //slideShow();
+
+        slideShowController.createList(dashSlide, eventListModel.getListaEventi().get((int) arg).getLocandina(), (int) arg);
     }
 
 
