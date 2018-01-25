@@ -10,6 +10,16 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class EventModel extends Observable {
 
+    private List listaSettoriName;
+
+    public List getListaSettoriName() {
+        return listaSettoriName;
+    }
+
+    public void setListaSettoriName(List<String> listaSettoriName) {
+        this.listaSettoriName = listaSettoriName;
+    }
+
     private class Settori {
         private String nome;
         private int prezzo;

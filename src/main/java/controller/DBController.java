@@ -101,9 +101,11 @@ public class DBController {
                         Integer totTickets = 0;
 
                         HashMap<String, Integer> settoriMap = new HashMap<>();
+                        List<String> settoriName = new ArrayList<>();
                         while (settori.iterator().hasNext()) {
                             DataSnapshot settoriSnap = settori.iterator().next();
                             settoriMap.put(settoriSnap.getKey(), 0);
+                            settoriName.add(settoriSnap.getKey());
                             totTickets = totTickets + Integer.valueOf(settoriSnap.getValue().toString());
                         }
                         Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
@@ -127,6 +129,7 @@ public class DBController {
                                event.addOneSoldPerMonth(eventEndTime.getMonth(), accesses);
                             }
 
+                            event.setListaSettoriName(settoriName);
                             event.setListaVenditaPerSettori(settoriMap);
                             event.setIndex(i);
                             event.setMaxVisitatori(totTickets);
