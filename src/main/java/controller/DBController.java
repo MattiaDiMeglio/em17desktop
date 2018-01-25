@@ -102,17 +102,19 @@ public class DBController {
                         Iterable<DataSnapshot> settori = locationSnap.child("settori").getChildren();
                         Integer totTickets = 0;
 
-                        HashMap<String, Integer> settoriMap = new HashMap<>();
                         List<String> settoriName = new ArrayList<>();
                         while (settori.iterator().hasNext()) {
                             DataSnapshot settoriSnap = settori.iterator().next();
-                            settoriMap.put(settoriSnap.getKey(), 0);
                             settoriName.add(settoriSnap.getKey());
                             totTickets = totTickets + Integer.valueOf(settoriSnap.getValue().toString());
                         }
                         Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
                         while (eventi.iterator().hasNext()) {
                             DataSnapshot eventiSnap = eventi.iterator().next();
+                            HashMap<String, Integer> settoriMap = new HashMap<>();
+                            for (String aSettoriName : settoriName) {
+                                settoriMap.put(aSettoriName, 0);
+                            }
                             EventModel event = new EventModel();//creo un nuovo event model
                             Integer ticketSold = 0;
                             event.initializeTicketPerMonth();
@@ -120,6 +122,7 @@ public class DBController {
                             while (eventiIteable.iterator().hasNext()) {
                                 DataSnapshot bigliettiSnap = eventiIteable.iterator().next();
                                 Integer accesses = Integer.valueOf(bigliettiSnap.child("accessi").getValue().toString());
+
                                 settoriMap.put(bigliettiSnap.child("settore").getValue().toString(),
                                         settoriMap.get(bigliettiSnap.child("settore").getValue().toString()) + accesses);
 
@@ -128,7 +131,7 @@ public class DBController {
                                 String eventEndDate = bigliettiSnap.child("data vendita").getValue().toString();
                                 Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
 
-                               event.addOneSoldPerMonth(eventEndTime.getMonth(), accesses);
+                                event.addOneSoldPerMonth(eventEndTime.getMonth(), accesses);
                             }
 
                             event.setListaSettoriName(settoriName);
@@ -148,7 +151,7 @@ public class DBController {
                             try {
                                 Date eventStartTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventStartDate);
                                 LocalDate localDate = eventStartTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                                String date = localDate.getDayOfMonth() + "/" + localDate.getMonthValue() +"/" +localDate.getYear();
+                                String date = localDate.getDayOfMonth() + "/" + localDate.getMonthValue() + "/" + localDate.getYear();
 
                                 event.setDataInizio(date);
                             } catch (ParseException e) {
@@ -158,7 +161,7 @@ public class DBController {
                             try {
                                 Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
                                 LocalDate localDate = eventEndTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                                String date = localDate.getDayOfMonth() + "/" + localDate.getMonthValue() +"/" +localDate.getYear();
+                                String date = localDate.getDayOfMonth() + "/" + localDate.getMonthValue() + "/" + localDate.getYear();
 
                                 event.setDataFine(date);
                             } catch (ParseException e) {

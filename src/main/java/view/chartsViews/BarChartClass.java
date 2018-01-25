@@ -26,8 +26,10 @@ public class BarChartClass implements Observer, ChartInterface {
     public void update(Observable o, Object arg) {
 
         EventModel eventModel = (EventModel) o;
+        System.out.println(eventModel.getIndex());
         HashMap settori = eventModel.getListaVenditaPerSettori();
         List<String> nomeSettori = eventModel.getListaSettoriName();
+        System.out.println(settori.toString());
 
         if (barChart.getData().isEmpty()) {
             System.out.println("primo avvio");
@@ -37,35 +39,39 @@ public class BarChartClass implements Observer, ChartInterface {
                 System.out.println(nomeSettori.get(i) + " " + settori.get(nomeSettori.get(i)));
                 datas.add(new XYChart.Data(nomeSettori.get(i), settori.get(nomeSettori.get(i))));
             }
-            System.out.println("datas dim prima del for " + datas.size());
             for (XYChart.Data<String, Number> data : datas) {
                 series.getData().add(data);
             }
-            System.out.println("series dim prima del for " + series.getData().size());
 
             barChart.getData().add(series);
         } else {
-            if (datas.size() != nomeSettori.size()) {
+            //if (datas.size() != nomeSettori.size()) {
                 System.out.println("pulisco i dati");
                 series.getData().clear();
+                datas.clear();
 
-                System.out.println("dim datas prima del for " + datas.size());
-                for (int i = 0; i < datas.size(); i++) {
+                for (int i = 0; i < settori.size(); i++) {
+                    System.out.println(nomeSettori.get(i) + " " + settori.get(nomeSettori.get(i)));
+                    datas.add(new XYChart.Data(nomeSettori.get(i), settori.get(nomeSettori.get(i))));
+                }
+
+               /* for (int i = 0; i < datas.size(); i++) {
                     System.out.println("aggiorno i dati");
                     datas.get(i).setXValue(nomeSettori.get(i));
                     datas.get(i).setYValue((Number) settori.get(nomeSettori.get(i)));
-                }
+                }*/
                 for (XYChart.Data<String, Number> data : datas) {
                     series.getData().add(data);
                 }
-            }else {
-                for (int i = 0; i < datas.size(); i++) {
+            //barChart.getData().add(series);
+           // }else {
+               /* for (int i = 0; i < datas.size(); i++) {
                     System.out.println("aggiorno i dati");
                     System.out.println(nomeSettori.get(i) + " " + settori.get(nomeSettori.get(i)));
                     datas.get(i).setXValue(nomeSettori.get(i));
                     datas.get(i).setYValue((Number) settori.get(nomeSettori.get(i)));
-                }
-            }
+                }*/
+            //}
         }
     }
 
