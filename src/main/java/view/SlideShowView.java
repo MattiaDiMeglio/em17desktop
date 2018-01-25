@@ -21,7 +21,8 @@ public class SlideShowView implements Observer {
 
     public void addToSlideshow ( ){
 
-    }
+            //hBox.getChildren().add(imageList.get(i));
+        }
 
     @Override
     public void update(Observable o, Object arg) {

@@ -94,10 +94,9 @@
         </center>
         <!-- bottom della schermata, contenente il tabpane dei grafici-->
         <bottom><!-- TabPane che andrà a contenere i Grafici -->
-            <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+            <TabPane fx:id="dashBoardTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
                 <!-- Prima tab del Tab Pane, conenente una VBox con un Linechart al suo interno -->
                 <Tab style="-fx-header-color: white" text="primo">
-                    <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <ComboBox fx:id="dashboardYearComboBox1" prefWidth="200.0" promptText="choose" />
                             <LineChart  VBox.vgrow="ALWAYS" fx:id="dashBoardGraph1LineChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -109,17 +108,14 @@
                                 </yAxis>
                             </LineChart>
                         </VBox>
-                    </AnchorPane>
                 </Tab>
                 <Tab style="-fx-header-color: white" text="primo">
-                    <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <ComboBox fx:id="dashBoardYearComboBox2" prefWidth="200.0" promptText="choose" />
                             <PieChart VBox.vgrow="ALWAYS" fx:id="dashBoardGraph2PieChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
                             </PieChart>
                         </VBox>
-                    </AnchorPane>
                 </Tab>
             </TabPane>
         </bottom>
