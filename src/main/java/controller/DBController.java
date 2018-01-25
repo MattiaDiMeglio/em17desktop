@@ -172,7 +172,6 @@ public class DBController {
                                 DataSnapshot slideSnap = eventiSnap.child("galleria");
                                 Integer j=0;
                                 while (j < slideSnap.getChildrenCount()) {
-                                    System.out.println("4");
                                     String index = j.toString();
                                     slidehow.add(slideSnap.child(index).getValue().toString());
                                     j++;
