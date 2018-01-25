@@ -99,6 +99,10 @@ public class ViewSourceController extends Application {
     private Text eventoBigliettiVendutiText;
     @FXML
     private ImageView eventPlaybillImageView;
+    @FXML
+    private Button dashBoardSlideShowLeftButton;
+    @FXML
+    private Button dashBoardSlideShowRightButton;
 
 
     /**
@@ -246,7 +250,7 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
-        new DashBoardView(dashSlide, dashBoardTabPane, this);
+        new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, dashBoardTabPane, this);
         changeView(dashBoardBox);
         System.out.println("cambioToDashBoard");
         DBController dbController = DBController.getInstance();

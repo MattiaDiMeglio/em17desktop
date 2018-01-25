@@ -21,10 +21,19 @@ public class SlideShowView implements Observer {
     List<Button> buttonList = new ArrayList<>();
     EventListModel eventListModel = EventListModel.getInstance();
     SlideShowController slideShowController;
-
-    public SlideShowView(HBox hBox, SlideShowController slideShowController) {
+    HBox hBox;
+    List<Integer> activeList = new ArrayList<>();
+    public SlideShowView(HBox hBox, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton, SlideShowController slideShowController) {
         eventListModel.addObserver(this);
         this.slideShowController = slideShowController;
+        this.hBox=hBox;
+        dashBoardSlideShowRightButton.setOnAction(event -> {
+            right();
+        });
+        dashBoardSlideShowLeftButton.setOnAction(event -> {
+            left();
+        });
+
         if (hBox != null) {
             hBox.setAlignment(Pos.CENTER);
             hBox.setSpacing(20);
@@ -32,14 +41,10 @@ public class SlideShowView implements Observer {
 
             for (int i = 0; i < 8; i++) {
                 Button button = new Button();
-                /*button.setMaxHeight(160);
-                button.setMaxWidth(160);
-                button.setMinHeight(160);
-                button.setMinWidth(160);*/
                 buttonList.add(button);
-
                 if (i<4){
-                    hBox.getChildren().add( button);
+                    hBox.getChildren().add(button);
+                    activeList.add(i);
                 }
 
             }
@@ -48,6 +53,48 @@ public class SlideShowView implements Observer {
         }
     }
 
+    private void right() {
+        System.out.println("hhhh");
+        if (activeList.get(3)<7){
+            System.out.println(activeList.get(0) + activeList.get(1) + activeList.get(2) + activeList.get(3));
+            activeList.set(0, activeList.get(0)+1);
+            activeList.set(1, activeList.get(1)+1);
+            activeList.set(2, activeList.get(2)+1);
+            activeList.set(3, activeList.get(3)+1);
+            hBox.getChildren().remove(3);
+            hBox.getChildren().remove(2);
+            hBox.getChildren().remove(1);
+            hBox.getChildren().remove(0);
+            System.out.println(activeList.get(0) + activeList.get(1) + activeList.get(2) + activeList.get(3));
+            hBox.getChildren().add(0, buttonList.get(activeList.get(0)));
+            hBox.getChildren().add(1, buttonList.get(activeList.get(1)));
+            hBox.getChildren().add(2, buttonList.get(activeList.get(2)));
+            hBox.getChildren().add(3, buttonList.get(activeList.get(3)));
+        }
+
+    }
+
+    private void left(){
+        System.out.println("aaaa");
+        if (activeList.get(0)>0){
+            System.out.println(activeList.get(0) + activeList.get(1) + activeList.get(2) + activeList.get(3));
+            activeList.set(0, activeList.get(0)-1);
+            activeList.set(1, activeList.get(1)-1);
+            activeList.set(2, activeList.get(2)-+1);
+            activeList.set(3, activeList.get(3)-1);
+            hBox.getChildren().remove(3);
+            hBox.getChildren().remove(2);
+            hBox.getChildren().remove(1);
+            hBox.getChildren().remove(0);
+            System.out.println(activeList.get(0) + activeList.get(1) + activeList.get(2) + activeList.get(3));
+            hBox.getChildren().add(0, buttonList.get(activeList.get(0)));
+            hBox.getChildren().add(1, buttonList.get(activeList.get(1)));
+            hBox.getChildren().add(2, buttonList.get(activeList.get(2)));
+            hBox.getChildren().add(3, buttonList.get(activeList.get(3)));
+        }
+
+
+    }
 
     @Override
     public void update(Observable o, Object arg) {
@@ -63,4 +110,5 @@ public class SlideShowView implements Observer {
             });
         }
     }
+
 }

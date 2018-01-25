@@ -18,8 +18,8 @@ public class SlideShowController {
 
    //SlideShowView slideShowView = new SlideShowView();
 
-    public void createSlide (HBox hBox, ViewSourceController viewSourceController){
-        SlideShowView slideShowView = new SlideShowView(hBox, this);
+    public void createSlide(HBox hBox, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton, ViewSourceController viewSourceController){
+        SlideShowView slideShowView = new SlideShowView(hBox, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, this);
         this.viewSourceController = viewSourceController;
 
     }

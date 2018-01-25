@@ -4,6 +4,7 @@ import controller.SlideShowController;
 import controller.ViewSourceController;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
@@ -40,13 +41,13 @@ public  class  DashBoardView implements Observer {
 
 
 
-    public DashBoardView(HBox dashSlide, TabPane dashBoardTabPane, ViewSourceController viewSourceController){
+    public DashBoardView(HBox dashSlide, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton, TabPane dashBoardTabPane, ViewSourceController viewSourceController){
         this.viewSourceController=viewSourceController;
         initalizeCharts(dashBoardTabPane);
         eventListModel.addObserver(this);
 
         this.dashSlide = dashSlide;
-        slideShowController.createSlide(dashSlide, viewSourceController);
+        slideShowController.createSlide(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, viewSourceController);
         System.out.println("nono");
     }
 
