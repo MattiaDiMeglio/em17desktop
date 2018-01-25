@@ -45,6 +45,7 @@ public class EventModel extends Observable {
     private Integer ticketSold;
     private Integer maxVisitatori;
     private HashMap<String,Integer> listaVenditaPerSettori;
+    private List<String> slideshow;
 
     public HashMap<String, Integer> getListaVenditaPerSettori() {
         return listaVenditaPerSettori;
@@ -212,6 +213,16 @@ public class EventModel extends Observable {
         for (int i = 0; i< ticketsSoldPerMonth.length; i++){
             ticketsSoldPerMonth[i] = 0;
         }
+        setChanged();
+        notifyObservers();
+    }
+
+    public List<String> getSlideshow() {
+        return slideshow;
+    }
+
+    public void setSlideshow(List<String> slideshow) {
+        this.slideshow = slideshow;
         setChanged();
         notifyObservers();
     }

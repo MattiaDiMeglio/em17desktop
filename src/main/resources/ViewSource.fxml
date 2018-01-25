@@ -80,7 +80,7 @@
                     </Button>
                     <HBox HBox.hgrow="ALWAYS"  fx:id="dashSlide" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"></HBox>
                     <!-- icona "right", sarà il bottone per scorrere verso sx. -->
-                    <Button  fx:id="dashBoardSlideShowRightButton" mnemonicParsing="false"
+                    <Button style="-fx-background-color: inherit" fx:id="dashBoardSlideShowRightButton" mnemonicParsing="false"
                               AnchorPane.rightAnchor="0.0">
                         <graphic>
                             <ImageView pickOnBounds="true" preserveRatio="true">
