@@ -97,7 +97,7 @@
         <bottom><!-- TabPane che andrà a contenere i Grafici -->
             <TabPane fx:id="dashBoardTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
                 <!-- Prima tab del Tab Pane, conenente una VBox con un Linechart al suo interno -->
-                <Tab style="-fx-header-color: white" text="primo">
+                <Tab style="-fx-header-color: white" text="Biglietti venduti">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <ComboBox prefWidth="200.0" />
                             <LineChart  VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -110,7 +110,7 @@
                             </LineChart>
                         </VBox>
                 </Tab>
-                <Tab style="-fx-header-color: white" text="primo">
+                <Tab style="-fx-header-color: white" text="Percentuale biglietti venduti">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <ComboBox prefWidth="200.0" />
                             <PieChart VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -118,7 +118,7 @@
                             </PieChart>
                         </VBox>
                 </Tab>
-                <Tab style="-fx-header-color: white" text="primo">
+                <Tab style="-fx-header-color: white" text="Biglietti venduti per Location">
                     <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <ComboBox prefWidth="200.0" />
                         <BarChart  VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

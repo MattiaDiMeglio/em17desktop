@@ -200,6 +200,7 @@ public class EventModel extends Observable {
     }
 
     public void addOneSoldPerMonth(Integer num, Integer accesses) {
+        System.out.println("stampo il mese per: " + num );
         ticketsSoldPerMonth[num] = ticketsSoldPerMonth[num] + accesses;
         setChanged();
         notifyObservers();
