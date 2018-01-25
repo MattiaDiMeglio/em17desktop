@@ -46,6 +46,7 @@ public  class  DashBoardView implements Observer {
         eventListModel.addObserver(this);
 
         this.dashSlide = dashSlide;
+        slideShowController.createSlide(dashSlide, viewSourceController);
         System.out.println("nono");
     }
 
@@ -77,6 +78,7 @@ public  class  DashBoardView implements Observer {
 
         new PieChartClass(pieChart, comboBox2);
         new LineChartClass(lineChart, comboBox1);
+
     }
 
 
