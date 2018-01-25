@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.EventListModel;
 import model.EventModel;
@@ -32,7 +33,9 @@ import view.chartsViews.PieChartClass;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -42,7 +45,6 @@ import java.util.concurrent.ExecutionException;
  * @author ingSW20
  */
 public class ViewSourceController extends Application {
-
     /**
      * Attributo stage, che rappresenta lo stage principale dell'applicazione
      *
@@ -79,6 +81,22 @@ public class ViewSourceController extends Application {
     private TabPane eventoTabPane;
     @FXML
     private TabPane dashBoardTabPane;
+    @FXML
+    private Label eventoTitleLabel;
+    @FXML
+    private Text eventLocationText;
+    @FXML
+    private Text eventoDataInizioText;
+    @FXML
+    private Text eventoDataFineText;
+    @FXML
+    private TextArea eventTextArea;
+    @FXML
+    private Text eventoPrezzoText;
+    @FXML
+    private Text eventoMaxVisitatoriText;
+    @FXML
+    private Text eventoBigliettiVendutiText;
 
 
     /**
@@ -251,7 +269,16 @@ public class ViewSourceController extends Application {
     }
 
     public void toEventView(int index) {
-        EventView eventView = new EventView(eventoTabPane, index);
+        List<Text> texts = new ArrayList<>();
+        texts.add(eventLocationText);
+        texts.add(eventoDataInizioText);
+        texts.add(eventoDataFineText);
+        texts.add(eventoPrezzoText);
+        texts.add(eventoMaxVisitatoriText);
+        texts.add(eventoBigliettiVendutiText);
+
+
+        EventView eventView = new EventView(eventoTabPane, index, texts, eventoTitleLabel, eventTextArea);
         changeView(eventBox);
     }
 

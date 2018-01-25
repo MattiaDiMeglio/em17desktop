@@ -28,7 +28,7 @@ public class BarChartClass implements Observer, ChartInterface {
             initializeCharts();
         }else {
             for (int i = 0; i < datas.size(); i++) {
-                datas.get(i).setYValue(vendite[i]);
+               // datas.get(i).setYValue(vendite[i]);
             }
         }
     }

@@ -3,12 +3,18 @@ package view;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import model.EventListModel;
+import model.EventModel;
 import view.chartsViews.BarChartClass;
 import view.chartsViews.LineChartClass;
 import view.chartsViews.PieChartClass;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,9 +24,21 @@ import java.util.Observer;
  * Implementa Observer, come definito dall'architettura MVC implementata per il progetto
  */
 public class EventView implements Observer {
-    public EventView(TabPane eventoTabPane, int index) {
+    EventListModel eventListModel = EventListModel.getInstance();
+    EventModel eventModel;
 
+    public EventView(TabPane eventoTabPane, int index, List<Text> texts, Label eventoTitleLabel, TextArea eventTextArea) {
+        eventModel = eventListModel.getListaEventi().get(index);
+        eventModel.addObserver(this);
         initializeCharts(eventoTabPane, index);
+        eventoTitleLabel.setText(eventModel.getNomeEvento());
+        eventTextArea.setText(eventModel.getDescrizione());
+        texts.get(0).setText(eventModel.getNomeLocation());
+        texts.get(1).setText(eventModel.getDataInizio().toString());
+        texts.get(2).setText(eventModel.getDataFine().toString());
+        texts.get(3).setText("prezzo");
+        texts.get(4).setText(eventModel.getMaxVisitatori().toString());
+        texts.get(5).setText(eventModel.getTicketSold().toString());
     }
 
     private void initializeCharts(TabPane tabPane, int index){
