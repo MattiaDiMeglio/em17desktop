@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
@@ -8,15 +9,6 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class EventModel extends Observable {
-
-    private Integer ticketSold;
-
-    private Integer maxVisitatori;
-
-    public void notifyMyObservers() {
-        setChanged();
-        notifyObservers();
-    }
 
     private class Settori {
         private String nome;
@@ -39,7 +31,17 @@ public class EventModel extends Observable {
     private double riduzioneBambini;
     private double riduzioneStudenti;
     private Integer[] ticketsSoldPerMonth = new Integer[12];
+    private Integer ticketSold;
+    private Integer maxVisitatori;
+    private HashMap<String,Integer> listaVenditaPerSettori;
 
+    public HashMap<String, Integer> getListaVenditaPerSettori() {
+        return listaVenditaPerSettori;
+    }
+
+    public void setListaVenditaPerSettori(HashMap<String,Integer> listaVenditaPerSettori) {
+        this.listaVenditaPerSettori = listaVenditaPerSettori;
+    }
 
     public List<Settori> getListaSettori() {
         return listaSettori;

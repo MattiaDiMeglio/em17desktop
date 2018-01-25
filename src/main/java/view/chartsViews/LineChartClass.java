@@ -60,7 +60,6 @@ public class LineChartClass implements Observer, ChartInterface {
         lineChart.setTitle("Vendita biglietti");
 
         EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
-
         update(EventListModel.getInstance().getListaEventi().get(index), null);
     }
 
@@ -68,11 +67,12 @@ public class LineChartClass implements Observer, ChartInterface {
     public void update(Observable o, Object arg) {
         Integer[] vendite;
         if (o instanceof LineChartClassModel) {
-            vendite = LineChartClassModel.getInstance().getTicketsSaled();
+            LineChartClassModel lineChartClassModel = (LineChartClassModel) o;
+            vendite = lineChartClassModel.getTicketsSaled();
 
         }else {
             EventModel eventModel = (EventModel) o;
-            vendite = ((EventModel) o).getTicketsSoldPerMonth();
+            vendite = eventModel.getTicketsSoldPerMonth();
         }
 
         for (int i = 0; i < datas.size(); i++) {

@@ -14,7 +14,10 @@ import java.io.InputStream;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -96,8 +99,12 @@ public class DBController {
 
                         Iterable<DataSnapshot> settori = locationSnap.child("settori").getChildren();
                         Integer totTickets = 0;
+
+                        HashMap<String, Integer> settoriMap = new HashMap<>();
                         while (settori.iterator().hasNext()) {
-                            totTickets = totTickets + Integer.valueOf(settori.iterator().next().getValue().toString());
+                            DataSnapshot settoriSnap = settori.iterator().next();
+                            settoriMap.put(settoriSnap.getKey(), 0);
+                            totTickets = totTickets + Integer.valueOf(settoriSnap.getValue().toString());
                         }
                         Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
                         while (eventi.iterator().hasNext()) {
@@ -109,16 +116,18 @@ public class DBController {
                             while (eventiIteable.iterator().hasNext()) {
                                 DataSnapshot bigliettiSnap = eventiIteable.iterator().next();
                                 Integer accesses = Integer.valueOf(bigliettiSnap.child("accessi").getValue().toString());
+                                settoriMap.put(bigliettiSnap.child("settore").getValue().toString(),
+                                        settoriMap.get(bigliettiSnap.child("settore").getValue().toString()) + accesses);
+
                                 ticketSold = ticketSold + accesses;
 
                                 String eventEndDate = bigliettiSnap.child("data vendita").getValue().toString();
                                 Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
 
                                event.addOneSoldPerMonth(eventEndTime.getMonth(), accesses);
-
                             }
 
-
+                            event.setListaVenditaPerSettori(settoriMap);
                             event.setIndex(i);
                             event.setMaxVisitatori(totTickets);
                             event.setTicketSold(ticketSold);
@@ -139,7 +148,7 @@ public class DBController {
                             String eventEndDate = dataSnapshot.child("fine").getValue().toString();
                             try {
                                 Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
-                                event.setDataInizio(eventEndTime);
+                                event.setDataFine(eventEndTime);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }

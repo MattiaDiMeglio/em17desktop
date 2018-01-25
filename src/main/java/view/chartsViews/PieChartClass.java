@@ -48,14 +48,6 @@ public class PieChartClass implements Observer, ChartInterface {
 
         this.pieChart = pieChart;
         initializeCharts();
-       /* slice1 = new PieChart.Data("Biglietti venduti", 0);
-        slice2 = new PieChart.Data("Biglietti non venduti", 0);
-
-        pieChart.setTitle("Vendita biglietti 2018");
-        pieChart.getData().add(slice1);
-        pieChart.getData().add(slice2);
-        pieChart.animatedProperty().setValue(false);
-        pieChart.legendVisibleProperty().setValue(false);*/
 
         dashboardYearComboBox2.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
