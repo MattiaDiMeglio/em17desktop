@@ -28,7 +28,7 @@ public class EventListModel extends Observable{
         this.listaEventi.add(evento);
         Platform.runLater(() -> {
             setChanged();
-            notifyObservers();
+            notifyObservers(evento.getIndex());
         });
 
     }

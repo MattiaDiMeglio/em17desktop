@@ -252,7 +252,7 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
-        new DashBoardView(dashBoardGraph2PieChart, dashBoardYearComboBox2, dashBoardGraph1LineChart, dashboardYearComboBox1, this);
+        new DashBoardView(dashSlide, dashBoardGraph2PieChart, dashBoardYearComboBox2, dashBoardGraph1LineChart, dashboardYearComboBox1, this);
         changeView(dashBoardBox);
         System.out.println("cambioToDashBoard");
         DBController dbController = DBController.getInstance();
