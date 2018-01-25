@@ -11,18 +11,8 @@ import java.util.Observable;
 
 public class SlideShowModel extends Observable {
 
-    public class DashBillBoard {
-        Button button;
-        private int index;
-        private String url;
+    /*
 
-        public DashBillBoard(Button button, int index){
-            this.button=button;
-            this.index=index;
-        }
-    }
-
-    List<DashBillBoard> imageList = new ArrayList<>();
 
     public void add ( String url, int index ){
         Button button = new Button();
@@ -34,5 +24,5 @@ public class SlideShowModel extends Observable {
 
     public List<DashBillBoard> getImageList() {
         return imageList;
-    }
+    }*/
 }

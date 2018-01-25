@@ -14,17 +14,13 @@ import java.util.Observer;
 public class SlideShowView implements Observer {
 
 
-    List<SlideShowModel.DashBillBoard> imageList = new ArrayList<>();
 
-    public SlideShowView (SlideShowModel slideShowModel) {
-        slideShowModel.addObserver(this);
+    public SlideShowView () {
+        //slideShowModel.addObserver(this);
     }
 
-    public void addToSlideshow (HBox hBox, List<SlideShowModel.DashBillBoard> imageList){
-        for (int i=0; i < imageList.size(); i++) {
+    public void addToSlideshow ( ){
 
-            hBox.getChildren().add(imageList.get(i));
-        }
     }
 
     @Override
