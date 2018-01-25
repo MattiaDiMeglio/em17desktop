@@ -17,6 +17,7 @@ public class EventModel extends Observable {
     }
 
     public void setListaSettoriName(List<String> listaSettoriName) {
+        System.out.println("lista settori: " + listaSettoriName.toString());
         this.listaSettoriName = listaSettoriName;
     }
 
@@ -50,6 +51,7 @@ public class EventModel extends Observable {
     }
 
     public void setListaVenditaPerSettori(HashMap<String,Integer> listaVenditaPerSettori) {
+        System.out.println("vendita per settori: " + listaVenditaPerSettori.toString());
         this.listaVenditaPerSettori = listaVenditaPerSettori;
     }
 

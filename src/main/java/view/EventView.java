@@ -55,7 +55,7 @@ public class EventView implements Observer {
         VBox eventoVboxBarChart = (VBox) tabPane.getTabs().get(2).getContent();
         BarChart barChart = (BarChart) eventoVboxBarChart.getChildren().get(0);
 
-        //new BarChartClass(barChart, index);
+        new BarChartClass(barChart, index);
         new PieChartClass(pieChart, index);
         new LineChartClass(lineChart, index);
     }

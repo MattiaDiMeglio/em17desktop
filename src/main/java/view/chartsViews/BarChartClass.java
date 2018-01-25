@@ -16,7 +16,7 @@ public class BarChartClass implements Observer, ChartInterface {
 
     public BarChartClass(BarChart barChart, int index) {
         this.barChart = barChart;
-        //initializeCharts();
+        initializeCharts();
         this.index = index;
         EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
         update(EventListModel.getInstance().getListaEventi().get(index), null);
@@ -24,11 +24,47 @@ public class BarChartClass implements Observer, ChartInterface {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (barChart.getData().isEmpty()){
-            initializeCharts();
-        }else {
-            for (int i = 0; i < datas.size(); i++) {
-               // datas.get(i).setYValue(vendite[i]);
+
+        EventModel eventModel = (EventModel) o;
+        HashMap settori = eventModel.getListaVenditaPerSettori();
+        List<String> nomeSettori = eventModel.getListaSettoriName();
+
+        if (barChart.getData().isEmpty()) {
+            System.out.println("primo avvio");
+            datas = new ArrayList<>();
+
+            for (int i = 0; i < settori.size(); i++) {
+                System.out.println(nomeSettori.get(i) + " " + settori.get(nomeSettori.get(i)));
+                datas.add(new XYChart.Data(nomeSettori.get(i), settori.get(nomeSettori.get(i))));
+            }
+            System.out.println("datas dim prima del for " + datas.size());
+            for (XYChart.Data<String, Number> data : datas) {
+                series.getData().add(data);
+            }
+            System.out.println("series dim prima del for " + series.getData().size());
+
+            barChart.getData().add(series);
+        } else {
+            if (datas.size() != nomeSettori.size()) {
+                System.out.println("pulisco i dati");
+                series.getData().clear();
+
+                System.out.println("dim datas prima del for " + datas.size());
+                for (int i = 0; i < datas.size(); i++) {
+                    System.out.println("aggiorno i dati");
+                    datas.get(i).setXValue(nomeSettori.get(i));
+                    datas.get(i).setYValue((Number) settori.get(nomeSettori.get(i)));
+                }
+                for (XYChart.Data<String, Number> data : datas) {
+                    series.getData().add(data);
+                }
+            }else {
+                for (int i = 0; i < datas.size(); i++) {
+                    System.out.println("aggiorno i dati");
+                    System.out.println(nomeSettori.get(i) + " " + settori.get(nomeSettori.get(i)));
+                    datas.get(i).setXValue(nomeSettori.get(i));
+                    datas.get(i).setYValue((Number) settori.get(nomeSettori.get(i)));
+                }
             }
         }
     }
@@ -36,35 +72,31 @@ public class BarChartClass implements Observer, ChartInterface {
     @Override
     public void initializeCharts() {
         barChart.setTitle("Vendita per Settore");
-        EventModel eventModel = EventListModel.getInstance().getListaEventi().get(index);
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-
-        series.setName("Biglietti venduti");
         if (barChart.getData().isEmpty()) {
+            series = new XYChart.Series<>();
+            series.setName("Biglietti venduti per settore");
+
+
+          /*  List nomeSettori = eventModel.getListaSettoriName();
             datas = new ArrayList<>();
 
-            datas.add(new XYChart.Data("Gen", 0));
-            datas.add(new XYChart.Data("Feb", 0));
-            datas.add(new XYChart.Data("Mar", 0));
-            datas.add(new XYChart.Data("Apr", 0));
-            datas.add(new XYChart.Data("Mag", 0));
-            datas.add(new XYChart.Data("Giu", 0));
-            datas.add(new XYChart.Data("Lug", 0));
-            datas.add(new XYChart.Data("Ago", 0));
-            datas.add(new XYChart.Data("Set", 0));
-            datas.add(new XYChart.Data("Ott", 0));
-            datas.add(new XYChart.Data("Nov", 0));
-            datas.add(new XYChart.Data("Dic", 0));
-
+            for (int i = 0; i<settori.size();i++) {
+                datas.add(new XYChart.Data(nomeSettori.get(i), settori.get(nomeSettori.get(i))));
+            }
             for (XYChart.Data<String, Number> data : datas) {
                 series.getData().add(data);
             }
 
-            barChart.getData().add(series);
+            barChart.getData().add(series);*/
 
-        }else {
-            this.series = (XYChart.Series<String, Number>) barChart.getData().get(0);
-            this.datas = Collections.singletonList(this.series.getData().get(0));
+        } else {
+            series = (XYChart.Series<String, Number>) barChart.getData().get(0);
+            System.out.println("dim series: " + series.getData().size());
+            datas = new ArrayList<>();
+            for (int i =0;i<series.getData().size();i++) {
+                datas.add(series.getData().get(i));
+            }
+            System.out.println("dim datas: " + datas.size());
         }
     }
 }
