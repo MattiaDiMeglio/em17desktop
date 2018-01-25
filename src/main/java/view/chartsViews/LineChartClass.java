@@ -14,18 +14,20 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TabPane;
 import model.EventListModel;
 import model.EventModel;
 import model.chartsModels.LineChartClassModel;
 
 import java.util.*;
+import java.util.function.ObjDoubleConsumer;
 
 /**
  * this class is responsible for creating and managing the chart dedicated for cpu load
  *
  * @author Andrea Bravaccino
  */
-public class LineChartClass implements Observer {
+public class LineChartClass implements Observer, ChartInterface {
     private List<XYChart.Data<String, Number>> datas;
     private XYChart.Series<String, Number> series;
 
@@ -38,7 +40,7 @@ public class LineChartClass implements Observer {
      */
     public LineChartClass(LineChart lineChart, ComboBox dashboardYearComboBox1) {
         this.lineChart = lineChart;
-        initializeLineChart();
+        initializeCharts();
         lineChart.setTitle("Vendita biglietti");
 
         dashboardYearComboBox1.valueProperty().addListener(new ChangeListener<Integer>() {
@@ -54,7 +56,7 @@ public class LineChartClass implements Observer {
 
     public LineChartClass(LineChart lineChart, int index) {
         this.lineChart = lineChart;
-        initializeLineChart();
+        initializeCharts();
         lineChart.setTitle("Vendita biglietti");
 
         EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
@@ -78,7 +80,8 @@ public class LineChartClass implements Observer {
         }
     }
 
-    private void initializeLineChart(){
+    @Override
+    public void initializeCharts() {
         lineChart.getXAxis().setAnimated(false);
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();

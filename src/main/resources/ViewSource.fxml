@@ -30,6 +30,7 @@
 
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.BarChart?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewSourceController" fx:id="mainAnchorPane">
     <!-- Schermata DashBoard -->
@@ -98,10 +99,10 @@
                 <!-- Prima tab del Tab Pane, conenente una VBox con un Linechart al suo interno -->
                 <Tab style="-fx-header-color: white" text="primo">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <ComboBox fx:id="dashboardYearComboBox1" prefWidth="200.0" promptText="choose" />
-                            <LineChart  VBox.vgrow="ALWAYS" fx:id="dashBoardGraph1LineChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <ComboBox prefWidth="200.0" />
+                            <LineChart  VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <xAxis>
-                                    <CategoryAxis side="BOTTOM"></CategoryAxis>
+                                    <CategoryAxis side="BOTTOM"/>
                                 </xAxis>
                                 <yAxis>
                                     <NumberAxis side="LEFT" />
@@ -111,11 +112,24 @@
                 </Tab>
                 <Tab style="-fx-header-color: white" text="primo">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <ComboBox fx:id="dashBoardYearComboBox2" prefWidth="200.0" promptText="choose" />
-                            <PieChart VBox.vgrow="ALWAYS" fx:id="dashBoardGraph2PieChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <ComboBox prefWidth="200.0" />
+                            <PieChart VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
                             </PieChart>
                         </VBox>
+                </Tab>
+                <Tab style="-fx-header-color: white" text="primo">
+                    <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <ComboBox prefWidth="200.0" />
+                        <BarChart  VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
                 </Tab>
             </TabPane>
         </bottom>
@@ -497,7 +511,18 @@
                                 <PieChart VBox.vgrow="ALWAYS" fx:id="eventGraph2PieChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 </PieChart>
                             </VBox>
-
+                    </Tab>
+                    <Tab style="-fx-header-color: white" text="primo">
+                        <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <BarChart  VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <xAxis>
+                                    <CategoryAxis side="BOTTOM"/>
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                </yAxis>
+                            </BarChart>
+                        </VBox>
                     </Tab>
                 </TabPane>
             </VBox>

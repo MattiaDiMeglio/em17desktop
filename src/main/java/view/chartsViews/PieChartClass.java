@@ -25,7 +25,7 @@ import java.util.Observer;
  *
  * @author Andrea Bravaccino
  */
-public class PieChartClass implements Observer {
+public class PieChartClass implements Observer, ChartInterface {
     /**
      * a slice of the "cake"
      */
@@ -46,15 +46,16 @@ public class PieChartClass implements Observer {
      */
     public PieChartClass(PieChart pieChart, ComboBox dashboardYearComboBox2) {
 
-        slice1 = new PieChart.Data("Biglietti venduti", 0);
+        this.pieChart = pieChart;
+        initializeCharts();
+       /* slice1 = new PieChart.Data("Biglietti venduti", 0);
         slice2 = new PieChart.Data("Biglietti non venduti", 0);
 
         pieChart.setTitle("Vendita biglietti 2018");
         pieChart.getData().add(slice1);
         pieChart.getData().add(slice2);
-        //pieChart.setPrefSize(400, 300);
         pieChart.animatedProperty().setValue(false);
-        pieChart.legendVisibleProperty().setValue(false);
+        pieChart.legendVisibleProperty().setValue(false);*/
 
         dashboardYearComboBox2.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
@@ -66,16 +67,8 @@ public class PieChartClass implements Observer {
     }
 
     public PieChartClass(PieChart pieChart, int index) {
-        if (pieChart.getData().isEmpty()) {
-            slice1 = new PieChart.Data("Biglietti venduti", 0);
-            slice2 = new PieChart.Data("Biglietti non venduti", 0);
-            pieChart.getData().add(slice1);
-            pieChart.getData().add(slice2);
-        }
-        pieChart.setTitle("Vendita biglietti");
-        pieChart.animatedProperty().setValue(false);
-        pieChart.legendVisibleProperty().setValue(false);
         this.pieChart = pieChart;
+        initializeCharts();
 
         EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
 
@@ -84,8 +77,6 @@ public class PieChartClass implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("sono in update pie");
-
         if (o instanceof PieChartClassModel) {
             System.out.println("dash");
             Double ticketsPerc = (PieChartClassModel.getInstance().getTicketsSold() / PieChartClassModel.getInstance().getMaxTickets()) * 100;
@@ -116,5 +107,18 @@ public class PieChartClass implements Observer {
         value = value * factor;
         long tmp = Math.round(value);
         return (double) tmp / factor;
+    }
+
+    @Override
+    public void initializeCharts() {
+        if (pieChart.getData().isEmpty()) {
+            slice1 = new PieChart.Data("Biglietti venduti", 0);
+            slice2 = new PieChart.Data("Biglietti non venduti", 0);
+            pieChart.getData().add(slice1);
+            pieChart.getData().add(slice2);
+        }
+        pieChart.setTitle("Vendita biglietti");
+        pieChart.animatedProperty().setValue(false);
+        pieChart.legendVisibleProperty().setValue(false);
     }
 }

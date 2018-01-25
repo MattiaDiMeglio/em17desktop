@@ -1,9 +1,11 @@
 package view;
 
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
+import view.chartsViews.BarChartClass;
 import view.chartsViews.LineChartClass;
 import view.chartsViews.PieChartClass;
 
@@ -28,6 +30,10 @@ public class EventView implements Observer {
         VBox eventoVboxPieChart = (VBox) tabPane.getTabs().get(1).getContent();
         PieChart pieChart = (PieChart) eventoVboxPieChart.getChildren().get(0);
 
+        VBox eventoVboxBarChart = (VBox) tabPane.getTabs().get(2).getContent();
+        BarChart barChart = (BarChart) eventoVboxBarChart.getChildren().get(0);
+
+        new BarChartClass(barChart, index);
         new PieChartClass(pieChart, index);
         new LineChartClass(lineChart, index);
     }
