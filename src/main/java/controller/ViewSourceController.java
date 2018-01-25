@@ -54,8 +54,6 @@ public class ViewSourceController extends Application {
      * Vbox prinicipale, contenente tutte le schemate
      */
     @FXML
-    private PieChart dashBoardGraph2PieChart;
-    @FXML
     private AnchorPane mainAnchorPane;
     @FXML
     private Button eventListResult1Button;
@@ -78,15 +76,9 @@ public class ViewSourceController extends Application {
     @FXML
     private HBox dashSlide;
     @FXML
-    private ComboBox dashboardYearComboBox1;
+    private TabPane eventoTabPane;
     @FXML
-    private ComboBox dashBoardYearComboBox2;
-    @FXML
-    private LineChart dashBoardGraph1LineChart;
-    @FXML
-    private LineChart eventoGrafico1LineChart;
-    @FXML
-    private PieChart eventGraph2PieChart;
+    private TabPane dashBoardTabPane;
 
 
     /**
@@ -197,24 +189,6 @@ public class ViewSourceController extends Application {
         eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //listener per il bottone "torna alla dashboard" della schermata evento
         eventoBackButton.setOnAction(event -> changeView(dashBoardBox));
-
-        Date date = new Date();
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        int year = localDate.getYear();
-
-        int year1 = year - 4;
-        int year2 = year - 3;
-        int year3 = year - 2;
-        int year4 = year - 1;
-
-        System.out.println("Stampo anno: " + year);
-        dashboardYearComboBox1.getItems().setAll(year, year4, year3, year2, year1);
-        dashboardYearComboBox1.getSelectionModel().selectFirst();
-
-        dashBoardYearComboBox2.getItems().setAll(year, year4, year3, year2, year1);
-        dashBoardYearComboBox2.getSelectionModel().selectFirst();
-
-
     }
 
 
@@ -252,7 +226,7 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
-        new DashBoardView(dashSlide, dashBoardGraph2PieChart, dashBoardYearComboBox2, dashBoardGraph1LineChart, dashboardYearComboBox1, this);
+        new DashBoardView(dashSlide, dashBoardTabPane, this);
         changeView(dashBoardBox);
         System.out.println("cambioToDashBoard");
         DBController dbController = DBController.getInstance();
@@ -277,7 +251,7 @@ public class ViewSourceController extends Application {
     }
 
     public void toEventView(int index) {
-        EventView eventView = new EventView(eventoGrafico1LineChart, eventGraph2PieChart, index);
+        EventView eventView = new EventView(eventoTabPane, index);
         changeView(eventBox);
     }
 

@@ -23,7 +23,7 @@ public class SlideShowView implements Observer {
     public void addToSlideshow (HBox hBox, List<SlideShowModel.DashBillBoard> imageList){
         for (int i=0; i < imageList.size(); i++) {
 
-            hBox.getChildren().add(imageList.get(i));
+            //hBox.getChildren().add(imageList.get(i));
         }
     }
 

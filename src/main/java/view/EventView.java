@@ -18,10 +18,14 @@ import java.util.Observer;
 public class EventView implements Observer {
     public EventView(TabPane eventoTabPane, int index) {
 
-        VBox eventoVboxLinechart = (VBox) eventoTabPane.getTabs().get(0).getContent();
+        initializeCharts(eventoTabPane, index);
+    }
+
+    private void initializeCharts(TabPane tabPane, int index){
+        VBox eventoVboxLinechart = (VBox) tabPane.getTabs().get(0).getContent();
         LineChart lineChart = (LineChart) eventoVboxLinechart.getChildren().get(0);
 
-        VBox eventoVboxPieChart = (VBox) eventoTabPane.getTabs().get(1).getContent();
+        VBox eventoVboxPieChart = (VBox) tabPane.getTabs().get(1).getContent();
         PieChart pieChart = (PieChart) eventoVboxPieChart.getChildren().get(0);
 
         new PieChartClass(pieChart, index);
