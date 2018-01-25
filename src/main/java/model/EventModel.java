@@ -32,8 +32,8 @@ public class EventModel extends Observable {
     private String nomeEvento;
     private boolean attivo;
     private String locandina;
-    private Date dataInizio;
-    private Date dataFine;
+    private String dataInizio;
+    private String dataFine;
     private String descrizione;
     private String nomeLocation;
     private String locationAddress;
@@ -102,21 +102,21 @@ public class EventModel extends Observable {
     }
 
 
-    public Date getDataInizio() {
+    public String getDataInizio() {
         return dataInizio;
     }
 
-    public void setDataInizio(Date dataInizio) {
+    public void setDataInizio(String dataInizio) {
         this.dataInizio = dataInizio;
         setChanged(); //attiva il flag per gli observer
         notifyObservers(); //notifica gli observer
     }
 
-    public Date getDataFine() {
+    public String getDataFine() {
         return dataFine;
     }
 
-    public void setDataFine(Date dataFine) {
+    public void setDataFine(String dataFine) {
         this.dataFine = dataFine;
         setChanged(); //attiva il flag per gli observer
         notifyObservers(); //notifica gli observer

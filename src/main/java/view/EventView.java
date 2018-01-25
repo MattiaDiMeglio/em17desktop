@@ -6,6 +6,8 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.EventListModel;
@@ -27,10 +29,12 @@ public class EventView implements Observer {
     EventListModel eventListModel = EventListModel.getInstance();
     EventModel eventModel;
 
-    public EventView(TabPane eventoTabPane, int index, List<Text> texts, Label eventoTitleLabel, TextArea eventTextArea) {
+    public EventView(ImageView eventPlaybillImageView, TabPane eventoTabPane, int index, List<Text> texts, Label eventoTitleLabel, TextArea eventTextArea) {
         eventModel = eventListModel.getListaEventi().get(index);
         eventModel.addObserver(this);
         initializeCharts(eventoTabPane, index);
+        Image image= new Image(eventModel.getLocandina());
+        eventPlaybillImageView.setImage(image);
         eventoTitleLabel.setText(eventModel.getNomeEvento());
         eventTextArea.setText(eventModel.getDescrizione());
         texts.get(0).setText(eventModel.getNomeLocation());

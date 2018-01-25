@@ -32,10 +32,10 @@ public class SlideShowView implements Observer {
 
             for (int i = 0; i < 8; i++) {
                 Button button = new Button();
-                button.setMaxHeight(160);
+                /*button.setMaxHeight(160);
                 button.setMaxWidth(160);
                 button.setMinHeight(160);
-                button.setMinWidth(160);
+                button.setMinWidth(160);*/
                 buttonList.add(button);
 
                 if (i<4){
@@ -51,16 +51,14 @@ public class SlideShowView implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println(arg.toString());
         int index = (int) arg;
         if (index<= buttonList.size()) {
             Image image = new Image(eventListModel.getListaEventi().get(index).getLocandina());
             ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(160.0);
-            imageView.setFitHeight(160.0);
+            imageView.setFitWidth(300.0);
+            imageView.setFitHeight(280.0);
             buttonList.get(index).setGraphic(imageView);
             buttonList.get(index).setOnAction(event -> {
-                System.out.println(index);
                 slideShowController.handler(index);
             });
         }

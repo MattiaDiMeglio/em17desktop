@@ -97,6 +97,8 @@ public class ViewSourceController extends Application {
     private Text eventoMaxVisitatoriText;
     @FXML
     private Text eventoBigliettiVendutiText;
+    @FXML
+    private ImageView eventPlaybillImageView;
 
 
     /**
@@ -251,23 +253,6 @@ public class ViewSourceController extends Application {
         dbController.dashBoard();
     }
 
-    @FXML
-    public void createSlide(int i, Button button) {
-
-        System.out.println("sdfnpoasnipnipniaf");
-        HBox hBox = new HBox();
-        dashSlide.setAlignment(Pos.CENTER);
-
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                toEventView(i);
-            }
-        });
-
-        dashSlide.getChildren().add(button);
-    }
-
     public void toEventView(int index) {
         List<Text> texts = new ArrayList<>();
         texts.add(eventLocationText);
@@ -278,7 +263,7 @@ public class ViewSourceController extends Application {
         texts.add(eventoBigliettiVendutiText);
 
 
-        EventView eventView = new EventView(eventoTabPane, index, texts, eventoTitleLabel, eventTextArea);
+        EventView eventView = new EventView(eventPlaybillImageView, eventoTabPane, index, texts, eventoTitleLabel, eventTextArea);
         changeView(eventBox);
     }
 

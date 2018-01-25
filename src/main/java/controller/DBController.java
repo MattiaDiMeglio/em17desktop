@@ -14,6 +14,8 @@ import java.io.InputStream;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -141,17 +143,24 @@ public class DBController {
                             event.setDescrizione(eventiSnap.child("descrizione").getValue().toString());
                             event.setLocandina(eventiSnap.child("copertina").getValue().toString());
                             DataSnapshot dataSnapshot = eventiSnap.child("data");
+                            DataSnapshot timeSnapshot = eventiSnap.child("ora");
                             String eventStartDate = dataSnapshot.child("inizio").getValue().toString();
                             try {
-                                Date eventStarttTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventStartDate);
-                                event.setDataInizio(eventStarttTime);
+                                Date eventStartTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventStartDate);
+                                LocalDate localDate = eventStartTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                                String date = localDate.getDayOfMonth() + "/" + localDate.getMonthValue() +"/" +localDate.getYear();
+
+                                event.setDataInizio(date);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                             String eventEndDate = dataSnapshot.child("fine").getValue().toString();
                             try {
                                 Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
-                                event.setDataFine(eventEndTime);
+                                LocalDate localDate = eventEndTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                                String date = localDate.getDayOfMonth() + "/" + localDate.getMonthValue() +"/" +localDate.getYear();
+
+                                event.setDataFine(date);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
