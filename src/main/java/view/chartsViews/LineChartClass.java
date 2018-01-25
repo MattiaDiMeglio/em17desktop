@@ -84,9 +84,9 @@ public class LineChartClass implements Observer, ChartInterface {
     public void initializeCharts() {
         lineChart.getXAxis().setAnimated(false);
 
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Biglietti venduti");
         if (lineChart.getData().isEmpty()) {
+            series = new XYChart.Series<>();
+            series.setName("Biglietti venduti");
             datas = new ArrayList<>();
 
             datas.add(new XYChart.Data("Gen", 0));
@@ -109,8 +109,11 @@ public class LineChartClass implements Observer, ChartInterface {
             lineChart.getData().add(series);
 
         }else {
-            this.series = (XYChart.Series<String, Number>) lineChart.getData().get(0);
-            this.datas = Collections.singletonList(this.series.getData().get(0));
+            series = (XYChart.Series<String, Number>) lineChart.getData().get(0);
+            datas = new ArrayList<>();
+            for (int i = 0; i < series.getData().size(); i++) {
+                datas.add(series.getData().get(i));
+            }
         }
     }
 }
