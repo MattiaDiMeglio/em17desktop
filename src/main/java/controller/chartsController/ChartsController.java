@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import model.chartsModels.BarChartModel;
 import model.chartsModels.LineChartClassModel;
 import model.chartsModels.PieChartClassModel;
 
@@ -11,27 +12,38 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class ChartsController {
 
     public static Query database;
 
-    public ChartsController() {}
+    public ChartsController() {
+    }
 
     public static void populateCharts(String year) {
 
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                System.out.println("sono nel listeners");
                 LineChartClassModel.getInstance().initializeArray();
                 Integer maxTickets = 0;
                 Integer ticketSold = 0;
+                Integer indexForLocation = 0;
                 Iterable<DataSnapshot> iterable = snapshot.getChildren();
+                List<String> locationNames = new ArrayList<>();
+                HashMap<Integer, String> locationIdMap = new HashMap<>();
+                Integer soldPerCurrentLocation = 0;
+                List<Integer> soldPerLocation = new ArrayList<>();
                 while (iterable.iterator().hasNext()) {
                     try {
                         DataSnapshot luoghi = iterable.iterator().next();
+                        locationIdMap.put(indexForLocation, luoghi.getKey());
+                        locationNames.add(luoghi.child("nome").getValue().toString());
+
                         Iterable<DataSnapshot> settori = luoghi.child("settori").getChildren();
                         Integer totTickets = 0;
                         while (settori.iterator().hasNext()) {
@@ -68,16 +80,22 @@ public class ChartsController {
                                 if (year.equals(ticketYear)) {
                                     Integer accesses = Integer.valueOf(dataSnapshot.child("accessi").getValue().toString());
                                     ticketSold = ticketSold + accesses;
+                                    soldPerCurrentLocation = soldPerCurrentLocation + accesses;
                                     LineChartClassModel.getInstance().add(eventEndTime.getMonth(), accesses);
                                 }
                             }
                         }
-
+                        soldPerLocation.add(soldPerCurrentLocation);
+                        indexForLocation++;
                     } catch (NullPointerException | ParseException | IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
+
                 }
 
+                BarChartModel.getInstance().setSoldPerLocation(soldPerLocation);
+                BarChartModel.getInstance().setLocationNames(locationNames);
+                BarChartModel.getInstance().setLocationIdMap(locationIdMap);
                 PieChartClassModel.getInstance().setMaxTickets(Double.valueOf(maxTickets));
                 PieChartClassModel.getInstance().setTicketsSold(Double.valueOf(ticketSold));
             }

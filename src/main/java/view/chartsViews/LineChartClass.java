@@ -36,14 +36,14 @@ public class LineChartClass implements Observer, ChartInterface {
      * the constructor is responsible for initialize the chart (lower and upper buonds, name, color)
      *
      * @param lineChart              is the type of chart for cpu load
-     * @param dashboardYearComboBox1
+     * @param comboBox
      */
-    public LineChartClass(LineChart lineChart, ComboBox dashboardYearComboBox1) {
+    public LineChartClass(LineChart lineChart, ComboBox comboBox) {
         this.lineChart = lineChart;
         initializeCharts();
         lineChart.setTitle("Vendita biglietti");
 
-        dashboardYearComboBox1.valueProperty().addListener(new ChangeListener<Integer>() {
+        comboBox.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
                 ChartsController.populateCharts(String.valueOf(newValue));
