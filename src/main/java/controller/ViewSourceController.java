@@ -103,6 +103,14 @@ public class ViewSourceController extends Application {
     private Button dashBoardSlideShowLeftButton;
     @FXML
     private Button dashBoardSlideShowRightButton;
+    @FXML
+    private Button eventoDeleteButton;
+    @FXML
+    private HBox eventSlide;
+    @FXML
+    private Button eventSlideShowLeftButton;
+    @FXML
+    private Button eventSlideShowRightButton;
 
 
     /**
@@ -252,7 +260,6 @@ public class ViewSourceController extends Application {
     public void toDashBoardView() throws ExecutionException, InterruptedException {
         new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, dashBoardTabPane, this);
         changeView(dashBoardBox);
-        System.out.println("cambioToDashBoard");
         DBController dbController = DBController.getInstance();
         dbController.dashBoard();
     }
@@ -265,9 +272,11 @@ public class ViewSourceController extends Application {
         texts.add(eventoPrezzoText);
         texts.add(eventoMaxVisitatoriText);
         texts.add(eventoBigliettiVendutiText);
+        EventController eventController = new EventController();
 
 
-        EventView eventView = new EventView(eventPlaybillImageView, eventoTabPane, index, texts, eventoTitleLabel, eventTextArea);
+        EventView eventView = new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
+                eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, this);
         changeView(eventBox);
     }
 

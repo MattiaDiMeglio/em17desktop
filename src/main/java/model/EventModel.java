@@ -29,6 +29,7 @@ public class EventModel extends Observable {
 
 
     List<Settori> listaSettori;
+    private String eventKey;
     private int index;
     private String nomeEvento;
     private boolean attivo;
@@ -47,8 +48,19 @@ public class EventModel extends Observable {
     private HashMap<String,Integer> listaVenditaPerSettori;
     private List<String> slideshow;
 
+
     public HashMap<String, Integer> getListaVenditaPerSettori() {
         return listaVenditaPerSettori;
+    }
+
+    public String getEventKey() {
+        return eventKey;
+    }
+
+    public void setEventKey(String eventKey) {
+        this.eventKey = eventKey;
+        setChanged(); //attiva il flag per gli observer
+        notifyObservers(); //notifica gli observer
     }
 
     public void setListaVenditaPerSettori(HashMap<String,Integer> listaVenditaPerSettori) {

@@ -1,13 +1,18 @@
 package view;
 
+import controller.EventController;
+import controller.SlideShowController;
+import controller.ViewSourceController;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.EventListModel;
@@ -28,8 +33,13 @@ import java.util.Observer;
 public class EventView implements Observer {
     EventListModel eventListModel = EventListModel.getInstance();
     EventModel eventModel;
+    Boolean ret;
 
-    public EventView(ImageView eventPlaybillImageView, TabPane eventoTabPane, int index, List<Text> texts, Label eventoTitleLabel, TextArea eventTextArea) {
+    public EventView(EventController eventController, Button eventoDeleteButton, ImageView eventPlaybillImageView,
+                     TabPane eventoTabPane, int index, List<Text> texts, Label eventoTitleLabel,
+                     TextArea eventTextArea, HBox eventSlide, Button eventSlideShowLeftButton, Button eventSlideShowRightButton,
+                     ViewSourceController viewSourceController) {
+        SlideShowController slideShowController = new SlideShowController();
         eventModel = eventListModel.getListaEventi().get(index);
         eventModel.addObserver(this);
         initializeCharts(eventoTabPane, index);
@@ -43,6 +53,12 @@ public class EventView implements Observer {
         texts.get(3).setText("prezzo");
         texts.get(4).setText(eventModel.getMaxVisitatori().toString());
         texts.get(5).setText(eventModel.getTicketSold().toString());
+        slideShowController.createSlide(eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, viewSourceController);
+        eventoDeleteButton.setOnAction(event -> {
+            if (eventModel.getTicketSold() == 0){
+                //ret = eventoDeleteButton.delete(eventModel.getEventKey());
+            }
+        });
     }
 
     private void initializeCharts(TabPane tabPane, int index){

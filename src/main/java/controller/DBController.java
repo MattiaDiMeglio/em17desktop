@@ -133,7 +133,8 @@ public class DBController {
 
                                 event.addOneSoldPerMonth(eventEndTime.getMonth(), accesses);
                             }
-
+                            event.setEventKey(eventiSnap.getKey());
+                            System.out.println(event.getEventKey());
                             event.setListaSettoriName(settoriName);
                             event.setListaVenditaPerSettori(settoriMap);
                             event.setIndex(i);
@@ -206,6 +207,12 @@ public class DBController {
 
 
         return;
+    }
+
+    public boolean delete(String key) {
+
+
+        return false;
     }
 
 
