@@ -1,5 +1,7 @@
 package model.chartsModels;
 
+import javafx.application.Platform;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
@@ -19,16 +21,18 @@ public class BarChartModel extends Observable{
 
     public void setSoldPerLocation(List<Integer> soldPerLocation) {
         this.soldPerLocation = soldPerLocation;
+        setChanged();
     }
 
     public void setLocationNames(List<String> locationNames) {
         this.locationNames = locationNames;
+        setChanged();
     }
 
     public void setLocationIdMap(HashMap<Integer,String> locationIdMap) {
         this.locationIdMap = locationIdMap;
         setChanged();
-        notifyObservers();
+        Platform.runLater(this::notifyObservers);
     }
 
     public List<Integer> getSoldPerLocation() {

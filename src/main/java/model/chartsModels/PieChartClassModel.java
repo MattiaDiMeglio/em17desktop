@@ -1,5 +1,7 @@
 package model.chartsModels;
 
+import javafx.application.Platform;
+
 import java.util.Observable;
 
 public class PieChartClassModel extends Observable{
@@ -29,6 +31,6 @@ public class PieChartClassModel extends Observable{
     public void setTicketsSold(Double ticketsSold) {
         this.ticketsSold = ticketsSold;
         setChanged();
-        notifyObservers();
+        Platform.runLater(this::notifyObservers);
     }
 }

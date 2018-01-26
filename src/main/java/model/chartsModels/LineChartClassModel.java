@@ -1,5 +1,7 @@
 package model.chartsModels;
 
+import javafx.application.Platform;
+
 import java.util.Observable;
 
 public class LineChartClassModel extends Observable {
@@ -23,7 +25,7 @@ public class LineChartClassModel extends Observable {
     public void add(Integer num, Integer accesses) {
         ticketsSaled[num] = ticketsSaled[num] + accesses;
         setChanged();
-        notifyObservers();
+        Platform.runLater(this::notifyObservers);
     }
 
     public Integer[] getTicketsSaled() {
