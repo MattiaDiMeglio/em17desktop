@@ -6,6 +6,7 @@ import controller.ViewSourceController;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
@@ -71,9 +72,13 @@ public class EventView implements Observer {
         VBox eventoVboxBarChart = (VBox) tabPane.getTabs().get(2).getContent();
         BarChart barChart = (BarChart) eventoVboxBarChart.getChildren().get(0);
 
+        VBox eventoVboxStackedAreaChart = (VBox) tabPane.getTabs().get(3).getContent();
+        StackedAreaChart stackedAreaChart = (StackedAreaChart) eventoVboxStackedAreaChart.getChildren().get(0);
+
         new BarChartClass(barChart, index);
         new PieChartClass(pieChart, index);
         new LineChartClass(lineChart, index);
+        new LineChartClass(stackedAreaChart, index);
     }
 
     @Override

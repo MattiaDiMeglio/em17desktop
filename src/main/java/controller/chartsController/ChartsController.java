@@ -6,6 +6,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import model.chartsModels.BarChartModel;
 import model.chartsModels.LineChartClassModel;
+import model.chartsModels.LineChartClassSalesModel;
 import model.chartsModels.PieChartClassModel;
 
 import java.text.ParseException;
@@ -30,6 +31,7 @@ public class ChartsController {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 LineChartClassModel.getInstance().initializeArray();
+                LineChartClassSalesModel.getInstance().initializeArray();
                 Integer maxTickets = 0;
                 Integer ticketSold = 0;
                 Integer indexForLocation = 0;
@@ -79,8 +81,10 @@ public class ChartsController {
 
                                 if (year.equals(ticketYear)) {
                                     Integer accesses = Integer.valueOf(dataSnapshot.child("accessi").getValue().toString());
+                                    Integer revenue = accesses * Integer.valueOf(dataSnapshot.child("prezzo").getValue().toString());
                                     ticketSold = ticketSold + accesses;
                                     soldPerCurrentLocation = soldPerCurrentLocation + accesses;
+                                    LineChartClassSalesModel.getInstance().add(eventEndTime.getMonth(), revenue);
                                     LineChartClassModel.getInstance().add(eventEndTime.getMonth(), accesses);
                                 }
                             }

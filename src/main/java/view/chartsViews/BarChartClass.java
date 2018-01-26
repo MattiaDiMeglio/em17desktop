@@ -97,7 +97,7 @@ public class BarChartClass implements Observer, ChartInterface {
     public void initializeCharts() {
         barChart.setAnimated(false);
         barChart.getXAxis().setAnimated(false);
-        barChart.getYAxis().setAnimated(false);
+       // barChart.getYAxis().setAnimated(false);
         barChart.legendVisibleProperty().setValue(false);
         if (barChart.getData().isEmpty()) {
             series = new XYChart.Series<>();

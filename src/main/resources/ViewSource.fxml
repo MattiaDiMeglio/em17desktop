@@ -31,6 +31,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.StackedAreaChart?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewSourceController" fx:id="mainAnchorPane">
     <!-- Schermata DashBoard -->
@@ -129,6 +130,19 @@
                                 <NumberAxis side="LEFT" />
                             </yAxis>
                         </BarChart>
+                    </VBox>
+                </Tab>
+                <Tab style="-fx-header-color: white" text="Guadagni nel tempo">
+                    <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <ComboBox prefWidth="200.0" />
+                        <StackedAreaChart VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </StackedAreaChart>
                     </VBox>
                 </Tab>
             </TabPane>
@@ -503,6 +517,18 @@
                                     <NumberAxis side="LEFT" />
                                 </yAxis>
                             </BarChart>
+                        </VBox>
+                    </Tab>
+                    <Tab style="-fx-header-color: white" text="Guadagni nel tempo">
+                        <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <StackedAreaChart VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <xAxis>
+                                    <CategoryAxis side="BOTTOM"/>
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis side="LEFT" />
+                                </yAxis>
+                            </StackedAreaChart>
                         </VBox>
                     </Tab>
                 </TabPane>

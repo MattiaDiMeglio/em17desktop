@@ -5,6 +5,7 @@ import controller.ViewSourceController;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TabPane;
@@ -16,6 +17,7 @@ import view.chartsViews.LineChartClass;
 import view.chartsViews.PieChartClass;
 
 
+import javax.sound.sampled.Line;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -65,6 +67,9 @@ public class DashBoardView implements Observer {
         ComboBox comboBox3 = (ComboBox) dashBoardVboxBarChart.getChildren().get(0);
         BarChart barChart = (BarChart) dashBoardVboxBarChart.getChildren().get(1);
 
+        VBox dashBoardVboxLineChartSales = (VBox) tabPane.getTabs().get(3).getContent();
+        ComboBox comboBox4 = (ComboBox) dashBoardVboxLineChartSales.getChildren().get(0);
+        StackedAreaChart stackedAreaChart = (StackedAreaChart) dashBoardVboxLineChartSales.getChildren().get(1);
 
         Date date = new Date();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -84,9 +89,13 @@ public class DashBoardView implements Observer {
         comboBox3.getItems().setAll(year, year4, year3, year2, year1);
         comboBox3.getSelectionModel().selectFirst();
 
+        comboBox4.getItems().setAll(year, year4, year3, year2, year1);
+        comboBox4.getSelectionModel().selectFirst();
+
         new PieChartClass(pieChart, comboBox2);
         new LineChartClass(lineChart, comboBox1);
         new BarChartClass(barChart,comboBox3);
+        new LineChartClass(stackedAreaChart, comboBox4);
 
     }
 
