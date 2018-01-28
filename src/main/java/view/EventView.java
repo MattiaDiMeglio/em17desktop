@@ -54,7 +54,7 @@ public class EventView implements Observer {
         texts.get(3).setText("prezzo");
         texts.get(4).setText(eventModel.getMaxVisitatori().toString());
         texts.get(5).setText(eventModel.getTicketSold().toString());
-        slideShowController.createSlide(eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, viewSourceController);
+        slideShowController.createSlide(eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, viewSourceController, eventModel);
         eventoDeleteButton.setOnAction(event -> {
             if (eventModel.getTicketSold() == 0){
                 //ret = eventoDeleteButton.delete(eventModel.getEventKey());

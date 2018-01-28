@@ -189,6 +189,7 @@ public class ViewSourceController extends Application {
         this.primaryStage.show();
         this.primaryStage.centerOnScreen();
         this.primaryStage.setTitle("Em-17");
+        this.primaryStage.setMaximized(true);
         this.primaryStage.setOnCloseRequest(event -> {
             ViewSourceController viewSourceController = new ViewSourceController();
             viewSourceController.shutdown();

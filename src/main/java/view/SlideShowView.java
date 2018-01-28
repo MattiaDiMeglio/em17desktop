@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import model.EventListModel;
+import model.EventModel;
 
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class SlideShowView implements Observer {
 
     List<Button> buttonList = new ArrayList<>();
     EventListModel eventListModel = EventListModel.getInstance();
+    EventModel eventModel;
     SlideShowController slideShowController;
     HBox hBox;
     List<Integer> activeList = new ArrayList<>();
@@ -33,12 +35,9 @@ public class SlideShowView implements Observer {
         dashBoardSlideShowLeftButton.setOnAction(event -> {
             left();
         });
-
         if (hBox != null) {
             hBox.setAlignment(Pos.CENTER);
             hBox.setSpacing(20);
-
-
             for (int i = 0; i < 8; i++) {
                 Button button = new Button();
                 buttonList.add(button);
@@ -46,17 +45,46 @@ public class SlideShowView implements Observer {
                     hBox.getChildren().add(button);
                     activeList.add(i);
                 }
-
             }
+        }
+    }
 
+    public SlideShowView(HBox hBox, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton, SlideShowController slideShowController, EventModel eventModel) {
+        int i=0;
+        this.eventModel = eventModel;
+        eventModel.addObserver(this);
 
+        this.slideShowController = slideShowController;
+        this.hBox=hBox;
+        dashBoardSlideShowRightButton.setOnAction(event -> {
+            right();
+        });
+        dashBoardSlideShowLeftButton.setOnAction(event -> {
+            left();
+        });
+        if (hBox != null) {
+            hBox.getChildren().removeAll();
+            hBox.setAlignment(Pos.CENTER);
+            hBox.setSpacing(20);
+            for (i = 0; i < eventModel.getSlideshow().size(); i++) {
+                System.out.println(i);
+                Button button = new Button();
+                buttonList.add(button);
+                Image image = new Image(eventModel.getSlideshow().get(i));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(300.0);
+                imageView.setFitHeight(280.0);
+                buttonList.get(i).setGraphic(imageView);
+                if (i<4){
+                    hBox.getChildren().add(button);
+                    activeList.add(i);
+                }
+            }
         }
     }
 
     private void right() {
-        System.out.println("hhhh");
         if (activeList.get(3)<7){
-            System.out.println(activeList.get(0) + activeList.get(1) + activeList.get(2) + activeList.get(3));
             activeList.set(0, activeList.get(0)+1);
             activeList.set(1, activeList.get(1)+1);
             activeList.set(2, activeList.get(2)+1);
@@ -65,7 +93,6 @@ public class SlideShowView implements Observer {
             hBox.getChildren().remove(2);
             hBox.getChildren().remove(1);
             hBox.getChildren().remove(0);
-            System.out.println(activeList.get(0) + activeList.get(1) + activeList.get(2) + activeList.get(3));
             hBox.getChildren().add(0, buttonList.get(activeList.get(0)));
             hBox.getChildren().add(1, buttonList.get(activeList.get(1)));
             hBox.getChildren().add(2, buttonList.get(activeList.get(2)));
@@ -75,9 +102,7 @@ public class SlideShowView implements Observer {
     }
 
     private void left(){
-        System.out.println("aaaa");
         if (activeList.get(0)>0){
-            System.out.println(activeList.get(0) + activeList.get(1) + activeList.get(2) + activeList.get(3));
             activeList.set(0, activeList.get(0)-1);
             activeList.set(1, activeList.get(1)-1);
             activeList.set(2, activeList.get(2)-+1);
@@ -86,7 +111,6 @@ public class SlideShowView implements Observer {
             hBox.getChildren().remove(2);
             hBox.getChildren().remove(1);
             hBox.getChildren().remove(0);
-            System.out.println(activeList.get(0) + activeList.get(1) + activeList.get(2) + activeList.get(3));
             hBox.getChildren().add(0, buttonList.get(activeList.get(0)));
             hBox.getChildren().add(1, buttonList.get(activeList.get(1)));
             hBox.getChildren().add(2, buttonList.get(activeList.get(2)));
@@ -98,16 +122,33 @@ public class SlideShowView implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        int index = (int) arg;
-        if (index<= buttonList.size()) {
-            Image image = new Image(eventListModel.getListaEventi().get(index).getLocandina());
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(300.0);
-            imageView.setFitHeight(280.0);
-            buttonList.get(index).setGraphic(imageView);
-            buttonList.get(index).setOnAction(event -> {
-                slideShowController.handler(index);
-            });
+        hBox.getChildren().removeAll();
+
+        if (o instanceof EventListModel) {
+            int index = (int) arg;
+
+            if (index <= buttonList.size()) {
+                Image image = new Image(eventListModel.getListaEventi().get(index).getLocandina());
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(300.0);
+                imageView.setFitHeight(280.0);
+                buttonList.get(index).setGraphic(imageView);
+                buttonList.get(index).setOnAction(event -> {
+                    slideShowController.handler(index);
+                });
+            }
+        } else {
+            int i=0;
+            while (i < eventModel.getSlideshow().size()){
+                Image image = new Image(eventModel.getSlideshow().get(i));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(300.0);
+                imageView.setFitHeight(280.0);
+                buttonList.get(i).setGraphic(imageView);
+                i++;
+
+            }
+
         }
     }
 
