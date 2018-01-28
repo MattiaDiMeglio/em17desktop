@@ -19,16 +19,18 @@ import java.util.Observer;
 
 public class SlideShowView implements Observer {
 
-    List<Button> buttonList = new ArrayList<>();
+    List<Button> buttonList;
     EventListModel eventListModel = EventListModel.getInstance();
     EventModel eventModel;
     SlideShowController slideShowController;
     HBox hBox;
-    List<Integer> activeList = new ArrayList<>();
+    List<Integer> activeList;
     public SlideShowView(HBox hBox, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton, SlideShowController slideShowController) {
         eventListModel.addObserver(this);
         this.slideShowController = slideShowController;
         this.hBox=hBox;
+        buttonList = new ArrayList<>();
+        activeList = new ArrayList<>();
         dashBoardSlideShowRightButton.setOnAction(event -> {
             right();
         });
@@ -53,6 +55,8 @@ public class SlideShowView implements Observer {
         int i=0;
         this.eventModel = eventModel;
         eventModel.addObserver(this);
+        buttonList = new ArrayList<>();
+        activeList = new ArrayList<>();
 
         this.slideShowController = slideShowController;
         this.hBox=hBox;
@@ -63,7 +67,11 @@ public class SlideShowView implements Observer {
             left();
         });
         if (hBox != null) {
-            hBox.getChildren().removeAll();
+            System.out.println( buttonList.size() + " " + activeList.size() + " " + hBox.getChildren().size());
+            while (hBox.getChildren().size() > 0){
+                   hBox.getChildren().remove(hBox.getChildren().size() -1);
+            }
+            System.out.println( buttonList.size() + " " + activeList.size() + " " + hBox.getChildren().size());
             hBox.setAlignment(Pos.CENTER);
             hBox.setSpacing(20);
             for (i = 0; i < eventModel.getSlideshow().size(); i++) {
