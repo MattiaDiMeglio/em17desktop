@@ -35,7 +35,7 @@ public class EventModel extends Observable {
     private String locandina;
     private String dataInizio;
     private String dataFine;
-    private String descrizione;
+    private String descrizione; 
     private String nomeLocation;
     private String locationAddress;
     private double riduzioneAnziani;
