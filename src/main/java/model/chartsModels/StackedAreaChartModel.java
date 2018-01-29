@@ -7,7 +7,7 @@ import java.util.Observable;
 public class StackedAreaChartModel extends Observable {
     private static StackedAreaChartModel ourInstance = new StackedAreaChartModel();
 
-    private Integer[] ticketsSaled = new Integer[12];
+    private Integer[] ticketsSold = new Integer[12];
 
     public static StackedAreaChartModel getInstance() {
         return ourInstance;
@@ -15,26 +15,26 @@ public class StackedAreaChartModel extends Observable {
 
     private StackedAreaChartModel() {
         if (ourInstance == null) {
-            for (int i = 0; i < ticketsSaled.length; i++) {
-                ticketsSaled[i] = 0;
+            for (int i = 0; i < ticketsSold.length; i++) {
+                ticketsSold[i] = 0;
             }
         }
     }
 
 
     public void add(Integer num, Integer accesses) {
-        ticketsSaled[num] = ticketsSaled[num] + accesses;
+        ticketsSold[num] = ticketsSold[num] + accesses;
         setChanged();
         Platform.runLater(this::notifyObservers);
     }
 
-    public Integer[] getTicketsSaled() {
-        return ticketsSaled;
+    public Integer[] getTicketsSold() {
+        return ticketsSold;
     }
 
     public void initializeArray(){
-        for (int i =0;i<ticketsSaled.length;i++){
-            ticketsSaled[i] = 0;
+        for (int i = 0; i< ticketsSold.length; i++){
+            ticketsSold[i] = 0;
         }
         setChanged();
         notifyObservers();
