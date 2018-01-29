@@ -27,15 +27,14 @@ public class DBController {
 
     private static final String DATABASE_URL = "https://ingws-20.firebaseio.com/";
     private DatabaseReference database;
-    private String ris;
     private static DBController instance = new DBController();
-    EventListModel eventListModel;
+    private EventListModel eventListModel;
 
     public static DBController getInstance() {
         return instance;
     }
 
-    protected DBController() {
+    private DBController() {
         initializeDatabase();
     }
 
@@ -86,9 +85,8 @@ public class DBController {
     }
 
 
-    public void dashBoard() throws ExecutionException, InterruptedException {
+    public void dashBoard() {
         database.addListenerForSingleValueEvent(new ValueEventListener() {
-
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
