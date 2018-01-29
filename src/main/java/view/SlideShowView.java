@@ -25,7 +25,9 @@ public class SlideShowView implements Observer {
     SlideShowController slideShowController;
     HBox hBox;
     List<Integer> activeList;
-    public SlideShowView(HBox hBox, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton, SlideShowController slideShowController) {
+
+    public SlideShowView(HBox hBox, Button dashBoardSlideShowLeftButton,
+                         Button dashBoardSlideShowRightButton, SlideShowController slideShowController) {
         eventListModel.addObserver(this);
         this.slideShowController = slideShowController;
         this.hBox=hBox;
@@ -51,7 +53,8 @@ public class SlideShowView implements Observer {
         }
     }
 
-    public SlideShowView(HBox hBox, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton, SlideShowController slideShowController, EventModel eventModel) {
+    public SlideShowView(HBox hBox, Button dashBoardSlideShowLeftButton,
+                         Button dashBoardSlideShowRightButton, SlideShowController slideShowController, EventModel eventModel) {
         int i=0;
         this.eventModel = eventModel;
         eventModel.addObserver(this);
@@ -67,15 +70,12 @@ public class SlideShowView implements Observer {
             left();
         });
         if (hBox != null) {
-            System.out.println( buttonList.size() + " " + activeList.size() + " " + hBox.getChildren().size());
             while (hBox.getChildren().size() > 0){
                    hBox.getChildren().remove(hBox.getChildren().size() -1);
             }
-            System.out.println( buttonList.size() + " " + activeList.size() + " " + hBox.getChildren().size());
             hBox.setAlignment(Pos.CENTER);
             hBox.setSpacing(20);
             for (i = 0; i < eventModel.getSlideshow().size(); i++) {
-                System.out.println(i);
                 Button button = new Button();
                 buttonList.add(button);
                 Image image = new Image(eventModel.getSlideshow().get(i));
@@ -133,16 +133,17 @@ public class SlideShowView implements Observer {
         hBox.getChildren().removeAll();
 
         if (o instanceof EventListModel) {
-            int index = (int) arg;
+            int eventIndex = (int) arg;
 
-            if (index <= buttonList.size()) {
-                Image image = new Image(eventListModel.getListaEventi().get(index).getLocandina());
+            if (eventIndex <= buttonList.size()) {
+                //TODO mettere il popolamento in un thread separato
+                Image image = new Image(eventListModel.getListaEventi().get(eventIndex).getLocandina());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(300.0);
                 imageView.setFitHeight(280.0);
-                buttonList.get(index).setGraphic(imageView);
-                buttonList.get(index).setOnAction(event -> {
-                    slideShowController.handler(index);
+                buttonList.get(eventIndex).setGraphic(imageView);
+                buttonList.get(eventIndex).setOnAction(event -> {
+                    slideShowController.handler(eventIndex);
                 });
             }
         } else {
