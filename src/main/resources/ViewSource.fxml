@@ -482,9 +482,7 @@
                         <Insets bottom="50.0" left="0.0" right="0.0" top="10.0"/>
                     </padding>
                 </VBox>
-
-
-                <!-- TabPane dove andranno inseriti i grafici e le eventuali rabelle -->
+                <!-- TabPane dove andranno inseriti i grafici e le eventuali tabelle -->
                 <TabPane fx:id="eventoTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" >
                     <!-- Tab1 -->
                     <Tab fx:id="eventoTab1Tab" style="-fx-header-color: white" text="Vendite">

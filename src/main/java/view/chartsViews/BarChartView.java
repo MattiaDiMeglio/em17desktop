@@ -82,8 +82,8 @@ public class BarChartView implements Observer, ChartInterface {
     }
 
     private void updateChart(EventModel eventModel){
-        HashMap settori = eventModel.getListaVenditaPerSettori();
-        List<String> nomeSettori = eventModel.getListaSettoriName();
+        HashMap settori = eventModel.getSoldPerSectorList();
+        List<String> nomeSettori = eventModel.getSectorNameList();
 
         if (barChart.getData().isEmpty()) {
             datas = new ArrayList<>();

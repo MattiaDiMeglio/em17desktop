@@ -77,7 +77,7 @@ public class PieChartView implements Observer, ChartInterface {
         } else {
             System.out.println("event");
             EventModel eventModel = (EventModel) o;
-            Double ticketsPerc = (eventModel.getTicketSold() / eventModel.getMaxVisitatori()) * 100;
+            Double ticketsPerc = (eventModel.getTicketSold() / eventModel.getMaxVisitors()) * 100;
             updateChart(ticketsPerc);
         }
     }
