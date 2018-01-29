@@ -64,13 +64,13 @@ public class EventView implements Observer {
         initializeCharts(eventoTabPane, index); //inizializzazione dei charts
         Image image= new Image(eventModel.getLocandina()); //valirizzo l'image con l'url della locandina
         eventPlaybillImageView.setImage(image); //creo l'imageView con l'image di cui sopra
-        eventoTitleLabel.setText(eventModel.getNomeEvento()); //setto il titolo nella label
-        eventTextArea.setText(eventModel.getDescrizione()); //setto la descrizione della textarea
-        texts.get(0).setText(eventModel.getNomeLocation()); //setto il nome location nel primo elemento della lista di text
-        texts.get(1).setText(eventModel.getDataInizio().toString()); //setto la data inizio nella text
-        texts.get(2).setText(eventModel.getDataFine().toString()); //setto la data di fine
+        eventoTitleLabel.setText(eventModel.getEventName()); //setto il titolo nella label
+        eventTextArea.setText(eventModel.getEventDescription()); //setto la descrizione della textarea
+        texts.get(0).setText(eventModel.getLocationName()); //setto il nome location nel primo elemento della lista di text
+        texts.get(1).setText(eventModel.getStartingDate().toString()); //setto la data inizio nella text
+        texts.get(2).setText(eventModel.getEndingDate().toString()); //setto la data di fine
         texts.get(3).setText("prezzo"); //setto il prezzo
-        texts.get(4).setText(eventModel.getMaxVisitatori().toString()); //setto il massimo dei visitatori
+        texts.get(4).setText(eventModel.getMaxVisitors().toString()); //setto il massimo dei visitatori
         texts.get(5).setText(eventModel.getTicketSold().toString()); //setto il numero di biglietti venduti
         //creo lo slideshow
         slideShowController.createSlide(eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, viewSourceController, eventModel);
@@ -108,6 +108,7 @@ public class EventView implements Observer {
         //ottendo lo stacked linechart
         StackedAreaChart stackedAreaChart = (StackedAreaChart) eventoVboxStackedAreaChart.getChildren().get(0);
 
+        //creo le view per i quattro chart
         new BarChartView(barChart, index);
         new PieChartView(pieChart, index);
         new LineChartView(lineChart, index);

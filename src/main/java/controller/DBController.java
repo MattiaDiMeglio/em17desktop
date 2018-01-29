@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 public class DBController {
@@ -43,33 +42,20 @@ public class DBController {
         System.out.println("Inizializzo database...");
 
         try {
-            // [START initialize]
 
-            /*
-             * Utilizzando FileInputStream, come nella guida, non funziona una cazzo di niente, quindi utilizzo l'InputStream
-             * che preleva direttamente il file invece di andarlo a creare con il contenuto.
-             * Per fare questo mi vado a prendere il contesto della classe per caricare gli oggetti (getClassLoader)
-             * legato al Thread sul quale sto lavorando, da qui accedo al file direttamente caricato come stream (getResourcesAsStream).
-             *
-             * Per vedere lo spaccimma del Json si deve andare a caricare a mano la cartella resources
-             * nelle impostazioni dell'artifact in Intellij
-             */
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             InputStream inputStream = loader.getResourceAsStream("ingws-20-firebase-adminsdk.json");
 
-            //adesso prendo lo stream e lo butto dove controllerà le credenziali d'accesso
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(inputStream))
                     .setDatabaseUrl(DATABASE_URL)
                     .build();
             FirebaseApp.initializeApp(options);
             System.out.println("database.Database inizializzato\n");
-            // [END initialize]
         } catch (IOException e) {
             System.out.println("ERROR: invalid service account credentials. Il Json potrebbe essere sminchiato.");
             e.printStackTrace();
 
-            //esco dal programma
             System.exit(1);
         }
 
@@ -133,16 +119,16 @@ public class DBController {
                             }
                             event.setEventKey(eventiSnap.getKey());
                             System.out.println(event.getEventKey());
-                            event.setListaSettoriName(settoriName);
-                            event.setListaVenditaPerSettori(settoriMap);
+                            event.setSectorNameList(settoriName);
+                            event.setSoldPerSectorList(settoriMap);
                             event.setIndex(i);
-                            event.setMaxVisitatori(totTickets);
+                            event.setMaxVisitors(totTickets);
                             event.setTicketSold(ticketSold);
                             event.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
-                            event.setNomeLocation(locationSnap.child("nome").getValue().toString());
-                            event.setNomeEvento(eventiSnap.child("nome").getValue().toString());
-                            event.setAttivo((boolean) eventiSnap.child("attivo").getValue());
-                            event.setDescrizione(eventiSnap.child("descrizione").getValue().toString());
+                            event.setLocationName(locationSnap.child("nome").getValue().toString());
+                            event.setEventName(eventiSnap.child("nome").getValue().toString());
+                            event.setActive((boolean) eventiSnap.child("attivo").getValue());
+                            event.setEventDescription(eventiSnap.child("descrizione").getValue().toString());
                             event.setLocandina(eventiSnap.child("copertina").getValue().toString());
                             DataSnapshot dataSnapshot = eventiSnap.child("data");
                             DataSnapshot timeSnapshot = eventiSnap.child("ora");
@@ -152,7 +138,7 @@ public class DBController {
                                 LocalDate localDate = eventStartTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                                 String date = localDate.getDayOfMonth() + "/" + localDate.getMonthValue() + "/" + localDate.getYear();
 
-                                event.setDataInizio(date);
+                                event.setStartingDate(date);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -162,7 +148,7 @@ public class DBController {
                                 LocalDate localDate = eventEndTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                                 String date = localDate.getDayOfMonth() + "/" + localDate.getMonthValue() + "/" + localDate.getYear();
 
-                                event.setDataFine(date);
+                                event.setEndingDate(date);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
