@@ -19,13 +19,27 @@ public class MergedController {
     private void merge() {
         mergedModel.resetModel();
         List<String> eventNames = new ArrayList<>();
-        for (int i = 0; i < eventModelList.size(); i++) {
-            EventModel eventModel = eventModelList.get(i);
-            eventNames.add(eventModel.getNomeEvento());
+        List<Double> soldPerEvent = new ArrayList<>();
+        for (EventModel eventModel : eventModelList) {
+            // dati per il barchart
+            eventNames.add(eventModel.getEventName());
+            soldPerEvent.add(eventModel.getTicketSold());
+
+            // dati per il linechart
             mergedModel.setTicketSoldArray(mergeArray(eventModel.getTicketsSoldPerMonth(), mergedModel.getTicketsSoldArray()));
 
-            mergedModel.setMaxTickets(mergeMaxVisitors(eventModel.getMaxVisitatori()));
+            //dati per il piechart
+            mergedModel.setMaxVisitors(mergeMaxVisitors(mergedModel.getMaxVisitors(), eventModel.getMaxVisitors()));
+            mergedModel.setTicketsSold(mergeTicketsSold(mergedModel.getTicketsSold(), eventModel.getTicketSold()));
         }
+    }
+
+    private Double mergeTicketsSold(Double ticketsSold, Double ticketsSold1) {
+        return ticketsSold + ticketsSold1;
+    }
+
+    private Double mergeMaxVisitors(Double maxVisitors, Double maxVisitors1) {
+        return maxVisitors + maxVisitors1;
     }
 
     private Integer[] mergeArray(Integer[] firstArray, Integer[] secondArray) {

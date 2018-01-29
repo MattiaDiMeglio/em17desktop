@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import model.EventListModel;
 import model.EventModel;
 import model.chartsModels.BarChartModel;
+import model.chartsModels.MergedModel;
 
 import java.util.*;
 
@@ -43,15 +44,27 @@ public class BarChartView implements Observer, ChartInterface {
         BarChartModel.getInstance().addObserver(this);
     }
 
+    public BarChartView(BarChart barChart) {
+        this.barChart = barChart;
+        barChart.getXAxis().setAnimated(false);
+        barChart.setTitle("Biglietti venduti per Evento");
+        initializeCharts();
+
+        MergedModel.getInstance().addObserver(this);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof EventModel) {
             EventModel eventModel = (EventModel) o;
             updateChart(eventModel);
 
-        } else {
+        } else if (o instanceof BarChartModel){
             BarChartModel barChartModel = (BarChartModel) o;
             updateChart(barChartModel);
+        } else {
+            MergedModel mergedModel = (MergedModel) o;
+            updateChart(mergedModel);
         }
     }
 
@@ -118,6 +131,28 @@ public class BarChartView implements Observer, ChartInterface {
 
         for (int i = 0; i < locationIdMap.size(); i++) {
             datas.add(new XYChart.Data(locationNames.get(i), soldPerLocation.get(i).intValue()));
+        }
+        for (XYChart.Data<String, Number> data : datas) {
+            setRandomColor(data);
+
+            series.getData().add(data);
+        }
+        barChart.getData().add(series);
+    }
+
+    private void updateChart(MergedModel mergedModel) {
+        List<String> eventNames = mergedModel.getEventNames();
+        List<Double> soldPerEvent = mergedModel.getSoldPerEvent();
+        if (barChart.getData().isEmpty()) {
+            datas = new ArrayList<>();
+        } else {
+            barChart.getData().clear();
+        }
+        series.getData().clear();
+        datas.clear();
+
+        for (int i = 0; i < eventNames.size(); i++) {
+            datas.add(new XYChart.Data(eventNames.get(i), soldPerEvent.get(i)));
         }
         for (XYChart.Data<String, Number> data : datas) {
             setRandomColor(data);

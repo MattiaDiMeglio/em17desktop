@@ -390,14 +390,14 @@
         </left>
         <!-- center della schermata, contenente la tabpane con i grafici-->
         <center>
-            <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+            <TabPane fx:id="eventListTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
                 <!-- Prima tab del Tab Pane, conenente una VBox con un Linechart al suo interno -->
-                <Tab style="-fx-header-color: white" text="primo">
+                <Tab style="-fx-header-color: white" text="Biglietti venduti">
                     <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <LineChart VBox.vgrow="ALWAYS" fx:id="eventListGraph1LineChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <LineChart VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <xAxis>
-                                    <NumberAxis side="BOTTOM" />
+                                    <CategoryAxis side="BOTTOM" />
                                 </xAxis>
                                 <yAxis>
                                     <NumberAxis side="LEFT" />
@@ -405,6 +405,25 @@
                             </LineChart>
                         </VBox>
                     </AnchorPane>
+                </Tab>
+                <Tab style="-fx-header-color: white" text="Percentuale biglietti venduti">
+                    <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <PieChart VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+                        </PieChart>
+                    </VBox>
+                </Tab>
+                <Tab style="-fx-header-color: white" text="Biglietti venduti per Evento">
+                    <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <BarChart  VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
                 </Tab>
             </TabPane>
         </center>

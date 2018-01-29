@@ -14,6 +14,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.ComboBox;
 import model.EventListModel;
 import model.EventModel;
+import model.chartsModels.MergedModel;
 import model.chartsModels.PieChartModel;
 
 import java.util.Observable;
@@ -67,6 +68,12 @@ public class PieChartView implements Observer, ChartInterface {
         update(EventListModel.getInstance().getListaEventi().get(index), null);
     }
 
+    public PieChartView(PieChart pieChart) {
+        this.pieChart = pieChart;
+        initializeCharts();
+        MergedModel.getInstance().addObserver(this);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof PieChartModel) {
@@ -74,10 +81,14 @@ public class PieChartView implements Observer, ChartInterface {
             PieChartModel classModel = (PieChartModel) o;
             Double ticketsPerc = (classModel.getTicketsSold() / classModel.getMaxTickets()) * 100;
             updateChart(ticketsPerc);
-        } else {
+        } else if (o instanceof  EventModel){
             System.out.println("event");
             EventModel eventModel = (EventModel) o;
             Double ticketsPerc = (eventModel.getTicketSold() / eventModel.getMaxVisitors()) * 100;
+            updateChart(ticketsPerc);
+        }else {
+            MergedModel mergedModel = (MergedModel) o;
+            Double ticketsPerc = (mergedModel.getTicketsSold() / mergedModel.getMaxVisitors()) * 100;
             updateChart(ticketsPerc);
         }
     }

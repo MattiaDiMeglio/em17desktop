@@ -7,9 +7,9 @@ public class MergedModel extends Observable {
     private static MergedModel ourInstance = new MergedModel();
     private Integer[] ticketsSoldArray = new Integer[12];
     private Integer[] earningsArray = new Integer[12];
-    private Double maxTickets;
+    private Double maxVisitors;
     private Double ticketsSold;
-    private List<Integer> soldPerEvent;
+    private List<Double> soldPerEvent;
     private List<String> eventNames;
 
     public static MergedModel getInstance() {
@@ -47,12 +47,12 @@ public class MergedModel extends Observable {
     }
 
     // metodi per il Piechart
-    public Double getMaxTickets() {
-        return maxTickets;
+    public Double getMaxVisitors() {
+        return maxVisitors;
     }
 
-    public void setMaxTickets(Double maxTickets) {
-        this.maxTickets = maxTickets;
+    public void setMaxVisitors(Double maxVisitors) {
+        this.maxVisitors = maxVisitors;
         setChanged();
     }
 
@@ -67,11 +67,11 @@ public class MergedModel extends Observable {
 
     // metodi per il barchart
 
-    public List<Integer> getSoldPerEvent() {
+    public List<Double> getSoldPerEvent() {
         return soldPerEvent;
     }
 
-    public void setSoldPerEvent(List<Integer> soldPerEvent) {
+    public void setSoldPerEvent(List<Double> soldPerEvent) {
         this.soldPerEvent = soldPerEvent;
     }
 

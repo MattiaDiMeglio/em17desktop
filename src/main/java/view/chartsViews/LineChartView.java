@@ -16,6 +16,7 @@ import javafx.scene.control.ComboBox;
 import model.EventListModel;
 import model.EventModel;
 import model.chartsModels.LineChartModel;
+import model.chartsModels.MergedModel;
 import model.chartsModels.StackedAreaChartModel;
 
 import java.util.*;
@@ -81,6 +82,12 @@ public class LineChartView implements Observer, ChartInterface {
         update(EventListModel.getInstance().getListaEventi().get(index), null);
     }
 
+    public LineChartView(LineChart lineChart) {
+        this.chart = lineChart;
+        initializeCharts();
+        MergedModel.getInstance().addObserver(this);
+    }
+
     //todo aggiungere le vendite per evento
     @Override
     public void update(Observable o, Object arg) {
@@ -92,9 +99,12 @@ public class LineChartView implements Observer, ChartInterface {
         }else if (o instanceof StackedAreaChartModel) {
             StackedAreaChartModel salesModel = (StackedAreaChartModel) o;
             vendite = salesModel.getTicketsSold();
-        }else {
+        }else if (o instanceof  EventModel){
             EventModel eventModel = (EventModel) o;
             vendite = eventModel.getTicketsSoldPerMonth();
+        }else {
+            MergedModel mergedModel = (MergedModel) o;
+            vendite = mergedModel.getTicketsSoldArray();
         }
 
         for (int i = 0; i < datas.size(); i++) {
