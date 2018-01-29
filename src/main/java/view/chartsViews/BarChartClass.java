@@ -36,7 +36,7 @@ public class BarChartClass implements Observer, ChartInterface {
         comboBox.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                ChartsController.populateCharts(String.valueOf(newValue));
+                ChartsController.getInstance().populateCharts(String.valueOf(newValue));
                 barChart.setTitle("Biglietti venduti per Location " + String.valueOf(newValue));
             }
         });
@@ -47,49 +47,11 @@ public class BarChartClass implements Observer, ChartInterface {
     public void update(Observable o, Object arg) {
         if (o instanceof EventModel) {
             EventModel eventModel = (EventModel) o;
-            HashMap settori = eventModel.getListaVenditaPerSettori();
-            List<String> nomeSettori = eventModel.getListaSettoriName();
-
-            if (barChart.getData().isEmpty()) {
-                datas = new ArrayList<>();
-            } else {
-                barChart.getData().clear();
-            }
-            series.getData().clear();
-            datas.clear();
-
-            for (int i = 0; i < settori.size(); i++) {
-                datas.add(new XYChart.Data(nomeSettori.get(i), settori.get(nomeSettori.get(i))));
-            }
-
-            for (XYChart.Data<String, Number> data : datas) {
-                setRandomColor(data);
-                series.getData().add(data);
-            }
-            barChart.getData().add(series);
+            updateChart(eventModel);
 
         } else {
             BarChartModel barChartModel = (BarChartModel) o;
-            HashMap<Integer, String> locationIdMap = barChartModel.getLocationIdMap();
-            List<String> locationNames = barChartModel.getLocationNames();
-            List<Integer> soldPerLocation = barChartModel.getSoldPerLocation();
-            if (barChart.getData().isEmpty()) {
-                datas = new ArrayList<>();
-            } else {
-                barChart.getData().clear();
-            }
-            series.getData().clear();
-            datas.clear();
-
-            for (int i = 0; i < locationIdMap.size(); i++) {
-                datas.add(new XYChart.Data(locationNames.get(i), soldPerLocation.get(i).intValue()));
-            }
-            for (XYChart.Data<String, Number> data : datas) {
-                setRandomColor(data);
-
-                series.getData().add(data);
-            }
-            barChart.getData().add(series);
+            updateChart(barChartModel);
         }
     }
 
@@ -97,7 +59,6 @@ public class BarChartClass implements Observer, ChartInterface {
     public void initializeCharts() {
         barChart.setAnimated(false);
         barChart.getXAxis().setAnimated(false);
-       // barChart.getYAxis().setAnimated(false);
         barChart.legendVisibleProperty().setValue(false);
         if (barChart.getData().isEmpty()) {
             series = new XYChart.Series<>();
@@ -118,5 +79,51 @@ public class BarChartClass implements Observer, ChartInterface {
                 newNode.setStyle("-fx-bar-fill: " + randomColor + ";");
             }
         });
+    }
+
+    private void updateChart(EventModel eventModel){
+        HashMap settori = eventModel.getListaVenditaPerSettori();
+        List<String> nomeSettori = eventModel.getListaSettoriName();
+
+        if (barChart.getData().isEmpty()) {
+            datas = new ArrayList<>();
+        } else {
+            barChart.getData().clear();
+        }
+        series.getData().clear();
+        datas.clear();
+
+        for (int i = 0; i < settori.size(); i++) {
+            datas.add(new XYChart.Data(nomeSettori.get(i), settori.get(nomeSettori.get(i))));
+        }
+
+        for (XYChart.Data<String, Number> data : datas) {
+            setRandomColor(data);
+            series.getData().add(data);
+        }
+        barChart.getData().add(series);
+    }
+
+    private void updateChart(BarChartModel barChartModel){
+        HashMap<Integer, String> locationIdMap = barChartModel.getLocationIdMap();
+        List<String> locationNames = barChartModel.getLocationNames();
+        List<Integer> soldPerLocation = barChartModel.getSoldPerLocation();
+        if (barChart.getData().isEmpty()) {
+            datas = new ArrayList<>();
+        } else {
+            barChart.getData().clear();
+        }
+        series.getData().clear();
+        datas.clear();
+
+        for (int i = 0; i < locationIdMap.size(); i++) {
+            datas.add(new XYChart.Data(locationNames.get(i), soldPerLocation.get(i).intValue()));
+        }
+        for (XYChart.Data<String, Number> data : datas) {
+            setRandomColor(data);
+
+            series.getData().add(data);
+        }
+        barChart.getData().add(series);
     }
 }

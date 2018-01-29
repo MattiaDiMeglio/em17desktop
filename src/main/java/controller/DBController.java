@@ -79,8 +79,8 @@ public class DBController {
         //Scelgo la root di partenza del database
         database = FirebaseDatabase.getInstance().getReference("luogo");
 
-        ChartsController.database = database;
-        ChartsController.populateCharts("2018");
+        ChartsController.getInstance().setDatabase(database);
+        ChartsController.getInstance().populateCharts("2018");
 
 
     }

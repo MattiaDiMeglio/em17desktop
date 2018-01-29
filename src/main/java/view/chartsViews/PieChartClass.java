@@ -52,7 +52,7 @@ public class PieChartClass implements Observer, ChartInterface {
         dashboardYearComboBox2.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                ChartsController.populateCharts(String.valueOf(newValue));
+                ChartsController.getInstance().populateCharts(String.valueOf(newValue));
             }
         });
         PieChartClassModel.getInstance().addObserver(this);
@@ -71,24 +71,14 @@ public class PieChartClass implements Observer, ChartInterface {
     public void update(Observable o, Object arg) {
         if (o instanceof PieChartClassModel) {
             System.out.println("dash");
-            Double ticketsPerc = (PieChartClassModel.getInstance().getTicketsSold() / PieChartClassModel.getInstance().getMaxTickets()) * 100;
-            slice1.setName(round(ticketsPerc, 2) + "%\nBiglietti Venduti");
-            slice1.setPieValue(ticketsPerc);
-            slice2.setName((100 - round(ticketsPerc, 2) + "%\nBiglietti non Venduti"));
-            slice2.setPieValue(100 - ticketsPerc);
-            slice1.getNode().setStyle("-fx-pie-color: #bbdefb");
-            slice2.getNode().setStyle("-fx-pie-color: #78909c");
+            PieChartClassModel classModel = (PieChartClassModel) o;
+            Double ticketsPerc = (classModel.getTicketsSold() / classModel.getMaxTickets()) * 100;
+            updateChart(ticketsPerc);
         } else {
             System.out.println("event");
             EventModel eventModel = (EventModel) o;
             Double ticketsPerc = (eventModel.getTicketSold() / eventModel.getMaxVisitatori()) * 100;
-            pieChart.getData().get(0).setName(round(ticketsPerc, 2) + "%\nBiglietti Venduti");
-            pieChart.getData().get(0).setPieValue(ticketsPerc);
-            pieChart.getData().get(1).setName((100 - round(ticketsPerc, 2) + "%\nBiglietti non Venduti"));
-            pieChart.getData().get(1).setPieValue(100 - ticketsPerc);
-
-            pieChart.getData().get(0).getNode().setStyle("-fx-pie-color: #bbdefb");
-            pieChart.getData().get(1).getNode().setStyle("-fx-pie-color: #78909c");
+            updateChart(ticketsPerc);
         }
     }
 
@@ -112,5 +102,15 @@ public class PieChartClass implements Observer, ChartInterface {
         pieChart.setTitle("Vendita biglietti");
         pieChart.animatedProperty().setValue(false);
         pieChart.legendVisibleProperty().setValue(false);
+    }
+
+    private void updateChart(Double ticketsPerc){
+        pieChart.getData().get(0).setName(round(ticketsPerc, 2) + "%\nBiglietti Venduti");
+        pieChart.getData().get(0).setPieValue(ticketsPerc);
+        pieChart.getData().get(1).setName((100 - round(ticketsPerc, 2) + "%\nBiglietti non Venduti"));
+        pieChart.getData().get(1).setPieValue(100 - ticketsPerc);
+
+        pieChart.getData().get(0).getNode().setStyle("-fx-pie-color: #bbdefb");
+        pieChart.getData().get(1).getNode().setStyle("-fx-pie-color: #78909c");
     }
 }

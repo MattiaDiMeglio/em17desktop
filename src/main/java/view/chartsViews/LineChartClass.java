@@ -30,8 +30,8 @@ public class LineChartClass implements Observer, ChartInterface {
     private List<XYChart.Data<String, Number>> datas;
     private XYChart.Series<String, Number> series;
 
-    private LineChart lineChart;
-    private StackedAreaChart stackedAreaChart;
+    private XYChart chart;
+
     /**
      * the constructor is responsible for initialize the chart (lower and upper buonds, name, color)
      *
@@ -39,12 +39,12 @@ public class LineChartClass implements Observer, ChartInterface {
      * @param comboBox
      */
     public LineChartClass(LineChart lineChart, ComboBox comboBox) {
-        this.lineChart = lineChart;
+        this.chart = lineChart;
         initializeCharts();
         lineChart.setTitle("Vendita biglietti");
 
         comboBox.valueProperty().addListener((ChangeListener<Integer>) (observable, oldValue, newValue) -> {
-            ChartsController.populateCharts(String.valueOf(newValue));
+            ChartsController.getInstance().populateCharts(String.valueOf(newValue));
             lineChart.setTitle("Vendita biglietti " + String.valueOf(newValue));
         });
 
@@ -52,7 +52,7 @@ public class LineChartClass implements Observer, ChartInterface {
     }
 
     public LineChartClass(LineChart lineChart, int index) {
-        this.lineChart = lineChart;
+        this.chart = lineChart;
         initializeCharts();
         lineChart.setTitle("Vendita biglietti");
 
@@ -61,12 +61,12 @@ public class LineChartClass implements Observer, ChartInterface {
     }
 
     public LineChartClass(StackedAreaChart stackedAreaChart, ComboBox comboBox) {
-        this.stackedAreaChart = stackedAreaChart;
+        this.chart = stackedAreaChart;
         initializeCharts();
         stackedAreaChart.setTitle("Vendita biglietti");
 
         comboBox.valueProperty().addListener((ChangeListener<Integer>) (observable, oldValue, newValue) -> {
-            ChartsController.populateCharts(String.valueOf(newValue));
+            ChartsController.getInstance().populateCharts(String.valueOf(newValue));
             stackedAreaChart.setTitle("Vendita biglietti " + String.valueOf(newValue));
         });
 
@@ -74,7 +74,7 @@ public class LineChartClass implements Observer, ChartInterface {
     }
 
     public LineChartClass(StackedAreaChart stackedAreaChart, int index) {
-        this.stackedAreaChart = stackedAreaChart;
+        this.chart = stackedAreaChart;
         initializeCharts();
         stackedAreaChart.setTitle("Guadagni nel tempo");
 
@@ -82,6 +82,7 @@ public class LineChartClass implements Observer, ChartInterface {
         update(EventListModel.getInstance().getListaEventi().get(index), null);
     }
 
+    //todo aggiungere le vendite per evento
     @Override
     public void update(Observable o, Object arg) {
         Integer[] vendite;
@@ -104,32 +105,18 @@ public class LineChartClass implements Observer, ChartInterface {
 
     @Override
     public void initializeCharts() {
-        if (lineChart == null) {
-            stackedAreaChart.getXAxis().setAnimated(false);
-            if (stackedAreaChart.getData().isEmpty()) {
+            chart.getXAxis().setAnimated(false);
+            if (chart.getData().isEmpty()) {
                 initilizeSeries();
-                stackedAreaChart.getData().add(series);
+                chart.getData().add(series);
             } else {
-                resetSeries();
+                resetSeries(chart);
             }
-        } else {
-            lineChart.getXAxis().setAnimated(false);
-
-            if (lineChart.getData().isEmpty()) {
-                initilizeSeries();
-                lineChart.getData().add(series);
-            } else {
-                resetSeries();
-            }
-        }
     }
 
-    private void resetSeries(){
-        if (lineChart == null){
-            series = (XYChart.Series<String, Number>) stackedAreaChart.getData().get(0);
-        }else {
-            series = (XYChart.Series<String, Number>) lineChart.getData().get(0);
-        }
+    private void resetSeries(XYChart chart){
+        series = (XYChart.Series<String, Number>) chart.getData().get(0);
+
         datas = new ArrayList<>();
         for (int i = 0; i < series.getData().size(); i++) {
             datas.add(series.getData().get(i));
