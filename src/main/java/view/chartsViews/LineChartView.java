@@ -87,11 +87,11 @@ public class LineChartView implements Observer, ChartInterface {
         Integer[] vendite;
         if (o instanceof LineChartModel) {
             LineChartModel lineChartModel = (LineChartModel) o;
-            vendite = lineChartModel.getTicketsSaled();
+            vendite = lineChartModel.getTicketsSold();
 
         }else if (o instanceof StackedAreaChartModel) {
             StackedAreaChartModel salesModel = (StackedAreaChartModel) o;
-            vendite = salesModel.getTicketsSaled();
+            vendite = salesModel.getTicketsSold();
         }else {
             EventModel eventModel = (EventModel) o;
             vendite = eventModel.getTicketsSoldPerMonth();
