@@ -24,12 +24,30 @@ import java.util.Observer;
  */
 public class SlideShowView implements Observer {
 
-    List<Button> buttonList; //lista dei bottoni con immagini da caricare nello slideshow
-    EventListModel eventListModel = EventListModel.getInstance(); //instanza di eventListModel
-    EventModel eventModel; //istanza di eventModel
-    SlideShowController slideShowController; //instanza di slideShowController
-    HBox hBox; //Hbox che conterrà i bottoni con le immagini
-    List<Integer> activeList; //lista dei bottoni visibili nella schermata corrente
+    /**
+     * lista dei bottoni con immagini da caricare nello slideshow
+     */
+    private List<Button> buttonList;
+    /**
+     * instanza di eventListModel
+     */
+    private EventListModel eventListModel = EventListModel.getInstance();
+    /**
+     * istanza di eventModel
+     */
+    private EventModel eventModel;
+    /**
+     * instanza di slideShowController
+     */
+    private SlideShowController slideShowController;
+    /**
+     * Hbox che conterrà i bottoni con le immagini
+     */
+    private HBox hBox;
+    /**
+     * lista dei bottoni visibili nella schermata corrente
+     */
+    private List<Integer> activeList;
 
     /**
      *
@@ -84,7 +102,7 @@ public class SlideShowView implements Observer {
      */
     public SlideShowView(HBox hBox, Button dashBoardSlideShowLeftButton,
                          Button dashBoardSlideShowRightButton, SlideShowController slideShowController, EventModel eventModel) {
-        int i=0;
+        int i=0; // 
         this.eventModel = eventModel;
         eventModel.addObserver(this);
         buttonList = new ArrayList<>();
@@ -119,6 +137,7 @@ public class SlideShowView implements Observer {
             }
         }
     }
+
 
     private void right() {
         if (activeList.get(3)< (buttonList.size() -1)){
@@ -166,7 +185,7 @@ public class SlideShowView implements Observer {
 
             if (eventIndex <= buttonList.size()) {
                 //TODO mettere il popolamento in un thread separato
-                Image image = new Image(eventListModel.getListaEventi().get(eventIndex).getLocandina());
+                Image image = new Image(eventListModel.getListaEventi().get(eventIndex).getBillboard());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(300.0);
                 imageView.setFitHeight(280.0);

@@ -129,7 +129,7 @@ public class DBController {
                             event.setEventName(eventiSnap.child("nome").getValue().toString());
                             event.setActive((boolean) eventiSnap.child("attivo").getValue());
                             event.setEventDescription(eventiSnap.child("descrizione").getValue().toString());
-                            event.setLocandina(eventiSnap.child("copertina").getValue().toString());
+                            event.setBillboard(eventiSnap.child("copertina").getValue().toString());
                             DataSnapshot dataSnapshot = eventiSnap.child("data");
                             DataSnapshot timeSnapshot = eventiSnap.child("ora");
                             String eventStartDate = dataSnapshot.child("inizio").getValue().toString();

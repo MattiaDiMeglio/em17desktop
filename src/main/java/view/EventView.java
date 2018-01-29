@@ -62,7 +62,7 @@ public class EventView implements Observer {
         eventModel = eventListModel.getListaEventi().get(index); //ottendo l'evento a cui la schermata riferisce
         eventModel.addObserver(this); //setto la view come observer dell'eventmodel
         initializeCharts(eventoTabPane, index); //inizializzazione dei charts
-        Image image= new Image(eventModel.getLocandina()); //valirizzo l'image con l'url della locandina
+        Image image= new Image(eventModel.getBillboard()); //valirizzo l'image con l'url della locandina
         eventPlaybillImageView.setImage(image); //creo l'imageView con l'image di cui sopra
         eventoTitleLabel.setText(eventModel.getEventName()); //setto il titolo nella label
         eventTextArea.setText(eventModel.getEventDescription()); //setto la descrizione della textarea
