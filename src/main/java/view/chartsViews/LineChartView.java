@@ -9,15 +9,14 @@ package view.chartsViews;
 
 import controller.chartsController.ChartsController;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import model.EventListModel;
 import model.EventModel;
-import model.chartsModels.LineChartClassModel;
-import model.chartsModels.LineChartClassSalesModel;
+import model.chartsModels.LineChartModel;
+import model.chartsModels.StackedAreaChartModel;
 
 import java.util.*;
 
@@ -26,7 +25,7 @@ import java.util.*;
  *
  * @author Andrea Bravaccino
  */
-public class LineChartClass implements Observer, ChartInterface {
+public class LineChartView implements Observer, ChartInterface {
     private List<XYChart.Data<String, Number>> datas;
     private XYChart.Series<String, Number> series;
 
@@ -38,7 +37,7 @@ public class LineChartClass implements Observer, ChartInterface {
      * @param lineChart              is the type of chart for cpu load
      * @param comboBox
      */
-    public LineChartClass(LineChart lineChart, ComboBox comboBox) {
+    public LineChartView(LineChart lineChart, ComboBox comboBox) {
         this.chart = lineChart;
         initializeCharts();
         lineChart.setTitle("Vendita biglietti");
@@ -48,10 +47,10 @@ public class LineChartClass implements Observer, ChartInterface {
             lineChart.setTitle("Vendita biglietti " + String.valueOf(newValue));
         });
 
-        LineChartClassModel.getInstance().addObserver(this);
+        LineChartModel.getInstance().addObserver(this);
     }
 
-    public LineChartClass(LineChart lineChart, int index) {
+    public LineChartView(LineChart lineChart, int index) {
         this.chart = lineChart;
         initializeCharts();
         lineChart.setTitle("Vendita biglietti");
@@ -60,7 +59,7 @@ public class LineChartClass implements Observer, ChartInterface {
         update(EventListModel.getInstance().getListaEventi().get(index), null);
     }
 
-    public LineChartClass(StackedAreaChart stackedAreaChart, ComboBox comboBox) {
+    public LineChartView(StackedAreaChart stackedAreaChart, ComboBox comboBox) {
         this.chart = stackedAreaChart;
         initializeCharts();
         stackedAreaChart.setTitle("Vendita biglietti");
@@ -70,10 +69,10 @@ public class LineChartClass implements Observer, ChartInterface {
             stackedAreaChart.setTitle("Vendita biglietti " + String.valueOf(newValue));
         });
 
-        LineChartClassSalesModel.getInstance().addObserver(this);
+        StackedAreaChartModel.getInstance().addObserver(this);
     }
 
-    public LineChartClass(StackedAreaChart stackedAreaChart, int index) {
+    public LineChartView(StackedAreaChart stackedAreaChart, int index) {
         this.chart = stackedAreaChart;
         initializeCharts();
         stackedAreaChart.setTitle("Guadagni nel tempo");
@@ -86,12 +85,12 @@ public class LineChartClass implements Observer, ChartInterface {
     @Override
     public void update(Observable o, Object arg) {
         Integer[] vendite;
-        if (o instanceof LineChartClassModel) {
-            LineChartClassModel lineChartClassModel = (LineChartClassModel) o;
-            vendite = lineChartClassModel.getTicketsSaled();
+        if (o instanceof LineChartModel) {
+            LineChartModel lineChartModel = (LineChartModel) o;
+            vendite = lineChartModel.getTicketsSaled();
 
-        }else if (o instanceof LineChartClassSalesModel) {
-            LineChartClassSalesModel salesModel = (LineChartClassSalesModel) o;
+        }else if (o instanceof StackedAreaChartModel) {
+            StackedAreaChartModel salesModel = (StackedAreaChartModel) o;
             vendite = salesModel.getTicketsSaled();
         }else {
             EventModel eventModel = (EventModel) o;

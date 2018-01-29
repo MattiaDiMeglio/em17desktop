@@ -4,16 +4,16 @@ import javafx.application.Platform;
 
 import java.util.Observable;
 
-public class PieChartClassModel extends Observable{
-    private static PieChartClassModel ourInstance = new PieChartClassModel();
+public class PieChartModel extends Observable{
+    private static PieChartModel ourInstance = new PieChartModel();
 
-    public static PieChartClassModel getInstance() {
+    public static PieChartModel getInstance() {
         return ourInstance;
     }
 
     private Double maxTickets;
     private Double ticketsSold;
-    private PieChartClassModel() {}
+    private PieChartModel() {}
 
     public Double getMaxTickets() {
         return maxTickets;

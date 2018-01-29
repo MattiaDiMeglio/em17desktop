@@ -12,12 +12,11 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.EventListModel;
-import view.chartsViews.BarChartClass;
-import view.chartsViews.LineChartClass;
-import view.chartsViews.PieChartClass;
+import view.chartsViews.BarChartView;
+import view.chartsViews.LineChartView;
+import view.chartsViews.PieChartView;
 
 
-import javax.sound.sampled.Line;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -92,10 +91,10 @@ public class DashBoardView implements Observer {
         comboBox4.getItems().setAll(year, year4, year3, year2, year1);
         comboBox4.getSelectionModel().selectFirst();
 
-        new PieChartClass(pieChart, comboBox2);
-        new LineChartClass(lineChart, comboBox1);
-        new BarChartClass(barChart,comboBox3);
-        new LineChartClass(stackedAreaChart, comboBox4);
+        new PieChartView(pieChart, comboBox2);
+        new LineChartView(lineChart, comboBox1);
+        new BarChartView(barChart,comboBox3);
+        new LineChartView(stackedAreaChart, comboBox4);
 
     }
 

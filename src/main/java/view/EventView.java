@@ -18,9 +18,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.EventListModel;
 import model.EventModel;
-import view.chartsViews.BarChartClass;
-import view.chartsViews.LineChartClass;
-import view.chartsViews.PieChartClass;
+import view.chartsViews.BarChartView;
+import view.chartsViews.LineChartView;
+import view.chartsViews.PieChartView;
 
 import java.util.List;
 import java.util.Observable;
@@ -108,11 +108,10 @@ public class EventView implements Observer {
         //ottendo lo stacked linechart
         StackedAreaChart stackedAreaChart = (StackedAreaChart) eventoVboxStackedAreaChart.getChildren().get(0);
 
-        //creo 
-        new BarChartClass(barChart, index);
-        new PieChartClass(pieChart, index);
-        new LineChartClass(lineChart, index);
-        new LineChartClass(stackedAreaChart, index);
+        new BarChartView(barChart, index);
+        new PieChartView(pieChart, index);
+        new LineChartView(lineChart, index);
+        new LineChartView(stackedAreaChart, index);
     }
 
     @Override

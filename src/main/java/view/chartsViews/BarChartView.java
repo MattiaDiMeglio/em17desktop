@@ -12,21 +12,21 @@ import model.chartsModels.BarChartModel;
 
 import java.util.*;
 
-public class BarChartClass implements Observer, ChartInterface {
+public class BarChartView implements Observer, ChartInterface {
 
     private BarChart barChart;
     private List<XYChart.Data<String, Number>> datas;
     private XYChart.Series<String, Number> series;
     private String[] colors = {"navy", "lightskyblue", "lightslategray", "lightsalmon", "limegreen"};
 
-    public BarChartClass(BarChart barChart, int index) {
+    public BarChartView(BarChart barChart, int index) {
         this.barChart = barChart;
         initializeCharts();
         EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
         update(EventListModel.getInstance().getListaEventi().get(index), null);
     }
 
-    public BarChartClass(BarChart barChart, ComboBox comboBox) {
+    public BarChartView(BarChart barChart, ComboBox comboBox) {
 
         this.barChart = barChart;
         barChart.getXAxis().setAnimated(false);

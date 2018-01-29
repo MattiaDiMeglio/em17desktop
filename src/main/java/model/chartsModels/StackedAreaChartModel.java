@@ -4,16 +4,16 @@ import javafx.application.Platform;
 
 import java.util.Observable;
 
-public class LineChartClassModel extends Observable {
-    private static LineChartClassModel ourInstance = new LineChartClassModel();
+public class StackedAreaChartModel extends Observable {
+    private static StackedAreaChartModel ourInstance = new StackedAreaChartModel();
 
     private Integer[] ticketsSaled = new Integer[12];
 
-    public static LineChartClassModel getInstance() {
+    public static StackedAreaChartModel getInstance() {
         return ourInstance;
     }
 
-    private LineChartClassModel() {
+    private StackedAreaChartModel() {
         if (ourInstance == null) {
             for (int i = 0; i < ticketsSaled.length; i++) {
                 ticketsSaled[i] = 0;

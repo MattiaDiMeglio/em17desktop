@@ -14,7 +14,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.ComboBox;
 import model.EventListModel;
 import model.EventModel;
-import model.chartsModels.PieChartClassModel;
+import model.chartsModels.PieChartModel;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -25,7 +25,7 @@ import java.util.Observer;
  *
  * @author Andrea Bravaccino
  */
-public class PieChartClass implements Observer, ChartInterface {
+public class PieChartView implements Observer, ChartInterface {
     /**
      * a slice of the "cake"
      */
@@ -44,7 +44,7 @@ public class PieChartClass implements Observer, ChartInterface {
      * @param pieChart               is the type of chart for cpu load
      * @param dashboardYearComboBox2
      */
-    public PieChartClass(PieChart pieChart, ComboBox dashboardYearComboBox2) {
+    public PieChartView(PieChart pieChart, ComboBox dashboardYearComboBox2) {
 
         this.pieChart = pieChart;
         initializeCharts();
@@ -55,10 +55,10 @@ public class PieChartClass implements Observer, ChartInterface {
                 ChartsController.getInstance().populateCharts(String.valueOf(newValue));
             }
         });
-        PieChartClassModel.getInstance().addObserver(this);
+        PieChartModel.getInstance().addObserver(this);
     }
 
-    public PieChartClass(PieChart pieChart, int index) {
+    public PieChartView(PieChart pieChart, int index) {
         this.pieChart = pieChart;
         initializeCharts();
 
@@ -69,9 +69,9 @@ public class PieChartClass implements Observer, ChartInterface {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof PieChartClassModel) {
+        if (o instanceof PieChartModel) {
             System.out.println("dash");
-            PieChartClassModel classModel = (PieChartClassModel) o;
+            PieChartModel classModel = (PieChartModel) o;
             Double ticketsPerc = (classModel.getTicketsSold() / classModel.getMaxTickets()) * 100;
             updateChart(ticketsPerc);
         } else {
