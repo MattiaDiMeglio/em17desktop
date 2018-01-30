@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.EventListModel;
 import view.*;
 
 import java.io.IOException;
@@ -95,6 +96,8 @@ public class ViewSourceController extends Application {
     private Button eventSlideShowRightButton;
     @FXML
     private Button dashBoardInsertButton;
+    @FXML
+    private TabPane eventListTabPane;
 
 
     /**
@@ -227,6 +230,7 @@ public class ViewSourceController extends Application {
         LoginView loginView = new LoginView(userName, password, loginButton, recoveryLabelButton, this);
         changeView(loginBox);
 
+
     }
 
     /**
@@ -235,6 +239,8 @@ public class ViewSourceController extends Application {
     public void toRecoveryView() {
         RecoveryView recoveryView = new RecoveryView(recoveryEmail, recoveryButton, recoveryBackButton, this);
         changeView(recoveryBox);
+        primaryStage.setTitle("Em-17 - Password Recovery");
+
     }
 
 
@@ -246,6 +252,7 @@ public class ViewSourceController extends Application {
         changeView(dashBoardBox);
         DBController dbController = DBController.getInstance();
         dbController.dashBoard();
+
     }
 
     public void toEventView(int index) {
@@ -262,11 +269,14 @@ public class ViewSourceController extends Application {
         EventView eventView = new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
                 eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, this);
         changeView(eventBox);
+
     }
 
     public void toInsertView(){
-        new InsertView();
+
+        new InsertView(new InsertController());
         changeView(insertBox);
+
     }
 
     public void shutdown() {
