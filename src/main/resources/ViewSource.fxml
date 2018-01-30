@@ -393,7 +393,6 @@
             <TabPane fx:id="eventListTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
                 <!-- Prima tab del Tab Pane, conenente una VBox con un Linechart al suo interno -->
                 <Tab style="-fx-header-color: white" text="Biglietti venduti">
-                    <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <LineChart VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <xAxis>
@@ -404,7 +403,6 @@
                                 </yAxis>
                             </LineChart>
                         </VBox>
-                    </AnchorPane>
                 </Tab>
                 <Tab style="-fx-header-color: white" text="Percentuale biglietti venduti">
                     <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
