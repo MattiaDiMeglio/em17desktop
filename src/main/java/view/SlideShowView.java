@@ -183,7 +183,7 @@ public class SlideShowView implements Observer {
         if (o instanceof EventListModel) {
             int eventIndex = (int) arg;
 
-            if (eventIndex <= buttonList.size()) {
+            if (eventIndex < buttonList.size()) {
                 //TODO mettere il popolamento in un thread separato
                 Image image = new Image(eventListModel.getListaEventi().get(eventIndex).getBillboard());
                 ImageView imageView = new ImageView(image);

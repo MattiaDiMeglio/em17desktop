@@ -1,5 +1,6 @@
 package controller;
 
+import com.google.api.services.storage.Storage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -98,6 +99,24 @@ public class ViewSourceController extends Application {
     private Button dashBoardInsertButton;
     @FXML
     private TabPane eventListTabPane;
+    @FXML
+    private TextField insertNameLabel;
+    @FXML
+    private TextField insertLocationLabel;
+    @FXML
+    private TextArea insertTextArea;
+    @FXML
+    private HBox insertSlideshow;
+    @FXML
+    private Button insertCancelButton;
+    @FXML
+    private Button insertConfirmButton;
+    @FXML
+    private DatePicker insertInizioDataPicker;
+    @FXML
+    private DatePicker insertFineDataPicker;
+    @FXML
+    private TextField insertMaxGuestsLabel;
 
 
     /**
@@ -274,7 +293,9 @@ public class ViewSourceController extends Application {
 
     public void toInsertView(){
 
-        new InsertView(new InsertController());
+        InsertController insertController = new InsertController(this);
+        new InsertView(new InsertController(this), insertCancelButton, insertConfirmButton, insertTextArea,
+                insertLocationLabel, insertNameLabel, insertSlideshow, insertInizioDataPicker, insertFineDataPicker, insertMaxGuestsLabel);
         changeView(insertBox);
 
     }
