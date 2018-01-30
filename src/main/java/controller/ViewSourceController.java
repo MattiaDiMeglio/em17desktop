@@ -13,10 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import view.DashBoardView;
-import view.EventView;
-import view.LoginView;
-import view.RecoveryView;
+import view.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,6 +93,8 @@ public class ViewSourceController extends Application {
     private Button eventSlideShowLeftButton;
     @FXML
     private Button eventSlideShowRightButton;
+    @FXML
+    private Button dashBoardInsertButton;
 
 
     /**
@@ -236,7 +235,6 @@ public class ViewSourceController extends Application {
     public void toRecoveryView() {
         RecoveryView recoveryView = new RecoveryView(recoveryEmail, recoveryButton, recoveryBackButton, this);
         changeView(recoveryBox);
-        System.out.println("a recovery");
     }
 
 
@@ -244,7 +242,7 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
-        new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, dashBoardTabPane, this);
+        new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, dashBoardTabPane, dashBoardInsertButton, this);
         changeView(dashBoardBox);
         DBController dbController = DBController.getInstance();
         dbController.dashBoard();
@@ -264,6 +262,11 @@ public class ViewSourceController extends Application {
         EventView eventView = new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
                 eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, this);
         changeView(eventBox);
+    }
+
+    public void toInsertView(){
+        new InsertView();
+        changeView(insertBox);
     }
 
     public void shutdown() {
