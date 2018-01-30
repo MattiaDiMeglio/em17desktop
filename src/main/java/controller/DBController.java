@@ -118,7 +118,6 @@ public class DBController {
                                 event.addOneSoldPerMonth(eventEndTime.getMonth(), accesses);
                             }
                             event.setEventKey(eventiSnap.getKey());
-                            System.out.println(event.getEventKey());
                             event.setSectorNameList(settoriName);
                             event.setSoldPerSectorList(settoriMap);
                             event.setIndex(i);

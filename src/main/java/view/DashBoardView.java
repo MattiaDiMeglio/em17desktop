@@ -42,14 +42,17 @@ public class DashBoardView implements Observer {
     int i = 0;
 
 
-    public DashBoardView(HBox dashSlide, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton, TabPane dashBoardTabPane, ViewSourceController viewSourceController) {
+    public DashBoardView(HBox dashSlide, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton,
+                         TabPane dashBoardTabPane, Button dashBoardInsertButton, ViewSourceController viewSourceController) {
         this.viewSourceController = viewSourceController;
         initalizeCharts(dashBoardTabPane);
         eventListModel.addObserver(this);
 
         this.dashSlide = dashSlide;
         slideShowController.createSlide(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, viewSourceController);
-        System.out.println("nono");
+        dashBoardInsertButton.setOnAction(event -> {
+            viewSourceController.toInsertView();
+        });
     }
 
     private void initalizeCharts(TabPane tabPane) {
