@@ -6,6 +6,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
 import controller.chartsController.ChartsController;
+import javafx.scene.image.Image;
 import model.EventListModel;
 import model.EventModel;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 
 public class DBController {
@@ -128,7 +130,16 @@ public class DBController {
                             event.setEventName(eventiSnap.child("nome").getValue().toString());
                             event.setActive((boolean) eventiSnap.child("attivo").getValue());
                             event.setEventDescription(eventiSnap.child("descrizione").getValue().toString());
-                            event.setBillboard(eventiSnap.child("copertina").getValue().toString());
+
+                            CountDownLatch latch = new CountDownLatch(1);
+                            new Thread(() -> {
+                                System.out.println("scarico l'immagine");
+                                Image image = new Image(eventiSnap.child("copertina").getValue().toString());
+                                event.setBillboard(image);
+                                System.out.println("settato");
+                                latch.countDown();
+                            }).start();
+
                             DataSnapshot dataSnapshot = eventiSnap.child("data");
                             DataSnapshot timeSnapshot = eventiSnap.child("ora");
                             String eventStartDate = dataSnapshot.child("inizio").getValue().toString();
@@ -152,30 +163,36 @@ public class DBController {
                                 e.printStackTrace();
                             }
                             try {
-                                List <String> slidehow = new ArrayList<>();
+                                //List <String> slidehow = new ArrayList<>();
+                                List<Image> slidehow = new ArrayList<>();
                                 DataSnapshot slideSnap = eventiSnap.child("galleria");
-                                Integer j=0;
+                                Integer j = 0;
+
+                                CountDownLatch latchSlideShow = new CountDownLatch(Math.toIntExact(slideSnap.getChildrenCount()));
                                 while (j < slideSnap.getChildrenCount()) {
-                                    String index = j.toString();
-                                    slidehow.add(slideSnap.child(index).getValue().toString());
+                                    Integer finalJ = j;
+                                    new Thread(() -> {
+                                        String index = finalJ.toString();
+                                        slidehow.add(new Image(slideSnap.child(index).getValue().toString()));
+                                        latchSlideShow.countDown();
+                                    }).start();
+
                                     j++;
                                 }
+                                latchSlideShow.await();
                                 event.setSlideshow(slidehow);
 
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
+
+                            latch.await();
                             eventListModel.setListaEventi(event);
                             i++;
-
                         }
 
 
                     }
-                } catch (IndexOutOfBoundsException e) {
-                    e.printStackTrace();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -186,9 +203,6 @@ public class DBController {
 
             }
         });
-
-
-        return;
     }
 
     public boolean delete(String key) {
