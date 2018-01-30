@@ -49,6 +49,10 @@ public class DashBoardView implements Observer {
         eventListModel.addObserver(this);
 
         this.dashSlide = dashSlide;
+        while (dashSlide.getChildren().size() > 0){
+            dashSlide.getChildren().remove(dashSlide.getChildren().size() -1);
+        }
+
         slideShowController.createSlide(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, viewSourceController);
         dashBoardInsertButton.setOnAction(event -> {
             viewSourceController.toInsertView();

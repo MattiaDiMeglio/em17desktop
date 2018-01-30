@@ -14,13 +14,13 @@ public class InsertController
         this.viewSourceController=viewSourceController;
     }
 
-    private void back () throws ExecutionException, InterruptedException {
+    public void back () throws ExecutionException, InterruptedException {
         viewSourceController.toDashBoardView();
     }
 
-    private void next(InsertView insertView) {
+    public void next(InsertView insertView) {
         EventModel newEvent =  new EventModel();
-        newEvent.setEventName(insertView.ge);
+        //newEvent.setEventName(insertView.ge);
 
     }
 }

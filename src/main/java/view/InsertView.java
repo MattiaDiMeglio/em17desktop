@@ -8,7 +8,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
+import java.util.concurrent.ExecutionException;
+
 public class InsertView {
+    InsertController insertController;
 
     @FXML
     private TextField insertNameLabel;
@@ -33,7 +36,7 @@ public class InsertView {
                       Button insertConfirmButton, TextArea insertTextArea, TextField insertLocationLabel,
                       TextField insertNameLabel, HBox insertSlideshow, DatePicker insertInizioDataPicker,
                       DatePicker insertFineDataPicker, TextField insertMaxGuestsLabel) {
-
+        this.insertController = insertController;
         this.insertNameLabel = insertNameLabel;
         this.insertLocationLabel = insertLocationLabel;
         this.insertTextArea = insertTextArea;
@@ -44,7 +47,15 @@ public class InsertView {
         this.insertFineDataPicker = insertFineDataPicker;
         this.insertMaxGuestsLabel = insertMaxGuestsLabel;
 
-        insertCancelButton.setOnAction(event -> {});
+        insertCancelButton.setOnAction(event -> {
+            try {
+                insertController.back();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
         insertConfirmButton.setOnAction(event -> {});
     }
 

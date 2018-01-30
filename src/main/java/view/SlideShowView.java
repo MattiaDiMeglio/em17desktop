@@ -110,6 +110,7 @@ public class SlideShowView implements Observer {
 
         this.slideShowController = slideShowController;
         this.hBox=hBox;
+
         dashBoardSlideShowRightButton.setOnAction(event -> {
             right();
         });
