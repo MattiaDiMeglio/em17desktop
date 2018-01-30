@@ -4,7 +4,6 @@ import controller.chartsController.MergedController;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import model.EventListModel;
@@ -25,15 +24,21 @@ import java.util.Observer;
  */
 public class EventListView  implements Observer {
 
+    /**
+     * variabile per la gestione dei dati visualizzati nei chart
+     */
+    private MergedController mergedController;
+
     public EventListView(TabPane eventListTabPane){
-        initializeCharts(eventListTabPane);
-        List<EventModel> eventModels = new ArrayList<>();
-        eventModels.add(EventListModel.getInstance().getListaEventi().get(0));
-        eventModels.add(EventListModel.getInstance().getListaEventi().get(1));
-        new MergedController(eventModels);
+        initializeCharts(eventListTabPane); // inizializzo i grafici
     }
 
+    /**
+     * si occupa dell'inizializzazione dei grafici
+     * @param tabPane TabPane contenente i grafici.
+     */
     private void initializeCharts(TabPane tabPane) {
+        mergedController = new MergedController();
         VBox vboxLinechart = (VBox) tabPane.getTabs().get(0).getContent();
         LineChart lineChart = (LineChart) vboxLinechart.getChildren().get(0);
 
@@ -46,7 +51,6 @@ public class EventListView  implements Observer {
         new LineChartView(lineChart);
         new PieChartView(pieChart);
         new BarChartView(barChart);
-
     }
 
     /**

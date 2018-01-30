@@ -1,10 +1,3 @@
-/*
- * This is the source code of PC-status.
- * It is licensed under GNU AGPL v3 or later.
- * You should have received a copy of the license in this archive (see LICENSE).
- *
- * Copyright Andrea Bravaccino.
- */
 package view.chartsViews;
 
 import controller.chartsController.ChartsController;
@@ -22,21 +15,36 @@ import model.chartsModels.StackedAreaChartModel;
 import java.util.*;
 
 /**
- * this class is responsible for creating and managing the chart dedicated for cpu load
+ * Questa classe rappresenta la view corrispondente al grafico {@link javafx.scene.chart.LineChart LineChart} e
+ * al grafico {@link javafx.scene.chart.StackedAreaChart StackedAreaChart}.
+ * L'aggiornamento della view è eseguita secondo i canoni del design pattern MVC
  *
- * @author Andrea Bravaccino
+ * @author ingsw20
  */
 public class LineChartView implements Observer, ChartInterface {
+
+    /**
+     * dati mostrati sul grfico
+     */
     private List<XYChart.Data<String, Number>> datas;
+
+    /**
+     * serie contenente i dati da mostrare sul grafico
+     */
     private XYChart.Series<String, Number> series;
 
+    /**
+     * variabile per la gestione del grafico
+     */
     private XYChart chart;
 
     /**
-     * the constructor is responsible for initialize the chart (lower and upper buonds, name, color)
+     * il construttore inizializza il grafico per la gestione del LineChart,
+     * inoltre registra la view presso il model.
+     * In particolare, questo costruttore è utilizzato per la visualizzazione delle statistiche relativo ad un anno scelto.
      *
-     * @param lineChart              is the type of chart for cpu load
-     * @param comboBox
+     * @param lineChart tipo di grafico da gestire
+     * @param comboBox  combobox per scegliere l'anno
      */
     public LineChartView(LineChart lineChart, ComboBox comboBox) {
         this.chart = lineChart;
@@ -51,6 +59,12 @@ public class LineChartView implements Observer, ChartInterface {
         LineChartModel.getInstance().addObserver(this);
     }
 
+    /**
+     * Costruttore per l'inizializzazione del LineChart relativo ad un singolo evento, inoltre registra la view presso il model.
+     *
+     * @param lineChart tipo di grafico
+     * @param index     indice da utilizzare per identificare l'evento desiderato
+     */
     public LineChartView(LineChart lineChart, int index) {
         this.chart = lineChart;
         initializeCharts();
@@ -60,6 +74,14 @@ public class LineChartView implements Observer, ChartInterface {
         update(EventListModel.getInstance().getListaEventi().get(index), null);
     }
 
+    /**
+     * il construttore inizializza il grafico per la gestione dello StackedAreaChart,
+     * inoltre registra la view presso il model.
+     * In particolare, questo costruttore è utilizzato per la visualizzazione delle statistiche relativo ad un anno scelto.
+     *
+     * @param stackedAreaChart tipo di grafico da gestire
+     * @param comboBox         combobox per scegliere l'anno
+     */
     public LineChartView(StackedAreaChart stackedAreaChart, ComboBox comboBox) {
         this.chart = stackedAreaChart;
         initializeCharts();
@@ -73,6 +95,12 @@ public class LineChartView implements Observer, ChartInterface {
         StackedAreaChartModel.getInstance().addObserver(this);
     }
 
+    /**
+     * Costruttore per l'inizializzazione dello StackedAreaChart relativo ad un singolo evento, inoltre registra la view presso il model.
+     *
+     * @param stackedAreaChart tipo di grafico
+     * @param index            indice da utilizzare per identificare l'evento desiderato
+     */
     public LineChartView(StackedAreaChart stackedAreaChart, int index) {
         this.chart = stackedAreaChart;
         initializeCharts();
@@ -82,12 +110,23 @@ public class LineChartView implements Observer, ChartInterface {
         update(EventListModel.getInstance().getListaEventi().get(index), null);
     }
 
+    /**
+     * costruttore per il grafico contenente i dati di più eventi
+     *
+     * @param lineChart tipo di grafico da gestire
+     */
     public LineChartView(LineChart lineChart) {
         this.chart = lineChart;
         initializeCharts();
         MergedModel.getInstance().addObserver(this);
     }
 
+    /**
+     * metodo necessario secondo il design pattern MVC, utile per l'aggiornamento del grafico in tempo reale
+     *
+     * @param o   Model dal quale è stato invocato il metodo
+     * @param arg null
+     */
     //todo aggiungere le vendite per evento
     @Override
     public void update(Observable o, Object arg) {
@@ -95,14 +134,13 @@ public class LineChartView implements Observer, ChartInterface {
         if (o instanceof LineChartModel) {
             LineChartModel lineChartModel = (LineChartModel) o;
             vendite = lineChartModel.getTicketsSold();
-
-        }else if (o instanceof StackedAreaChartModel) {
+        } else if (o instanceof StackedAreaChartModel) {
             StackedAreaChartModel salesModel = (StackedAreaChartModel) o;
-            vendite = salesModel.getTicketsSold();
-        }else if (o instanceof  EventModel){
+            vendite = salesModel.getEaringsFromTicketsSold();
+        } else if (o instanceof EventModel) {
             EventModel eventModel = (EventModel) o;
             vendite = eventModel.getTicketsSoldPerMonth();
-        }else {
+        } else {
             MergedModel mergedModel = (MergedModel) o;
             vendite = mergedModel.getTicketsSoldArray();
         }
@@ -112,18 +150,26 @@ public class LineChartView implements Observer, ChartInterface {
         }
     }
 
+    /**
+     * metodo per l'inizializzazione del grafico
+     */
     @Override
     public void initializeCharts() {
-            chart.getXAxis().setAnimated(false);
-            if (chart.getData().isEmpty()) {
-                initilizeSeries();
-                chart.getData().add(series);
-            } else {
-                resetSeries(chart);
-            }
+        chart.getXAxis().setAnimated(false);
+        if (chart.getData().isEmpty()) {
+            initilizeSeries();
+            chart.getData().add(series);
+        } else {
+            resetSeries(chart);
+        }
     }
 
-    private void resetSeries(XYChart chart){
+    /**
+     * effettua un reset della variabile {@link #series} per un nuovo popolamento del grafico
+     *
+     * @param chart
+     */
+    private void resetSeries(XYChart chart) {
         series = (XYChart.Series<String, Number>) chart.getData().get(0);
 
         datas = new ArrayList<>();
@@ -132,7 +178,10 @@ public class LineChartView implements Observer, ChartInterface {
         }
     }
 
-    private void initilizeSeries(){
+    /**
+     * inizializza la variabile {@link #series}
+     */
+    private void initilizeSeries() {
         series = new XYChart.Series<>();
         series.setName("Biglietti venduti");
         datas = new ArrayList<>();
