@@ -390,21 +390,38 @@
         </left>
         <!-- center della schermata, contenente la tabpane con i grafici-->
         <center>
-            <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+            <TabPane fx:id="eventListTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
                 <!-- Prima tab del Tab Pane, conenente una VBox con un Linechart al suo interno -->
-                <Tab style="-fx-header-color: white" text="primo">
-                    <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <Tab style="-fx-header-color: white" text="Biglietti venduti">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <LineChart VBox.vgrow="ALWAYS" fx:id="eventListGraph1LineChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <LineChart VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <xAxis>
-                                    <NumberAxis side="BOTTOM" />
+                                    <CategoryAxis side="BOTTOM" />
                                 </xAxis>
                                 <yAxis>
                                     <NumberAxis side="LEFT" />
                                 </yAxis>
                             </LineChart>
                         </VBox>
-                    </AnchorPane>
+                </Tab>
+                <Tab style="-fx-header-color: white" text="Percentuale biglietti venduti">
+                    <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <PieChart VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+                        </PieChart>
+                    </VBox>
+                </Tab>
+                <Tab style="-fx-header-color: white" text="Biglietti venduti per Evento">
+                    <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <BarChart  VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <xAxis>
+                                <CategoryAxis side="BOTTOM"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
                 </Tab>
             </TabPane>
         </center>
@@ -659,8 +676,8 @@
     <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
         <center>
-            <VBox HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <VBox translateX="20" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" >
+            <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <VBox VBox.vgrow="ALWAYS" translateX="20">
                     <!-- Hbox contenente le etichette e textbox di inserimento del nome evento e location -->
                     <HBox spacing="50">
                         <VBox>
@@ -696,7 +713,7 @@
                         </VBox>
                     </AnchorPane>
 
-                    <HBox fx:id="insertSlideshow" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" alignment="CENTER">
+                    <HBox VBox.vgrow="ALWAYS" fx:id="insertSlideshow" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" alignment="CENTER">
                         <children>
                             <!-- icona "left", sarà il bottone per scorrere verso sx.-->
                             <Button fx:id="insertSlideShowLeftButton" mnemonicParsing="false"
@@ -759,17 +776,16 @@
                         </VBox>
                     </HBox>
                 </VBox>
+                <HBox VBox.vgrow="ALWAYS"></HBox>
                 <HBox spacing="20">
                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                        <Insets  left="20.0" right="20.0" bottom="10.0" />
                     </padding>
-                    <Button AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" text="Indietro" fx:id="insertCancelButton"></Button>
+                    <Button text="Indietro" fx:id="insertCancelButton"></Button>
                     <VBox HBox.hgrow="ALWAYS"></VBox>
-                    <Button style=" -fx-background-color: #199ED9; -fx-text-fill: white"  AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" text="Conferma" fx:id="insertConfirmButton">
+                    <Button style=" -fx-background-color: #199ED9; -fx-text-fill: white" text="Conferma" fx:id="insertConfirmButton">
                     </Button>
                 </HBox>
-
-
             </VBox>
         </center>
         <!-- left della schermata, contenente la barra laterale-->

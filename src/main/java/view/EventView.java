@@ -7,10 +7,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.StackedAreaChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -25,10 +22,11 @@ import view.chartsViews.PieChartView;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 
 /**
  * Classe View per la schermata Evento
- *
+ * <p>
  * Implementa Observer, come definito dall'architettura MVC implementata per il progetto
  */
 public class EventView implements Observer {
@@ -37,21 +35,20 @@ public class EventView implements Observer {
     Boolean ret;
 
     /**
-     *
      * Costruttore della view, che va a popolarla passando per l'eventModel corrispondente all'index passatogli
      *
-     * @param eventController controller corrispondente
-     * @param eventoDeleteButton bottone per la cancellazione dell'evento corrente
-     * @param eventPlaybillImageView imageview della locandina dell'evento
-     * @param eventoTabPane tabpane contenuto nella schermata, al cui interno andranno i grafici
-     * @param index indice dell'evento a cui la schermata riferisce
-     * @param texts lista di text modificabili, che conterranno i dati dell'evento
-     * @param eventoTitleLabel label col titolo dell'evento
-     * @param eventTextArea textArea con la descrizione dell'evento
-     * @param eventSlide Hbox che conterrà le immagini dello slideshow
-     * @param eventSlideShowLeftButton bottone sinistro dello slideshow
+     * @param eventController           controller corrispondente
+     * @param eventoDeleteButton        bottone per la cancellazione dell'evento corrente
+     * @param eventPlaybillImageView    imageview della locandina dell'evento
+     * @param eventoTabPane             tabpane contenuto nella schermata, al cui interno andranno i grafici
+     * @param index                     indice dell'evento a cui la schermata riferisce
+     * @param texts                     lista di text modificabili, che conterranno i dati dell'evento
+     * @param eventoTitleLabel          label col titolo dell'evento
+     * @param eventTextArea             textArea con la descrizione dell'evento
+     * @param eventSlide                Hbox che conterrà le immagini dello slideshow
+     * @param eventSlideShowLeftButton  bottone sinistro dello slideshow
      * @param eventSlideShowRightButton bottone destro dello slideshow
-     * @param viewSourceController viewsourcecontroller, necessario per la creazione dello slideshow
+     * @param viewSourceController      viewsourcecontroller, necessario per la creazione dello slideshow
      */
     public EventView(EventController eventController, Button eventoDeleteButton, ImageView eventPlaybillImageView,
                      TabPane eventoTabPane, int index, List<Text> texts, Label eventoTitleLabel,
@@ -62,7 +59,7 @@ public class EventView implements Observer {
         eventModel = eventListModel.getListaEventi().get(index); //ottendo l'evento a cui la schermata riferisce
         eventModel.addObserver(this); //setto la view come observer dell'eventmodel
         initializeCharts(eventoTabPane, index); //inizializzazione dei charts
-        Image image= new Image(eventModel.getLocandina()); //valirizzo l'image con l'url della locandina
+        Image image = eventModel.getBillboard(); //valirizzo l'image con l'immagine della locandina
         eventPlaybillImageView.setImage(image); //creo l'imageView con l'image di cui sopra
         eventoTitleLabel.setText(eventModel.getEventName()); //setto il titolo nella label
         eventTextArea.setText(eventModel.getEventDescription()); //setto la descrizione della textarea
@@ -76,18 +73,31 @@ public class EventView implements Observer {
         slideShowController.createSlide(eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, viewSourceController, eventModel);
         //creo il listener del bottone per la cancellazione
         eventoDeleteButton.setOnAction(event -> {
-            if (eventModel.getTicketSold() == 0){
-                //ret = eventoDeleteButton.delete(eventModel.getEventKey());
+            if (eventModel.getTicketSold() == 0) {
+
+                //Popup di avviso per confermare l'eliminazione
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Attenzione");
+                alert.setHeaderText("Eliminazione");
+                alert.setContentText("Si sta tentando di ELIMINARE l'evento " + eventModel.getEventName() + ", confermare?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.get() == ButtonType.OK){
+                    eventController.delete(eventModel.getEventKey());
+                }
             }
         });
     }
 
     /**
      * Metodo per l'inizializzazione dei charts
+     *
      * @param tabPane //tabpane contenente i charts
-     * @param index //indice dell'evento a cui la view riferisce
+     * @param index   //indice dell'evento a cui la view riferisce
      */
-    private void initializeCharts(TabPane tabPane, int index){
+    private void initializeCharts(TabPane tabPane, int index) {
         //ottengo la Vbox in cui è contenuto il linecharts (il contenuto della prima tab
         VBox eventoVboxLinechart = (VBox) tabPane.getTabs().get(0).getContent();
         //ottengo il linechart dalla Vbox ottenuta sopra

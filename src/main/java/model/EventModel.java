@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Observable;
 
 import com.google.firebase.database.IgnoreExtraProperties;
+import javafx.scene.image.Image;
 
 /**
  * Model contenente i dati del singolo evento
@@ -13,32 +14,106 @@ import com.google.firebase.database.IgnoreExtraProperties;
  */
 @IgnoreExtraProperties
 public class EventModel extends Observable {
+
+    /**
+     * sottoclasse contenente i dati dei singoli settori
+     */
     private class Sectors {
-        private String nome;
+        /**
+         * nome del settore
+         */
+        private String name;
+        /**
+         * prezzo base per settore
+         */
         private int prize;
-        private boolean riduzione;
+        /**
+         * flag
+         */
+        private boolean reduction;
     }
 
-    private List sectorNameList; //lista contentente i nomi dei settori
-    List<Sectors> sectorList; //lista dei settori
-    private String eventKey; //chiave dell'evento
-    private int index; //indice dell'evento
-    private String eventName; //nome dell'evento
-    private boolean active; //flah di attività dell'evento
-    private String locandina; //url della locandina
-    private String startingDate; //data inizio
-    private String endingDate; //data Fine
-    private String eventDescription; //descrizione dell'evento
-    private String locationName; //nome della location
-    private String locationAddress; //indirizzo della location
-    private double eldersReduction; //percentuale di riduzione per gli anziani
-    private double childrenReduction;//percentuale di riduzione per i bambini
-    private double studentReduction;//percentuale di riduzione per gli studenti
-    private Integer[] ticketsSoldPerMonth = new Integer[12]; //array di biglietti venduti per mese
-    private Integer ticketSold; //biglietti venduti
-    private Integer maxVisitors; //massimo dei visitatori
-    private HashMap<String,Integer> soldPerSectorList; //hashmap dei biglietti venduti
-    private List<String> slideshow; //lista di url della galleria immagini
+    /**
+     * lista contentente i nomi dei settori
+     */
+    private List sectorNameList;
+    /**
+     * lista dei settori
+     */
+    private List<Sectors> sectorList;
+    /**
+     * chiave dell'evento
+     */
+    private String eventKey;
+    /**
+     * indice dell'evento
+     */
+    private int index;
+    /**
+     * nome dell'evento
+     */
+    private String eventName;
+    /**
+     * flag di attività dell'evento
+     */
+    private boolean active;
+    /**
+     * immagine della locandina
+     */
+    private Image billboard;
+    /**
+     * data inizio
+     */
+    private String startingDate;
+    /**
+     * data Fine
+     */
+    private String endingDate;
+    /**
+     * descrizione dell'evento
+     */
+    private String eventDescription;
+    /**
+     * nome della location
+     */
+    private String locationName;
+    /**
+     * indirizzo della location
+     */
+    private String locationAddress;
+    /**
+     * percentuale di riduzione per gli anziani
+     */
+    private double eldersReduction;
+    /**
+     * percentuale di riduzione per i bambini
+     */
+    private double childrenReduction;
+    /**
+     * percentuale di riduzione per gli studenti
+     */
+    private double studentReduction;
+    /**
+     * array di biglietti venduti per mese
+     */
+    private Integer[] ticketsSoldPerMonth = new Integer[12];
+    private Integer[] revenuePerMonth = new Integer[12];
+    /**
+     * biglietti venduti
+     */
+    private Integer ticketSold;
+    /**
+     * massimo dei visitatori
+     */
+    private Integer maxVisitors;
+    /**
+     * hashmap dei biglietti venduti
+     */
+    private HashMap<String,Integer> soldPerSectorList;
+    /**
+     * lista di url della galleria immagini
+     */
+    private List<Image> slideshow;
 
 
     /**
@@ -154,16 +229,16 @@ public class EventModel extends Observable {
      * getter di locandina
      * @return
      */
-    public String getLocandina() {
-        return locandina;
+    public Image getBillboard() {
+        return billboard;
     }
 
     /**
      * setter di Locdandina
-     * @param locandina
+     * @param billboard
      */
-    public void setLocandina(String locandina) {
-        this.locandina = locandina;
+    public void setBillboard(Image billboard) {
+        this.billboard = billboard;
         setChanged(); //attiva il flag per gli observer
         notifyObservers(); //notifica gli observer
     }
@@ -366,8 +441,8 @@ public class EventModel extends Observable {
 
     /**
      * metodo che aggiunge un'elemento a ticketsSoldPerMonth, in posizione num
-     * @param num
-     * @param accesses
+     * @param num mese
+     * @param accesses numero di biglietti
      */
     public void addOneSoldPerMonth(Integer num, Integer accesses) {
         ticketsSoldPerMonth[num] = ticketsSoldPerMonth[num] + accesses;
@@ -395,10 +470,40 @@ public class EventModel extends Observable {
     }
 
     /**
+     * getter di revenuePerMonth
+     * @return {@link #revenuePerMonth}
+     */
+    public Integer[] getRevenuePerMonth() {
+        return revenuePerMonth;
+    }
+
+    /**
+     * metodo per l'inizializzazione degli elementi di revenuePerMonth a 0
+     */
+    public void initializeRevenuePerMonth(){
+        for (int i = 0; i< revenuePerMonth.length; i++){
+            revenuePerMonth[i] = 0;
+        }
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * metodo che aggiunge somma il parametro in ingresso "revenue" a quello contenuto nella stessa posizione di "num"
+     * @param num mese
+     * @param revenues guadagni da somare
+     */
+    public void addOneRevenuePerMonth(Integer num, Integer revenues) {
+        revenuePerMonth[num] = revenuePerMonth[num] + revenues;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
      * getter di Slideshow
      * @return
      */
-    public List<String> getSlideshow() {
+    public List<Image> getSlideshow() {
         return slideshow;
     }
 
@@ -406,7 +511,7 @@ public class EventModel extends Observable {
      * setter di slideshow
      * @param slideshow
      */
-    public void setSlideshow(List<String> slideshow) {
+    public void setSlideshow(List<Image> slideshow) {
         this.slideshow = slideshow;
         setChanged();
         notifyObservers();

@@ -1,5 +1,6 @@
 package controller;
 
+import com.google.api.services.storage.Storage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -13,10 +14,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import view.DashBoardView;
-import view.EventView;
-import view.LoginView;
-import view.RecoveryView;
+import model.EventListModel;
+import view.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,6 +95,28 @@ public class ViewSourceController extends Application {
     private Button eventSlideShowLeftButton;
     @FXML
     private Button eventSlideShowRightButton;
+    @FXML
+    private Button dashBoardInsertButton;
+    @FXML
+    private TabPane eventListTabPane;
+    @FXML
+    private TextField insertNameLabel;
+    @FXML
+    private TextField insertLocationLabel;
+    @FXML
+    private TextArea insertTextArea;
+    @FXML
+    private HBox insertSlideshow;
+    @FXML
+    private Button insertCancelButton;
+    @FXML
+    private Button insertConfirmButton;
+    @FXML
+    private DatePicker insertInizioDataPicker;
+    @FXML
+    private DatePicker insertFineDataPicker;
+    @FXML
+    private TextField insertMaxGuestsLabel;
 
 
     /**
@@ -228,6 +249,7 @@ public class ViewSourceController extends Application {
         LoginView loginView = new LoginView(userName, password, loginButton, recoveryLabelButton, this);
         changeView(loginBox);
 
+
     }
 
     /**
@@ -236,7 +258,8 @@ public class ViewSourceController extends Application {
     public void toRecoveryView() {
         RecoveryView recoveryView = new RecoveryView(recoveryEmail, recoveryButton, recoveryBackButton, this);
         changeView(recoveryBox);
-        System.out.println("a recovery");
+        primaryStage.setTitle("Em-17 - Password Recovery");
+
     }
 
 
@@ -244,10 +267,11 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
-        new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, dashBoardTabPane, this);
+        new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, dashBoardTabPane, dashBoardInsertButton, this);
         changeView(dashBoardBox);
         DBController dbController = DBController.getInstance();
         dbController.dashBoard();
+
     }
 
     public void toEventView(int index) {
@@ -264,6 +288,16 @@ public class ViewSourceController extends Application {
         EventView eventView = new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
                 eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, this);
         changeView(eventBox);
+
+    }
+
+    public void toInsertView(){
+
+        InsertController insertController = new InsertController(this);
+        new InsertView(new InsertController(this), insertCancelButton, insertConfirmButton, insertTextArea,
+                insertLocationLabel, insertNameLabel, insertSlideshow, insertInizioDataPicker, insertFineDataPicker, insertMaxGuestsLabel);
+        changeView(insertBox);
+
     }
 
     public void shutdown() {
