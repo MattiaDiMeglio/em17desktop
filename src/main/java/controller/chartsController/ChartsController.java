@@ -4,10 +4,26 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.chartsModels.BarChartModel;
 import model.chartsModels.LineChartModel;
-import model.chartsModels.StackedAreaChartModel;
 import model.chartsModels.PieChartModel;
+import model.chartsModels.StackedAreaChartModel;
+
+import javafx.concurrent.Service;
+import view.LoadingPopupView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * la classe si occupa del prelievo dei dati dal database utili per la rappresentazione delle statistiche mediante grafici.
@@ -58,7 +75,7 @@ public class ChartsController {
      *
      * @param year anno del quale prelevare le statistiche
      */
-    public void populateCharts(String year) {
+    public void populateCharts(String year, CountDownLatch latch) {
 
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -114,7 +131,6 @@ public class ChartsController {
 
                             // scorro tutti i biglietti per prenderne il contenuto
                             while (biglietti.iterator().hasNext()) {
-
                                 DataSnapshot dataSnapshot = biglietti.iterator().next();
                                 String eventEndDate = dataSnapshot.child("data vendita").getValue().toString();
                                 Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
@@ -147,6 +163,7 @@ public class ChartsController {
                 BarChartModel.getInstance().setLocationIdMap(locationIdMap);
                 PieChartModel.getInstance().setMaxTickets(Double.valueOf(maxTickets));
                 PieChartModel.getInstance().setTicketsSold(Double.valueOf(ticketSold));
+                latch.countDown();
             }
 
             @Override

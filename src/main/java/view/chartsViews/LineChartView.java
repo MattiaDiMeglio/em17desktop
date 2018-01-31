@@ -11,8 +11,10 @@ import model.EventModel;
 import model.chartsModels.LineChartModel;
 import model.chartsModels.MergedModel;
 import model.chartsModels.StackedAreaChartModel;
+import view.LoadingPopupView;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Questa classe rappresenta la view corrispondente al grafico {@link javafx.scene.chart.LineChart LineChart} e
@@ -52,7 +54,9 @@ public class LineChartView implements Observer, ChartInterface {
         lineChart.setTitle("Vendita biglietti");
 
         comboBox.valueProperty().addListener((ChangeListener<Integer>) (observable, oldValue, newValue) -> {
-            ChartsController.getInstance().populateCharts(String.valueOf(newValue));
+            CountDownLatch latch = new CountDownLatch(1);
+            ChartsController.getInstance().populateCharts(String.valueOf(newValue), latch);
+            new LoadingPopupView(latch);
             lineChart.setTitle("Vendita biglietti " + String.valueOf(newValue));
         });
 
@@ -88,7 +92,9 @@ public class LineChartView implements Observer, ChartInterface {
         stackedAreaChart.setTitle("Vendita biglietti");
 
         comboBox.valueProperty().addListener((ChangeListener<Integer>) (observable, oldValue, newValue) -> {
-            ChartsController.getInstance().populateCharts(String.valueOf(newValue));
+            CountDownLatch latch = new CountDownLatch(1);
+            ChartsController.getInstance().populateCharts(String.valueOf(newValue), latch);
+            new LoadingPopupView(latch);
             stackedAreaChart.setTitle("Vendita biglietti " + String.valueOf(newValue));
         });
 

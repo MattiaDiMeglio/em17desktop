@@ -9,6 +9,7 @@ import controller.chartsController.ChartsController;
 import javafx.scene.image.Image;
 import model.EventListModel;
 import model.EventModel;
+import view.LoadingPopupView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,16 +66,13 @@ public class DBController {
         System.out.println("Collegamento al database...");
         //Scelgo la root di partenza del database
         database = FirebaseDatabase.getInstance().getReference("luogo");
-
         ChartsController.getInstance().setDatabase(database);
-        ChartsController.getInstance().populateCharts("2018");
-
-
     }
 
-
     public void dashBoard() {
-        database.addListenerForSingleValueEvent(new ValueEventListener() {
+        CountDownLatch latch = new CountDownLatch(2);
+        new Thread(() -> ChartsController.getInstance().populateCharts("2018", latch)).start();
+        new Thread(() -> database.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -131,13 +129,13 @@ public class DBController {
                             event.setActive((boolean) eventiSnap.child("attivo").getValue());
                             event.setEventDescription(eventiSnap.child("descrizione").getValue().toString());
 
-                            CountDownLatch latch = new CountDownLatch(1);
+                            CountDownLatch latch1 = new CountDownLatch(1);
                             new Thread(() -> {
                                 System.out.println("scarico l'immagine");
                                 Image image = new Image(eventiSnap.child("copertina").getValue().toString());
                                 event.setBillboard(image);
                                 System.out.println("settato");
-                                latch.countDown();
+                                latch1.countDown();
                             }).start();
 
                             DataSnapshot dataSnapshot = eventiSnap.child("data");
@@ -163,7 +161,6 @@ public class DBController {
                                 e.printStackTrace();
                             }
                             try {
-                                //List <String> slidehow = new ArrayList<>();
                                 List<Image> slidehow = new ArrayList<>();
                                 DataSnapshot slideSnap = eventiSnap.child("galleria");
                                 Integer j = 0;
@@ -186,7 +183,7 @@ public class DBController {
                                 e.printStackTrace();
                             }
 
-                            latch.await();
+                            latch1.await();
                             eventListModel.setListaEventi(event);
                             i++;
                         }
@@ -196,13 +193,16 @@ public class DBController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                latch.countDown();
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-
+                System.out.println(error.getMessage());
+                latch.countDown();
             }
-        });
+        })).start();
+        new LoadingPopupView(latch);
     }
 
     public boolean delete(String key) {

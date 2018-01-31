@@ -9,9 +9,11 @@ import model.EventListModel;
 import model.EventModel;
 import model.chartsModels.MergedModel;
 import model.chartsModels.PieChartModel;
+import view.LoadingPopupView;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Questa classe rappresenta la view corrispondente al grafico {@link javafx.scene.chart.PieChart PieChart}.
@@ -42,7 +44,9 @@ public class PieChartView implements Observer, ChartInterface {
         dashboardYearComboBox2.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                ChartsController.getInstance().populateCharts(String.valueOf(newValue));
+                CountDownLatch latch = new CountDownLatch(1);
+                ChartsController.getInstance().populateCharts(String.valueOf(newValue), latch);
+                new LoadingPopupView(latch);
             }
         });
         PieChartModel.getInstance().addObserver(this);
