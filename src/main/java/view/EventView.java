@@ -76,6 +76,7 @@ public class EventView implements Observer {
         //creo il listener del bottone per la cancellazione
         eventoDeleteButton.setOnAction(event -> {
             if (eventModel.getTicketSold() == 0) {
+                eventController.delete(eventModel.getEventKey());
                 //ret = eventoDeleteButton.delete(eventModel.getEventKey());
             }
         });

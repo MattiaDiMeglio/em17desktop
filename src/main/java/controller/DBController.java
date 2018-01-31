@@ -207,9 +207,46 @@ public class DBController {
 
     public boolean delete(String key) {
 
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                try {
+                    Iterable<DataSnapshot> location = snapshot.getChildren();
+                    while (location.iterator().hasNext()) {
+                        DataSnapshot locationSnap = location.iterator().next();
+                        Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
+                        while (eventi.iterator().hasNext()) {
+                            DataSnapshot eventiSnap = eventi.iterator().next();
+                            if (key.equals(eventiSnap.getKey())){
+                                eventiSnap.getRef().removeValue();
+                            }
+
+                            //event.setEventKey(eventiSnap.getKey());
+
+                        }
+
+
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.out.println(error.getMessage());
+            }
+        });
+
 
         return false;
     }
+
 
 
 }
