@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutionException;
  * @author ingSW20
  */
 public class ViewSourceController extends Application {
+
     /**
      * Attributo stage, che rappresenta lo stage principale dell'applicazione
      *
@@ -117,6 +118,8 @@ public class ViewSourceController extends Application {
     private DatePicker insertFineDataPicker;
     @FXML
     private TextField insertMaxGuestsLabel;
+    @FXML
+    private ToolBar searchToolBar;
 
 
     /**
@@ -267,7 +270,8 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
-        new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, dashBoardTabPane, dashBoardInsertButton, this);
+        new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton,
+                dashBoardTabPane, dashBoardInsertButton, this, searchToolBar);
         changeView(dashBoardBox);
         DBController dbController = DBController.getInstance();
         dbController.dashBoard();
@@ -295,7 +299,8 @@ public class ViewSourceController extends Application {
 
         InsertController insertController = new InsertController(this);
         new InsertView(new InsertController(this), insertCancelButton, insertConfirmButton, insertTextArea,
-                insertLocationLabel, insertNameLabel, insertSlideshow, insertInizioDataPicker, insertFineDataPicker, insertMaxGuestsLabel);
+                insertLocationLabel, insertNameLabel, insertSlideshow, insertInizioDataPicker, insertFineDataPicker,
+                insertMaxGuestsLabel);
         changeView(insertBox);
 
     }

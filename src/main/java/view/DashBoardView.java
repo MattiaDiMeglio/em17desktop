@@ -9,6 +9,7 @@ import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.EventListModel;
@@ -43,9 +44,11 @@ public class DashBoardView implements Observer {
 
 
     public DashBoardView(HBox dashSlide, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton,
-                         TabPane dashBoardTabPane, Button dashBoardInsertButton, ViewSourceController viewSourceController) {
+                         TabPane dashBoardTabPane, Button dashBoardInsertButton,
+                         ViewSourceController viewSourceController, ToolBar searchToolBar) {
         this.viewSourceController = viewSourceController;
         initalizeCharts(dashBoardTabPane);
+        initalizeSearch(searchToolBar);
         eventListModel.addObserver(this);
 
         this.dashSlide = dashSlide;
@@ -59,11 +62,14 @@ public class DashBoardView implements Observer {
         });
     }
 
+    private void initalizeSearch(ToolBar toolBar) {
+        
+    }
+
     private void initalizeCharts(TabPane tabPane) {
         VBox dashBoardVboxLinechart = (VBox) tabPane.getTabs().get(0).getContent();
         ComboBox comboBox1 = (ComboBox) dashBoardVboxLinechart.getChildren().get(0);
         LineChart lineChart = (LineChart) dashBoardVboxLinechart.getChildren().get(1);
-
 
         VBox dashBoardVboxPieChart = (VBox) tabPane.getTabs().get(1).getContent();
         ComboBox comboBox2 = (ComboBox) dashBoardVboxPieChart.getChildren().get(0);

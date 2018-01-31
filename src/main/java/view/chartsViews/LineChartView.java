@@ -133,7 +133,6 @@ public class LineChartView implements Observer, ChartInterface {
      * @param o   Model dal quale è stato invocato il metodo
      * @param arg null
      */
-    //todo aggiungere le vendite per evento
     @Override
     public void update(Observable o, Object arg) {
         Integer[] vendite;

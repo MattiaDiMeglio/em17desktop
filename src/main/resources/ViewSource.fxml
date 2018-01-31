@@ -39,29 +39,26 @@
         <!-- top della schermata, contenente latoolbar superiore -->
         <top>
             <VBox prefHeight="-1.0" prefWidth="-1.0" spacing="20">
-                <children>
-                    <ToolBar style="-fx-background-color: grey" >
-                        <items>
-                            <!-- TextField che farà da barra di ricerca, con corrispondente bottone -->
-                            <TextField fx:id="dashBoardSearchTextField" minWidth="310"></TextField>
-                            <Button fx:id="dashBoardSearchButton" text="cerca"></Button>
-                            <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL" prefHeight="-Infinity" prefWidth="0.0"> </Separator>
-                            <!-- Bottone di inserimento nuovo evento -->
-                            <Button fx:id="dashBoardInsertButton" mnemonicParsing="false"
-                                    style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
-                                <graphic>
-                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                        <image>
-                                            <Image url="@image/Add_32px.png" />
-                                        </image>
-                                    </ImageView>
-                                </graphic>
-                            </Button>
-                            <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL"
-                                       prefHeight="-Infinity" prefWidth="0.0" />
-                        </items>
-                    </ToolBar>
-                </children>
+                <ToolBar fx:id="searchToolBar" style="-fx-background-color: grey">
+                    <!-- TextField che farà da barra di ricerca, con corrispondente bottone -->
+                    <TextField fx:id="dashBoardSearchTextField" minWidth="310"></TextField>
+                    <Button fx:id="dashBoardSearchButton" text="cerca"></Button>
+                    <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL" prefHeight="-Infinity"
+                               prefWidth="0.0"></Separator>
+                    <!-- Bottone di inserimento nuovo evento -->
+                    <Button fx:id="dashBoardInsertButton" mnemonicParsing="false"
+                            style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
+                        <graphic>
+                            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@image/Add_32px.png"/>
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL"
+                               prefHeight="-Infinity" prefWidth="0.0"/>
+                </ToolBar>
             </VBox>
         </top>
         <!-- center della schermata, contenente lo slideshow -->
