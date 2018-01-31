@@ -205,7 +205,11 @@ public class DBController {
         new LoadingPopupView(latch);
     }
 
-    public boolean delete(String key) {
+    /**
+     * @param key
+     * @return
+     */
+    public void delete(String key) {
 
         database.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -221,17 +225,8 @@ public class DBController {
                             if (key.equals(eventiSnap.getKey())){
                                 eventiSnap.getRef().removeValue();
                             }
-
-                            //event.setEventKey(eventiSnap.getKey());
-
                         }
-
-
                     }
-                } catch (IndexOutOfBoundsException e) {
-                    e.printStackTrace();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -7,10 +7,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.StackedAreaChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -25,6 +22,7 @@ import view.chartsViews.PieChartView;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 
 /**
  * Classe View per la schermata Evento
@@ -76,8 +74,19 @@ public class EventView implements Observer {
         //creo il listener del bottone per la cancellazione
         eventoDeleteButton.setOnAction(event -> {
             if (eventModel.getTicketSold() == 0) {
-                eventController.delete(eventModel.getEventKey());
-                //ret = eventoDeleteButton.delete(eventModel.getEventKey());
+
+                //Popup di avviso per confermare l'eliminazione
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Attenzione");
+                alert.setHeaderText("Eliminazione");
+                alert.setContentText("Si sta tentando di ELIMINARE l'evento " + eventModel.getEventName() + ", confermare?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.get() == ButtonType.OK){
+                    eventController.delete(eventModel.getEventKey());
+                }
             }
         });
     }
