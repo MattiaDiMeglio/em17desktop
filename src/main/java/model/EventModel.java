@@ -97,6 +97,7 @@ public class EventModel extends Observable {
      * array di biglietti venduti per mese
      */
     private Integer[] ticketsSoldPerMonth = new Integer[12];
+    private Integer[] revenuePerMonth = new Integer[12];
     /**
      * biglietti venduti
      */
@@ -440,8 +441,8 @@ public class EventModel extends Observable {
 
     /**
      * metodo che aggiunge un'elemento a ticketsSoldPerMonth, in posizione num
-     * @param num
-     * @param accesses
+     * @param num mese
+     * @param accesses numero di biglietti
      */
     public void addOneSoldPerMonth(Integer num, Integer accesses) {
         ticketsSoldPerMonth[num] = ticketsSoldPerMonth[num] + accesses;
@@ -464,6 +465,36 @@ public class EventModel extends Observable {
         for (int i = 0; i< ticketsSoldPerMonth.length; i++){
             ticketsSoldPerMonth[i] = 0;
         }
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * getter di revenuePerMonth
+     * @return {@link #revenuePerMonth}
+     */
+    public Integer[] getRevenuePerMonth() {
+        return revenuePerMonth;
+    }
+
+    /**
+     * metodo per l'inizializzazione degli elementi di revenuePerMonth a 0
+     */
+    public void initializeRevenuePerMonth(){
+        for (int i = 0; i< revenuePerMonth.length; i++){
+            revenuePerMonth[i] = 0;
+        }
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * metodo che aggiunge somma il parametro in ingresso "revenue" a quello contenuto nella stessa posizione di "num"
+     * @param num mese
+     * @param revenues guadagni da somare
+     */
+    public void addOneRevenuePerMonth(Integer num, Integer revenues) {
+        revenuePerMonth[num] = revenuePerMonth[num] + revenues;
         setChanged();
         notifyObservers();
     }

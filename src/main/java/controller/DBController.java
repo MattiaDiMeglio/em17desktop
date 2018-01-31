@@ -67,6 +67,7 @@ public class DBController {
         //Scelgo la root di partenza del database
         database = FirebaseDatabase.getInstance().getReference("luogo");
         ChartsController.getInstance().setDatabase(database);
+        databaseListener();
     }
 
     public void dashBoard() {
@@ -102,6 +103,7 @@ public class DBController {
                             EventModel event = new EventModel();//creo un nuovo event model
                             Integer ticketSold = 0;
                             event.initializeTicketPerMonth();
+                            event.initializeRevenuePerMonth();
                             Iterable<DataSnapshot> eventiIteable = eventiSnap.child("biglietti").getChildren();
                             while (eventiIteable.iterator().hasNext()) {
                                 DataSnapshot bigliettiSnap = eventiIteable.iterator().next();
@@ -111,11 +113,13 @@ public class DBController {
                                         settoriMap.get(bigliettiSnap.child("settore").getValue().toString()) + accesses);
 
                                 ticketSold = ticketSold + accesses;
+                                Integer revenue = accesses * Integer.valueOf(bigliettiSnap.child("prezzo").getValue().toString());
 
                                 String eventEndDate = bigliettiSnap.child("data vendita").getValue().toString();
                                 Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
 
                                 event.addOneSoldPerMonth(eventEndTime.getMonth(), accesses);
+                                event.addOneRevenuePerMonth(eventEndTime.getMonth(), revenue);
                             }
                             event.setEventKey(eventiSnap.getKey());
                             event.setSectorNameList(settoriName);
@@ -187,8 +191,6 @@ public class DBController {
                             eventListModel.setListaEventi(event);
                             i++;
                         }
-
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -222,7 +224,7 @@ public class DBController {
                         Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
                         while (eventi.iterator().hasNext()) {
                             DataSnapshot eventiSnap = eventi.iterator().next();
-                            if (key.equals(eventiSnap.getKey())){
+                            if (key.equals(eventiSnap.getKey())) {
                                 eventiSnap.getRef().removeValue();
                             }
                         }
@@ -237,11 +239,35 @@ public class DBController {
                 System.out.println(error.getMessage());
             }
         });
-
-
-        return false;
     }
 
+    private void databaseListener(){
+        database.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
 
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
+                System.out.println("cambiato");
+                // todo all'eliminazione si deve riaggiornare la dash. Se aggiorno i model la view rimane uguale
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot snapshot) {
+                System.out.println("rimosso");
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+    }
 }

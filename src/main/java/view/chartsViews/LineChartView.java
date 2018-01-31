@@ -145,7 +145,11 @@ public class LineChartView implements Observer, ChartInterface {
             vendite = salesModel.getEaringsFromTicketsSold();
         } else if (o instanceof EventModel) {
             EventModel eventModel = (EventModel) o;
-            vendite = eventModel.getTicketsSoldPerMonth();
+            if (chart instanceof LineChart) {
+                vendite = eventModel.getTicketsSoldPerMonth();
+            }else {
+                vendite = eventModel.getRevenuePerMonth();
+            }
         } else {
             MergedModel mergedModel = (MergedModel) o;
             vendite = mergedModel.getTicketsSoldArray();
