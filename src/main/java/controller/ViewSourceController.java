@@ -12,9 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.EventListModel;
+import model.EventModel;
 import view.*;
 
 import java.io.IOException;
@@ -120,6 +122,8 @@ public class ViewSourceController extends Application {
     private TextField insertMaxGuestsLabel;
     @FXML
     private ToolBar searchToolBar;
+    @FXML
+    private VBox eventListViewVBox;
 
 
     /**
@@ -228,7 +232,7 @@ public class ViewSourceController extends Application {
         //dashBoardImage1Button.setOnAction(event -> changeView(eventListBox));
         //dashBoardImage2Button.setOnAction(event -> changeView(eventListBox));
         //listener per il bottone sulla prima immagine nei risultati di ricerca
-        eventListResult1Button.setOnAction(event -> changeView(eventBox));
+        //eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //listener per il bottone "torna alla dashboard" della schermata evento
         eventoBackButton.setOnAction(event -> changeView(dashBoardBox));
     }
@@ -295,7 +299,7 @@ public class ViewSourceController extends Application {
 
     }
 
-    public void toInsertView(){
+    public void toInsertView() {
 
         InsertController insertController = new InsertController(this);
         new InsertView(new InsertController(this), insertCancelButton, insertConfirmButton, insertTextArea,
@@ -310,4 +314,8 @@ public class ViewSourceController extends Application {
         LoginController.getInstance().shutdown();
     }
 
+    public void toEventListView(List<EventModel> foundedEventInSearch) {
+        new EventListView(eventListTabPane, foundedEventInSearch, eventListViewVBox);
+        changeView(eventListBox);
+    }
 }

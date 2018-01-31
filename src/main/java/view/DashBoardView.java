@@ -1,18 +1,17 @@
 package view;
 
+import controller.SearchController;
 import controller.SlideShowController;
 import controller.ViewSourceController;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.StackedAreaChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.EventListModel;
+import model.EventModel;
 import view.chartsViews.BarChartView;
 import view.chartsViews.LineChartView;
 import view.chartsViews.PieChartView;
@@ -20,9 +19,7 @@ import view.chartsViews.PieChartView;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * Classe view per la schermata DashBoard, nonché main dell'applicativo.
@@ -41,6 +38,8 @@ public class DashBoardView implements Observer {
     SlideShowController slideShowController = new SlideShowController();
     HBox dashSlide;
     int i = 0;
+    private SearchController searchController;
+    private List<EventModel> foundedEventInSearch;
 
 
     public DashBoardView(HBox dashSlide, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton,
@@ -63,7 +62,17 @@ public class DashBoardView implements Observer {
     }
 
     private void initalizeSearch(ToolBar toolBar) {
-        
+        searchController = new SearchController();
+        TextField textField = (TextField) toolBar.getItems().get(0);
+        Button button = (Button) toolBar.getItems().get(1);
+        button.setOnAction(event -> {
+            foundedEventInSearch = searchController.search(textField.getText());
+            if (foundedEventInSearch.isEmpty()){
+                System.out.println("non è stato trovato niente");
+            }else {
+                viewSourceController.toEventListView(foundedEventInSearch);
+            }
+        });
     }
 
     private void initalizeCharts(TabPane tabPane) {
