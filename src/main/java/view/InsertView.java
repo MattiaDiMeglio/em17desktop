@@ -52,10 +52,9 @@ public class InsertView {
         this.insertMaxGuestsLabel = insertMaxGuestsLabel;
 
 
-        List<String> in = new ArrayList<>();
-        in.add("canne");
-        in.add("cacca");
-        TextFields.bindAutoCompletion(insertLocationLabel, in);
+
+        List<String> locations = insertController.getLocations();
+        TextFields.bindAutoCompletion(insertLocationLabel, locations);
         insertLocationLabel.focusedProperty().addListener(new ChangeListener<Boolean>()
         {
             @Override
@@ -63,11 +62,9 @@ public class InsertView {
             {
                 if (newPropertyValue)
                 {
-                    System.out.println("Textfield on focus");
                 }
                 else
                 {
-                    System.out.println("Textfield out focus");
                     try {
                         insertMaxGuestsLabel.setText(insertController.maxVisitors(insertLocationLabel.getText()));
                     } catch (InterruptedException e) {

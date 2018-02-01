@@ -1,13 +1,14 @@
 package view;
 
+import controller.SearchController;
+import controller.ViewSourceController;
 import controller.chartsController.MergedController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -34,31 +35,67 @@ public class EventListView implements Observer {
      */
     private MergedController mergedController;
     private VBox foundedElementsVBox;
+    private SearchController searchController;
+    private List<EventModel> foundedEventInSearch;
+    private ViewSourceController viewSourceController;
 
-    public EventListView(TabPane eventListTabPane, List<EventModel> foundedEventInSearch, VBox eventListViewVBox) {
+    public EventListView(TabPane eventListTabPane, List<EventModel> foundedEventInSearch, VBox eventListViewVBox,
+                         ToolBar searchToolBarEventListView, ViewSourceController viewSourceController) {
         this.foundedElementsVBox = eventListViewVBox;
+        this.foundedEventInSearch = foundedEventInSearch;
+        this.viewSourceController = viewSourceController;
+        initalizeSearch(searchToolBarEventListView);
         initializeCharts(eventListTabPane); // inizializzo i grafici
-        createHbox(foundedEventInSearch);
+        createHbox();
 
-
-        /*for (EventModel event :foundedEventInSearch){
-            System.out.println(event.getEventName());
-        }*/
     }
 
-    private void createHbox(List<EventModel> foundedEventInSearch) {
+    private void initalizeSearch(ToolBar toolBar) {
+        searchController = new SearchController();
+        TextField textField = (TextField) toolBar.getItems().get(0);
+        Button button = (Button) toolBar.getItems().get(1);
+        button.setOnAction(event -> {
+            resetSearch();
+            mergedController.resetModel();
+            foundedEventInSearch.addAll(searchController.search(textField.getText()));
+            if (foundedEventInSearch.isEmpty()){
+                System.out.println("non è stato trovato niente");
+            }else {
+                createHbox();
+            }
+        });
+    }
+
+    private void resetSearch(){
+        foundedEventInSearch.clear();
+
+        foundedElementsVBox.getChildren().clear();
+    }
+
+    private void createHbox() {
         for (EventModel eventModel : foundedEventInSearch) {
             HBox hBox = new HBox();
-            hBox.setSpacing(2);
+            hBox.setSpacing(20);
             CheckBox checkBox = new CheckBox();
             checkBox.setTranslateY(80);
+            checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    mergedController.addEventToList(eventModel);
+                    hBox.setStyle("-fx-background-color: darkgrey");
+                }else {
+                    mergedController.removeEventFromList(eventModel);
+                    hBox.setStyle("-fx-background-color: inherit");
+                }
+            });
             Button button = new Button();
             ImageView imageView = new ImageView(eventModel.getBillboard());
             imageView.setFitHeight(200);
             imageView.setFitWidth(180);
             imageView.setPickOnBounds(true);
-            //imageView.preserveRatioProperty().setValue(true);
             button.setGraphic(imageView);
+            button.setOnAction(event -> {
+                viewSourceController.toEventView(eventModel.getIndex());
+            });
 
             VBox vBox = new VBox();
             Label eventName = new Label();
@@ -67,6 +104,9 @@ public class EventListView implements Observer {
             eventName.underlineProperty().setValue(true);
             eventName.fontProperty().setValue(new Font(20));
             eventName.setText(eventModel.getEventName());
+            eventName.setOnMouseClicked(event -> {
+                viewSourceController.toEventView(eventModel.getIndex());
+            });
             Label locationName = new Label();
             locationName.translateYProperty().setValue(40);
             locationName.setText(eventModel.getLocationName());

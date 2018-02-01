@@ -33,10 +33,8 @@ public class InsertController
 
     public String maxVisitors ( String location) throws InterruptedException {
         int i=0;
-        System.out.println("Stringa= " + location);
         while (i < eventListModel.getListaEventi().size()-1){
             if (location.toLowerCase().equals(eventListModel.getListaEventi().get(i).getLocationName().toLowerCase())){
-                System.out.println("luogo= " + eventListModel.getListaEventi().get(i).getLocationName());
                 return eventListModel.getListaEventi().get(i).getMaxVisitors().toString();
             }
             i++;
@@ -45,13 +43,16 @@ public class InsertController
     }
 
     public List<String> getLocations () {
-        int i=0;
+        System.out.println("entrato");
         List<String> locations = new ArrayList<>();
-        //locations.add();
+        int i=0;
         while (i < eventListModel.getListaEventi().size()-1){
-
+            if (!locations.contains(eventListModel.getListaEventi().get(i).getLocationName())){
+                locations.add(eventListModel.getListaEventi().get(i).getLocationName());
+            }
+            i++;
         }
 
-        return null;
+        return locations;
     }
 }
