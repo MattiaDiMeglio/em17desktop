@@ -211,13 +211,13 @@ public class BarChartView implements Observer, ChartInterface {
         series.getData().clear();
         datas.clear();
 
+        int repetitions = 1;
         for (int i = 0; i < eventNames.size(); i++) {
             boolean b = false;
-            System.out.println("entro");
             for (int j = 0; j<datas.size();j++){
-                System.out.println("entro2");
-                if (datas.get(j).getXValue().equals(eventNames.get(j))){
-                    datas.add(new XYChart.Data<>(eventNames.get(i) + " (" + i + ")", soldPerEvent.get(i)));
+                if (datas.get(j).getXValue().equals(eventNames.get(i))){
+                    datas.add(new XYChart.Data<>(eventNames.get(i) + " (" + repetitions + ")", soldPerEvent.get(i)));
+                    repetitions++;
                     b = true;
                     break;
                 }
