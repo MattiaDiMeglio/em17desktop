@@ -43,10 +43,10 @@
             <VBox prefHeight="-1.0" prefWidth="-1.0" spacing="20">
                 <ToolBar fx:id="searchToolBar" style="-fx-background-color: grey">
                     <!-- TextField che farà da barra di ricerca, con corrispondente bottone -->
-                    <TextField fx:id="dashBoardSearchTextField" minWidth="310"></TextField>
-                    <Button fx:id="dashBoardSearchButton" text="cerca"></Button>
+                    <TextField fx:id="dashBoardSearchTextField" minWidth="310"/>
+                    <Button fx:id="dashBoardSearchButton" text="cerca"/>
                     <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL" prefHeight="-Infinity"
-                               prefWidth="0.0"></Separator>
+                               prefWidth="0.0"/>
                     <!-- Bottone di inserimento nuovo evento -->
                     <Button fx:id="dashBoardInsertButton" mnemonicParsing="false"
                             style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
@@ -254,8 +254,8 @@
                         </Label>
                         <!-- label  "Location:" col il rispettivo testo modificabile "EventLocationText",
                              dove verrà inserito il nome della location-->
-                        <Label text="Location: "></Label>
-                        <Text fx:id="eventLocationText"  text="locazione1"></Text>
+                        <Label text="Location: "/>
+                        <Text fx:id="eventLocationText" text="locazione1"/>
                     </HBox>
                     <!-- Hbox contenente le due label delle date con i rispettivi testi da modificare -->
                     <HBox spacing="4">

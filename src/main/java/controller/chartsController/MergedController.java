@@ -31,14 +31,14 @@ public class MergedController {
         for (EventModel eventModel : eventModelList) {
             // dati per il barchart
             eventNames.add(eventModel.getEventName());
-            soldPerEvent.add(eventModel.getTicketSold());
+            soldPerEvent.add(Double.valueOf(eventModel.getTicketSold()));
 
             // dati per il linechart
             mergedModel.setTicketSoldArray(mergeArray(eventModel.getTicketsSoldPerMonth(), mergedModel.getTicketsSoldArray()));
 
             //dati per il piechart
-            mergedModel.setMaxVisitors(mergeMaxVisitors(mergedModel.getMaxVisitors(), eventModel.getMaxVisitors()));
-            mergedModel.setTicketsSold(mergeTicketsSold(mergedModel.getTicketsSold(), eventModel.getTicketSold()));
+            mergedModel.setMaxVisitors(mergeMaxVisitors(mergedModel.getMaxVisitors(), Double.valueOf(eventModel.getMaxVisitors())));
+            mergedModel.setTicketsSold(mergeTicketsSold(mergedModel.getTicketsSold(), Double.valueOf(eventModel.getTicketSold())));
         }
         mergedModel.setEventNames(eventNames);
         mergedModel.setSoldPerEvent(soldPerEvent);

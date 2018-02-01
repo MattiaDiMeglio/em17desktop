@@ -266,7 +266,7 @@ public class ViewSourceController extends Application {
         //eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //listener per il bottone "torna alla dashboard" della schermata evento
         eventoBackButton.setOnAction(event -> turnBack());
-        eventListViewBackButton.setOnAction(event -> turnBack());
+        eventListViewBackButton.setOnAction(event -> toDashBoardView());
     }
 
 
@@ -308,7 +308,7 @@ public class ViewSourceController extends Application {
     /**
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
-    public void toDashBoardView() throws ExecutionException, InterruptedException {
+    public void toDashBoardView() {
         new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton,
                 dashBoardTabPane, dashBoardInsertButton, this, searchToolBar);
         changeView(dashBoardBox);

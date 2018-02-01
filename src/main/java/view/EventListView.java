@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import model.EventModel;
+import org.controlsfx.control.textfield.TextFields;
 import view.chartsViews.BarChartView;
 import view.chartsViews.LineChartView;
 import view.chartsViews.PieChartView;
@@ -50,7 +51,13 @@ public class EventListView {
         this.viewSourceController = viewSourceController;
         initalizeSearch(searchToolBarEventListView);
         initializeCharts(eventListTabPane); // inizializzo i grafici
-        createHbox();
+
+        if (foundedEventInSearch.isEmpty()){
+            foundedElementsVBox.getChildren().add(notFoundLabel);
+
+        }else {
+            createHbox();
+        }
     }
 
     private void initalizeSearch(ToolBar toolBar) {
@@ -58,7 +65,11 @@ public class EventListView {
         notFoundLabel.setText("non è stato trovato nessun elemento");
         notFoundLabel.fontProperty().setValue(new Font(20));
         searchController = new SearchController();
+
         TextField textField = (TextField) toolBar.getItems().get(2);
+        List<String> eventsName = searchController.getEventsName();
+        TextFields.bindAutoCompletion(textField, eventsName);
+
         Button button = (Button) toolBar.getItems().get(3);
         button.setOnAction(event -> {
             resetSearch();
@@ -98,8 +109,6 @@ public class EventListView {
     }
 
     private void createHbox() {
-        System.out.println("createHbox");
-        //mergedController.resetModel();
         checkBoxList.clear();
         for (EventModel eventModel : foundedEventInSearch) {
             System.out.println("scorro");
@@ -167,18 +176,12 @@ public class EventListView {
                 foundedElementsVBox.getChildren().add(hBox);
             }
         }
-        Iterator iterator = selectedItems.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry entry = (Map.Entry)iterator.next();
-
-            // Stampa a schermo la coppia chiave-valore;
-            System.out.println("Key = " + entry.getKey());
-            System.out.println("Value = " + entry.getValue());
+        for (Object o : selectedItems.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
             HBox tmp = (HBox) entry.getValue();
             checkBoxList.add((CheckBox) tmp.getChildren().get(0));
             foundedElementsVBox.getChildren().add((Node) entry.getValue());
         }
-
     }
 
     /**

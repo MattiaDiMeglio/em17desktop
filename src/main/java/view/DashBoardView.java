@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.EventListModel;
 import model.EventModel;
+import org.controlsfx.control.textfield.TextFields;
 import view.chartsViews.BarChartView;
 import view.chartsViews.LineChartView;
 import view.chartsViews.PieChartView;
@@ -64,11 +65,17 @@ public class DashBoardView implements Observer {
     private void initalizeSearch(ToolBar toolBar) {
         searchController = new SearchController();
         TextField textField = (TextField) toolBar.getItems().get(0);
+        textField.setOnMouseClicked(event -> {
+            List<String> eventsName = searchController.getEventsName();
+            TextFields.bindAutoCompletion(textField, eventsName);
+        });
+
         Button button = (Button) toolBar.getItems().get(1);
         button.setOnAction(event -> {
             foundedEventInSearch = searchController.search(textField.getText());
             if (foundedEventInSearch.isEmpty()){
                 System.out.println("non è stato trovato niente");
+                viewSourceController.toEventListView(foundedEventInSearch);
             }else {
                 viewSourceController.toEventListView(foundedEventInSearch);
             }

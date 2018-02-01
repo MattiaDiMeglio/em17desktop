@@ -417,8 +417,8 @@ public class EventModel extends Observable {
      * getter di ticketSold
      * @return
      */
-    public Double getTicketSold() {
-        return Double.valueOf(ticketSold);
+    public Integer getTicketSold() {
+        return ticketSold;
     }
 
     /**
@@ -435,8 +435,8 @@ public class EventModel extends Observable {
      * getter maxVisitors
      * @return
      */
-    public Double getMaxVisitors() {
-        return Double.valueOf(maxVisitors);
+    public Integer getMaxVisitors() {
+        return maxVisitors;
     }
 
     /**
