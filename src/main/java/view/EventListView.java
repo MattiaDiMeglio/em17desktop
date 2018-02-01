@@ -6,6 +6,7 @@ import controller.chartsController.MergedController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
@@ -78,6 +79,7 @@ public class EventListView {
             if (foundedEventInSearch.isEmpty()) {
                 resetSearch();
                 foundedElementsVBox.getChildren().add(notFoundLabel);
+                populateWithSelectedItems();
             } else {
                 createHbox();
             }
@@ -85,7 +87,6 @@ public class EventListView {
         selectAllCheckBox = new CheckBox();
         selectAllCheckBox.setText("Seleziona tutto");
         selectAllCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            //mergedController.resetModel();
             if (newValue) {
                 for (CheckBox checkBox : checkBoxList) {
                     checkBox.selectedProperty().setValue(true);
@@ -102,6 +103,7 @@ public class EventListView {
     }
 
     private void resetSearch() {
+        checkBoxList.clear();
         foundedEventInSearch.clear();
         foundedElementsVBox.getChildren().clear();
         foundedElementsVBox.paddingProperty().setValue(new Insets(5.0, 5.0, 2.0, 12.0));
@@ -111,7 +113,6 @@ public class EventListView {
     private void createHbox() {
         checkBoxList.clear();
         for (EventModel eventModel : foundedEventInSearch) {
-            System.out.println("scorro");
             if (!selectedItems.containsKey(eventModel.getIndex())) {
                 HBox hBox = new HBox();
                 hBox.setSpacing(20);
@@ -140,7 +141,7 @@ public class EventListView {
                     viewSourceController.toEventView(eventModel.getIndex());
                 });
 
-                VBox vBox = new VBox();
+                VBox vBoxEvent = new VBox();
                 Label eventName = new Label();
                 eventName.translateYProperty().setValue(20);
                 eventName.setTextFill(Paint.valueOf("blue"));
@@ -171,17 +172,18 @@ public class EventListView {
                 delete.setText("Cancella");
 
                 modifyAndDelete.getChildren().addAll(modify, delete);
-                vBox.getChildren().addAll(eventName, locationName, date, modifyAndDelete);
-                hBox.getChildren().addAll(checkBox, button, vBox);
-                foundedElementsVBox.getChildren().add(hBox);
+                vBoxEvent.getChildren().addAll(eventName, locationName, date, modifyAndDelete);
+                hBox.getChildren().addAll(checkBox, button, vBoxEvent);
+                Separator separator = new Separator();
+                separator.setOrientation(Orientation.HORIZONTAL);
+
+                VBox vBox = new VBox();
+                vBox.setSpacing(20);
+                vBox.getChildren().addAll(hBox, separator);
+                foundedElementsVBox.getChildren().add(vBox);
             }
         }
-        for (Object o : selectedItems.entrySet()) {
-            Map.Entry entry = (Map.Entry) o;
-            HBox tmp = (HBox) entry.getValue();
-            checkBoxList.add((CheckBox) tmp.getChildren().get(0));
-            foundedElementsVBox.getChildren().add((Node) entry.getValue());
-        }
+        populateWithSelectedItems();
     }
 
     /**
@@ -203,5 +205,14 @@ public class EventListView {
         new LineChartView(lineChart);
         new PieChartView(pieChart);
         new BarChartView(barChart);
+    }
+
+    private void populateWithSelectedItems(){
+        for (Object o : selectedItems.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
+            HBox tmp = (HBox) entry.getValue();
+            checkBoxList.add((CheckBox) tmp.getChildren().get(0));
+            foundedElementsVBox.getChildren().add((Node) entry.getValue());
+        }
     }
 }
