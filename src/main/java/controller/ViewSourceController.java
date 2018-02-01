@@ -120,10 +120,21 @@ public class ViewSourceController extends Application {
     private DatePicker insertFineDataPicker;
     @FXML
     private TextField insertMaxGuestsLabel;
+    /**
+     * toolbar presente nella dashboard
+     */
     @FXML
     private ToolBar searchToolBar;
+    /**
+     * Vbox in eventListView contenente i risultati della ricerca
+     */
     @FXML
     private VBox eventListViewVBox;
+    /**
+     * toolbar presente in eventListView
+     */
+    @FXML
+    private ToolBar searchToolBarEventListView;
 
 
     /**
@@ -155,6 +166,12 @@ public class ViewSourceController extends Application {
     private Node insertBox;
 
     private Node insertTicketBox;
+
+    /**
+     * variabile per memorizzare la view precedente alla quale si vuole tornare
+     * tramite la pressione del tasto indietro
+     */
+    private Node prevView;
 
     /**
      * Main dell'applicazione, richiama il metono launch che fa partire la schermata di javafx
@@ -235,10 +252,10 @@ public class ViewSourceController extends Application {
         //dashBoardImage1Button.setOnAction(event -> changeView(eventListBox));
         //dashBoardImage2Button.setOnAction(event -> changeView(eventListBox));
         //listener per il bottone sulla prima immagine nei risultati di ricerca
-        eventListResult1Button.setOnAction(event -> changeView(eventBox));
+//        eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //listener per il bottone "torna alla dashboard" della schermata evento
-        eventoBackButton.setOnAction(event -> changeView(dashBoardBox));
+        eventoBackButton.setOnAction(event -> turnBack());
     }
 
 
@@ -249,7 +266,10 @@ public class ViewSourceController extends Application {
      * @param view
      */
     private void changeView(Node view) {
-        mainAnchorPane.getChildren().removeAll(dashBoardBox, eventBox, eventListBox, loginBox, recoveryBox, insertBox, insertTicketBox);
+        if (!mainAnchorPane.getChildren().isEmpty()){
+            prevView = mainAnchorPane.getChildren().get(0);
+        }
+        mainAnchorPane.getChildren().clear();
         mainAnchorPane.getChildren().add(view);
     }
 
@@ -278,6 +298,7 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
+        new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton,
                 dashBoardTabPane, dashBoardInsertButton, this, searchToolBar);
         changeView(dashBoardBox);
         DBController dbController = DBController.getInstance();
@@ -322,7 +343,11 @@ public class ViewSourceController extends Application {
     }
 
     public void toEventListView(List<EventModel> foundedEventInSearch) {
-        new EventListView(eventListTabPane, foundedEventInSearch, eventListViewVBox);
+        new EventListView(eventListTabPane, foundedEventInSearch, eventListViewVBox, searchToolBarEventListView, this);
         changeView(eventListBox);
+    }
+
+    private void turnBack(){
+        changeView(prevView);
     }
 }

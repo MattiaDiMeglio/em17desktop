@@ -100,4 +100,12 @@ public class MergedController {
         eventModelList.remove(eventModel);
         merge();
     }
+
+
+    /**
+     * Il metodo richiama un reset per i dati contenuti nel model
+     */
+    public void resetModel() {
+        mergedModel.resetModel();
+    }
 }

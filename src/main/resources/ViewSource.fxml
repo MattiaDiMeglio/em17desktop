@@ -151,35 +151,32 @@
         <!-- top della schermata, contenente latoolbar superiore -->
         <top>
             <VBox prefHeight="-1.0" prefWidth="-1.0" spacing="20">
-                <children>
-                    <ToolBar style="-fx-background-color: grey" >
-                        <items>
-                            <!-- TextField che farà da barra di ricerca, con corrispondente bottone -->
-                            <TextField fx:id="eventListSearchTextField" minWidth="310"></TextField>
-                            <Button fx:id="eventListSearchButton" text="cerca"></Button>
-                            <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL" prefHeight="-Infinity" prefWidth="0.0"> </Separator>
-                            <!-- Bottone di inserimento nuovo evento -->
-                            <Button fx:id="eventListInsertButton" mnemonicParsing="false"
-                                    style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
-                                <graphic>
-                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                        <image>
-                                            <Image url="@image/Add_32px.png" />
-                                        </image>
-                                    </ImageView>
-                                </graphic>
-                            </Button>
-                            <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL"
-                                       prefHeight="-Infinity" prefWidth="0.0" />
-                        </items>
-                    </ToolBar>
-                </children>
+                <ToolBar fx:id="searchToolBarEventListView" style="-fx-background-color: grey">
+                    <!-- TextField che farà da barra di ricerca, con corrispondente bottone -->
+                    <TextField minWidth="310"/>
+                    <Button text="cerca"/>
+                    <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL" prefHeight="-Infinity"
+                               prefWidth="0.0"/>
+                    <!-- Bottone di inserimento nuovo evento -->
+                    <Button fx:id="eventListInsertButton" mnemonicParsing="false"
+                            style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
+                        <graphic>
+                            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@image/Add_32px.png"/>
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL"
+                               prefHeight="-Infinity" prefWidth="0.0"/>
+                </ToolBar>
             </VBox>
         </top>
         <!-- left della schermata, contenentei risultati della ricerca-->
         <left>
-            <VBox AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-color: blue">
-                <ScrollPane minWidth="400" >
+            <VBox AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <ScrollPane VBox.vgrow="ALWAYS" minWidth="400" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <VBox fx:id="eventListViewVBox" prefHeight="-1.0" prefWidth="-1.0" spacing="30">
                         <padding>
                             <Insets bottom="10.0" left="5.0" right="5.0" top="10.0"/>
@@ -395,7 +392,7 @@
                     </graphic>
                 </Button>
                 <Separator/>
-                <Button fx:id="eventoBackButton" mnemonicParsing="false" style="-fx-background-color: inherit" text="Torna alla DashBoard" textFill="white">
+                <Button fx:id="eventoBackButton" mnemonicParsing="false" style="-fx-background-color: inherit" text="Torna indietro" textFill="white">
                     <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -646,9 +643,9 @@
                 <padding>
                     <Insets  left="20.0" right="20.0" bottom="10.0" />
                 </padding>
-                <Button text="Indietro" fx:id=""></Button>
+                <Button text="Indietro"></Button>
                 <VBox HBox.hgrow="ALWAYS"></VBox>
-                <Button style=" -fx-background-color: #199ED9; -fx-text-fill: white" text="Conferma" fx:id="">
+                <Button style=" -fx-background-color: #199ED9; -fx-text-fill: white" text="Conferma">
                 </Button>
             </HBox>
         </center>

@@ -66,8 +66,11 @@ public class MergedModel extends Observable {
         initializeArray();
         soldPerEvent.clear();
         eventNames.clear();
+        eventNames.add("");
         maxVisitors = 0.0;
         ticketsSold = 0.0;
+        setChanged();
+        Platform.runLater(this::notifyObservers);
     }
 
     /**
@@ -153,6 +156,7 @@ public class MergedModel extends Observable {
      */
     public void setSoldPerEvent(List<Double> soldPerEvent) {
         this.soldPerEvent = soldPerEvent;
+        setChanged();
         Platform.runLater(this::notifyObservers);
     }
 
