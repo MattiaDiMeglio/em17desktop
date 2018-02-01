@@ -147,6 +147,8 @@ public class ViewSourceController extends Application {
      */
     private Node insertBox;
 
+    private Node insertTicketBox;
+
     /**
      * Main dell'applicazione, richiama il metono launch che fa partire la schermata di javafx
      *
@@ -216,6 +218,7 @@ public class ViewSourceController extends Application {
         loginBox = mainAnchorPane.getChildren().get(3);
         recoveryBox = mainAnchorPane.getChildren().get(4);
         insertBox = mainAnchorPane.getChildren().get(5);
+        insertTicketBox = mainAnchorPane.getChildren().get(6);
 
 
         //metodo per passare alla loginview
@@ -238,7 +241,7 @@ public class ViewSourceController extends Application {
      * @param view
      */
     private void changeView(Node view) {
-        mainAnchorPane.getChildren().removeAll(dashBoardBox, eventBox, eventListBox, loginBox, recoveryBox, insertBox);
+        mainAnchorPane.getChildren().removeAll(dashBoardBox, eventBox, eventListBox, loginBox, recoveryBox, insertBox, insertTicketBox);
         mainAnchorPane.getChildren().add(view);
     }
 
@@ -246,7 +249,7 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la loginView e cambiare la schermata a loginbox
      */
     public void toLoginView() {
-        LoginView loginView = new LoginView(userName, password, loginButton, recoveryLabelButton, this);
+        new LoginView(userName, password, loginButton, recoveryLabelButton, this);
         changeView(loginBox);
 
 
@@ -256,7 +259,7 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la RecoveryView
      */
     public void toRecoveryView() {
-        RecoveryView recoveryView = new RecoveryView(recoveryEmail, recoveryButton, recoveryBackButton, this);
+        new RecoveryView(recoveryEmail, recoveryButton, recoveryBackButton, this);
         changeView(recoveryBox);
         primaryStage.setTitle("Em-17 - Password Recovery");
 
@@ -285,7 +288,7 @@ public class ViewSourceController extends Application {
         EventController eventController = new EventController();
 
 
-        EventView eventView = new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
+        new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
                 eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, this);
         changeView(eventBox);
 
@@ -294,10 +297,14 @@ public class ViewSourceController extends Application {
     public void toInsertView(){
 
         InsertController insertController = new InsertController(this);
-        new InsertView(new InsertController(this), insertCancelButton, insertConfirmButton, insertTextArea,
+        new InsertView(insertController, insertCancelButton, insertConfirmButton, insertTextArea,
                 insertLocationLabel, insertNameLabel, insertSlideshow, insertInizioDataPicker, insertFineDataPicker, insertMaxGuestsLabel);
         changeView(insertBox);
 
+    }
+
+    public void toInsetTicketView(){
+        changeView(insertTicketBox);
     }
 
     public void shutdown() {

@@ -7,7 +7,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import model.EventModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class InsertView {
@@ -41,7 +44,6 @@ public class InsertView {
         this.insertLocationLabel = insertLocationLabel;
         this.insertTextArea = insertTextArea;
         this.insertSlideshow = insertSlideshow;
-        this.insertCancelButton = insertCancelButton;
         this.insertConfirmButton = insertConfirmButton;
         this.insertInizioDataPicker = insertInizioDataPicker;
         this.insertFineDataPicker = insertFineDataPicker;
@@ -49,15 +51,30 @@ public class InsertView {
 
         insertCancelButton.setOnAction(event -> {
             try {
-                insertController.back();
+                back();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
-        insertConfirmButton.setOnAction(event -> {});
+
+        insertConfirmButton.setOnAction(event -> {
+            next();
+        });
     }
 
+    private void back() throws ExecutionException, InterruptedException {
+        insertController.back();
+    }
+
+    private void next() {
+        List<String> texts = new ArrayList<>();
+        texts.add(insertNameLabel.getText());
+        texts.add(insertLocationLabel.getText());
+        texts.add(insertMaxGuestsLabel.getText());
+
+        insertController.next(this, texts);
+    }
 
 }

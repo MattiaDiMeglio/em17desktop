@@ -819,4 +819,47 @@
 
     </BorderPane>
 
+    <!-- Schermata Inserimento Biglietti-->
+    <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
+        <center>
+            <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <GridPane fx:id="insertTicketGrid">
+                    <Label GridPane.columnIndex="1" GridPane.rowIndex="1" text="Nome Settore"></Label>
+                    <Label GridPane.columnIndex="2" GridPane.rowIndex="1" text="Numero Posti"></Label>
+                    <Label GridPane.columnIndex="3" GridPane.rowIndex="1" text="Costo Intero"></Label>
+                    <Separator GridPane.rowIndex="2"/>
+                </GridPane>
+            </VBox>
+            <HBox VBox.vgrow="ALWAYS"></HBox>
+            <HBox spacing="20">
+                <padding>
+                    <Insets  left="20.0" right="20.0" bottom="10.0" />
+                </padding>
+                <Button text="Indietro" fx:id=""></Button>
+                <VBox HBox.hgrow="ALWAYS"></VBox>
+                <Button style=" -fx-background-color: #199ED9; -fx-text-fill: white" text="Conferma" fx:id="">
+                </Button>
+            </HBox>
+        </center>
+        <!-- left della schermata, contenente la barra laterale-->
+        <left>
+            <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" style="-fx-background-color: darkgray">
+                <padding>
+                    <Insets bottom="5.0" left="12.0" right="12.0" top="5.0"/>
+                </padding>
+                <!-- ImageView contenente la foto di Locandina-->
+                <ImageView fx:id="insertTicketPlaybillImageView" fitHeight="300.0" fitWidth="280.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <!-- L'url dell'immagine è momentaneo e contenuto in resources/image. Sostituire da view -->
+                        <Image url="@image/Picture_80px.png" />
+                    </image>
+                </ImageView>
+                <Separator/>
+            </VBox>
+        </left>
+
+
+    </BorderPane>
+
 </AnchorPane>
