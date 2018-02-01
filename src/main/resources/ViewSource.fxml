@@ -28,10 +28,12 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.chart.PieChart?>
 
+
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.StackedAreaChart?>
+<?import np.com.ngopal.control.AutoFillTextBox?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewSourceController" fx:id="mainAnchorPane">
     <!-- Schermata DashBoard -->
@@ -494,9 +496,9 @@
                             <Label text="Nome Evento"></Label>
                             <TextField fx:id="insertNameLabel"></TextField>
                         </VBox>
-                        <VBox >
+                        <VBox  fx:id="vbox">
                             <Label text="Nome Location"></Label>
-                            <TextField fx:id="insertLocationLabel"></TextField>
+                            <TextField fx:id="insertLocationLabel" styleClass="inherit"></TextField>
                         </VBox>
                     </HBox>
                     <HBox spacing="20">

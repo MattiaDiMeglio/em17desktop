@@ -130,9 +130,7 @@ public class DashBoardView implements Observer {
      * @see java.util.Observable
      */
     public void update(Observable o, Object arg) {
-        //slideShow();
 
-        //slideShowController.createList(dashSlide, eventListModel.getListaEventi().get((int) arg).getLocandina(), (int) arg);
     }
 
 

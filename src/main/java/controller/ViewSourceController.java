@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.EventListModel;
 import model.EventModel;
+import np.com.ngopal.control.AutoFillTextBox;
 import view.*;
 
 import java.io.IOException;
@@ -124,6 +125,8 @@ public class ViewSourceController extends Application {
     private ToolBar searchToolBar;
     @FXML
     private VBox eventListViewVBox;
+    @FXML
+    private VBox vbox;
 
 
     /**
@@ -211,6 +214,7 @@ public class ViewSourceController extends Application {
             Platform.exit();
 
         });
+
     }
 
     /**
@@ -235,7 +239,6 @@ public class ViewSourceController extends Application {
         //dashBoardImage1Button.setOnAction(event -> changeView(eventListBox));
         //dashBoardImage2Button.setOnAction(event -> changeView(eventListBox));
         //listener per il bottone sulla prima immagine nei risultati di ricerca
-        eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //listener per il bottone "torna alla dashboard" della schermata evento
         eventoBackButton.setOnAction(event -> changeView(dashBoardBox));
@@ -278,6 +281,7 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
+        new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton,
                 dashBoardTabPane, dashBoardInsertButton, this, searchToolBar);
         changeView(dashBoardBox);
         DBController dbController = DBController.getInstance();
