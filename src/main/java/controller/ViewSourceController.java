@@ -124,6 +124,7 @@ public class ViewSourceController extends Application {
     private Button insertPlayBillLabel;
     @FXML
     private ImageView insertPlaybillImageView;
+
     /**
      * toolbar presente nella dashboard
      */
@@ -342,7 +343,7 @@ public class ViewSourceController extends Application {
         InsertController insertController = new InsertController(this);
         new InsertView(insertController, insertCancelButton, insertConfirmButton, insertTextArea,
                 insertLocationLabel, insertNameLabel, insertSlideshow, insertInizioDataPicker, insertFineDataPicker, insertMaxGuestsLabel,
-                insertPlayBillLabel, insertPlaybillImageView);
+                insertPlayBillLabel, insertPlaybillImageView, insertSlideshow);
 
         changeView(insertBox);
 
