@@ -266,7 +266,7 @@ public class ViewSourceController extends Application {
         //eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //listener per il bottone "torna alla dashboard" della schermata evento
         eventoBackButton.setOnAction(event -> turnBack());
-        eventListViewBackButton.setOnAction(event -> toDashBoardView());
+        eventListViewBackButton.setOnAction(event -> changeView(dashBoardBox));
     }
 
 

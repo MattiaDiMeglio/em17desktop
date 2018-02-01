@@ -71,8 +71,7 @@ public class BarChartView implements Observer, ChartInterface {
         comboBox.valueProperty().addListener((ChangeListener<Integer>) (observable, oldValue, newValue) -> {
             CountDownLatch latch = new CountDownLatch(1);
             ChartsController.getInstance().populateCharts(String.valueOf(newValue), latch);
-            new LoadingPopupView(latch);
-            barChart.setTitle("Biglietti venduti per Location " + String.valueOf(newValue));
+            new LoadingPopupView(latch);            barChart.setTitle("Biglietti venduti per Location " + String.valueOf(newValue));
         });
         BarChartModel.getInstance().addObserver(this);
     }
@@ -148,7 +147,7 @@ public class BarChartView implements Observer, ChartInterface {
      * @param eventModel model per il prelievo dei dati
      */
     private void updateChart(EventModel eventModel){
-        HashMap settori = eventModel.getSoldPerSectorList();
+        HashMap<String, Integer> settori = eventModel.getSoldPerSectorList();
         List<String> nomeSettori = eventModel.getSectorNameList();
 
         if (barChart.getData().isEmpty()) {
@@ -160,7 +159,7 @@ public class BarChartView implements Observer, ChartInterface {
         datas.clear();
 
         for (int i = 0; i < settori.size(); i++) {
-            datas.add(new XYChart.Data(nomeSettori.get(i), settori.get(nomeSettori.get(i))));
+            datas.add(new XYChart.Data<String, Number>(nomeSettori.get(i), settori.get(nomeSettori.get(i))));
         }
 
         for (XYChart.Data<String, Number> data : datas) {
@@ -187,7 +186,7 @@ public class BarChartView implements Observer, ChartInterface {
         datas.clear();
 
         for (int i = 0; i < locationIdMap.size(); i++) {
-            datas.add(new XYChart.Data(locationNames.get(i), soldPerLocation.get(i).intValue()));
+            datas.add(new XYChart.Data<>(locationNames.get(i), soldPerLocation.get(i).intValue()));
         }
         for (XYChart.Data<String, Number> data : datas) {
             setRandomColor(data);
@@ -213,7 +212,20 @@ public class BarChartView implements Observer, ChartInterface {
         datas.clear();
 
         for (int i = 0; i < eventNames.size(); i++) {
-            datas.add(new XYChart.Data(eventNames.get(i), soldPerEvent.get(i)));
+            boolean b = false;
+            System.out.println("entro");
+            for (int j = 0; j<datas.size();j++){
+                System.out.println("entro2");
+                if (datas.get(j).getXValue().equals(eventNames.get(j))){
+                    datas.add(new XYChart.Data<>(eventNames.get(i) + " (" + i + ")", soldPerEvent.get(i)));
+                    b = true;
+                    break;
+                }
+            }
+            if (!b){
+                datas.add(new XYChart.Data<>(eventNames.get(i), soldPerEvent.get(i)));
+            }
+
         }
         for (XYChart.Data<String, Number> data : datas) {
             setRandomColor(data);
