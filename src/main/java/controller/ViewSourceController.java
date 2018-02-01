@@ -135,6 +135,11 @@ public class ViewSourceController extends Application {
      */
     @FXML
     private ToolBar searchToolBarEventListView;
+    /**
+     * bottone per tornare indietro dalla schermata eventListView
+     */
+    @FXML
+    private Button eventListViewBackButton;
 
 
     /**
@@ -256,6 +261,7 @@ public class ViewSourceController extends Application {
         //eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //listener per il bottone "torna alla dashboard" della schermata evento
         eventoBackButton.setOnAction(event -> turnBack());
+        eventListViewBackButton.setOnAction(event -> turnBack());
     }
 
 
@@ -266,7 +272,7 @@ public class ViewSourceController extends Application {
      * @param view
      */
     private void changeView(Node view) {
-        if (!mainAnchorPane.getChildren().isEmpty()){
+        if (!mainAnchorPane.getChildren().isEmpty()) {
             prevView = mainAnchorPane.getChildren().get(0);
         }
         mainAnchorPane.getChildren().clear();
@@ -333,7 +339,7 @@ public class ViewSourceController extends Application {
 
     }
 
-    public void toInsetTicketView(){
+    public void toInsetTicketView() {
         changeView(insertTicketBox);
     }
 
@@ -347,7 +353,7 @@ public class ViewSourceController extends Application {
         changeView(eventListBox);
     }
 
-    private void turnBack(){
+    private void turnBack() {
         changeView(prevView);
     }
 }

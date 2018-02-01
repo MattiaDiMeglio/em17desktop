@@ -148,10 +148,21 @@
 
     <!-- Schermata EventList -->
     <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <!-- top della schermata, contenente latoolbar superiore -->
+        <!-- top della schermata, contenente la toolbar superiore -->
         <top>
             <VBox prefHeight="-1.0" prefWidth="-1.0" spacing="20">
                 <ToolBar fx:id="searchToolBarEventListView" style="-fx-background-color: grey">
+                    <Button fx:id="eventListViewBackButton" mnemonicParsing="false" style="-fx-background-color: inherit" text="Torna indietro" textFill="white">
+                        <graphic>
+                            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@image/Back To_32px.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Separator minHeight="-Infinity" minWidth="20" orientation="VERTICAL" prefHeight="-Infinity"
+                               prefWidth="0.0"/>
                     <!-- TextField che farà da barra di ricerca, con corrispondente bottone -->
                     <TextField minWidth="310"/>
                     <Button text="cerca"/>
@@ -176,17 +187,10 @@
         <!-- left della schermata, contenentei risultati della ricerca-->
         <left>
             <VBox AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <ScrollPane VBox.vgrow="ALWAYS" minWidth="400" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <ScrollPane VBox.vgrow="ALWAYS" minWidth="400" maxWidth="600" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <VBox fx:id="eventListViewVBox" prefHeight="-1.0" prefWidth="-1.0" spacing="30">
-                        <padding>
-                            <Insets bottom="10.0" left="5.0" right="5.0" top="10.0"/>
-                        </padding>
                         <VBox>
-                            <padding>
-                                <Insets bottom="2.0" left="12.0" right="5.0" top="5.0"/>
-                            </padding>
-                            <!-- Checkbox "seleziona tutto" -->
-                            <CheckBox fx:id="eventListSelectAllCheckBox" text="Selziona Tutto"></CheckBox>
+
                         </VBox>
                         <!-- L'Hbox seguente ed i prossimi vanno contati come singolo "elemento"
                          in quanto rappresentano un singolo risultato di ricerca-->

@@ -65,6 +65,7 @@ public class MergedModel extends Observable {
     public void resetModel() {
         initializeArray();
         soldPerEvent.clear();
+        soldPerEvent.add(0.0);
         eventNames.clear();
         eventNames.add("");
         maxVisitors = 0.0;
