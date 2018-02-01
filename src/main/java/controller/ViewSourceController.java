@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.EventListModel;
 import model.EventModel;
+import np.com.ngopal.control.AutoFillTextBox;
 import view.*;
 
 import java.io.IOException;
@@ -130,6 +131,7 @@ public class ViewSourceController extends Application {
      */
     @FXML
     private VBox eventListViewVBox;
+
     /**
      * toolbar presente in eventListView
      */
@@ -233,6 +235,7 @@ public class ViewSourceController extends Application {
             Platform.exit();
 
         });
+
     }
 
     /**
@@ -257,7 +260,9 @@ public class ViewSourceController extends Application {
         //dashBoardImage1Button.setOnAction(event -> changeView(eventListBox));
         //dashBoardImage2Button.setOnAction(event -> changeView(eventListBox));
         //listener per il bottone sulla prima immagine nei risultati di ricerca
+
 //        eventListResult1Button.setOnAction(event -> changeView(eventBox));
+
         //eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //listener per il bottone "torna alla dashboard" della schermata evento
         eventoBackButton.setOnAction(event -> turnBack());

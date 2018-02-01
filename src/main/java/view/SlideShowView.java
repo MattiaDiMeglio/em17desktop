@@ -185,9 +185,7 @@ public class SlideShowView implements Observer {
             int eventIndex = (int) arg;
 
             if (eventIndex < buttonList.size()) {
-                System.out.println("sono in update");
                 Image image = eventListModel.getListaEventi().get(eventIndex).getBillboard();
-                System.out.println(image.toString());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(300.0);
                 imageView.setFitHeight(280.0);
