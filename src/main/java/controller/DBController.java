@@ -1,6 +1,7 @@
 package controller;
 
 
+import com.google.api.client.util.ArrayMap;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -18,10 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 
@@ -135,10 +133,8 @@ public class DBController {
 
                             CountDownLatch latch1 = new CountDownLatch(1);
                             new Thread(() -> {
-                                System.out.println("scarico l'immagine");
                                 Image image = new Image(eventiSnap.child("copertina").getValue().toString());
                                 event.setBillboard(image);
-                                System.out.println("settato");
                                 latch1.countDown();
                             }).start();
 
@@ -270,4 +266,6 @@ public class DBController {
             }
         });
     }
+
+
 }

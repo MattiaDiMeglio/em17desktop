@@ -20,7 +20,7 @@ public class InsertController
 
     public void back () throws ExecutionException, InterruptedException {
         System.out.println("indietro");
-        viewSourceController.toDashBoardView();
+        viewSourceController.turnBack();
     }
 
     public void next(InsertView insertView, List<String> texts) {
@@ -43,7 +43,6 @@ public class InsertController
     }
 
     public List<String> getLocations () {
-        System.out.println("entrato");
         List<String> locations = new ArrayList<>();
         int i=0;
         while (i < eventListModel.getListaEventi().size()-1){

@@ -32,7 +32,6 @@ import java.util.concurrent.ExecutionException;
  * @author ingSW20
  */
 public class ViewSourceController extends Application {
-
     /**
      * Attributo stage, che rappresenta lo stage principale dell'applicazione
      *
@@ -121,6 +120,10 @@ public class ViewSourceController extends Application {
     private DatePicker insertFineDataPicker;
     @FXML
     private TextField insertMaxGuestsLabel;
+    @FXML
+    private Button insertPlayBillLabel;
+    @FXML
+    private ImageView insertPlaybillImageView;
     /**
      * toolbar presente nella dashboard
      */
@@ -338,7 +341,8 @@ public class ViewSourceController extends Application {
 
         InsertController insertController = new InsertController(this);
         new InsertView(insertController, insertCancelButton, insertConfirmButton, insertTextArea,
-                insertLocationLabel, insertNameLabel, insertSlideshow, insertInizioDataPicker, insertFineDataPicker, insertMaxGuestsLabel);
+                insertLocationLabel, insertNameLabel, insertSlideshow, insertInizioDataPicker, insertFineDataPicker, insertMaxGuestsLabel,
+                insertPlayBillLabel, insertPlaybillImageView);
 
         changeView(insertBox);
 
@@ -358,7 +362,7 @@ public class ViewSourceController extends Application {
         changeView(eventListBox);
     }
 
-    private void turnBack() {
+    public void turnBack() {
         changeView(prevView);
     }
 }

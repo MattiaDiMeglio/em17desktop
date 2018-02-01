@@ -539,28 +539,7 @@
                                     </ImageView>
                                 </graphic>
                             </Button>
-                            <GridPane HBox.hgrow="ALWAYS" fx:id="insertSlideshowImmagine" alignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" >
-                                <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
-                                <Button GridPane.columnIndex="1" fx:id="insertImage1Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
-                                    <graphic>
-                                        <ImageView fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
-                                            <image>
-                                                <Image url="@image/Picture_80px.png" />
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-                                <!-- Le immagini saranno tutte quante cliccabili e manderanno ai rispettivi eventi -->
-                                <Button GridPane.columnIndex="2" fx:id="insertImage2Button" mnemonicParsing="false" style="-fx-background-color: inherit"  textFill="white">
-                                    <graphic>
-                                        <ImageView fitHeight="325.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true">
-                                            <image>
-                                                <Image url="@image/Picture_80px.png" />
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                </Button>
-                            </GridPane>
+                            <HBox HBox.hgrow="ALWAYS"  fx:id="insertSlide" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"></HBox>
                             <!-- icona "right", sarà il bottone per scorrere verso sx. -->
                             <Button  fx:id="insertSlideShowRightButton" mnemonicParsing="false"
                                      style="-fx-background-color: inherit" AnchorPane.rightAnchor="0.0">
