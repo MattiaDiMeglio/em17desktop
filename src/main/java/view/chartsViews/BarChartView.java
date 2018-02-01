@@ -9,8 +9,10 @@ import model.EventListModel;
 import model.EventModel;
 import model.chartsModels.BarChartModel;
 import model.chartsModels.MergedModel;
+import view.LoadingPopupView;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Questa classe rappresenta la view corrispondente al grafico {@link javafx.scene.chart.BarChart BarChart}.
@@ -67,7 +69,9 @@ public class BarChartView implements Observer, ChartInterface {
         initializeCharts();
 
         comboBox.valueProperty().addListener((ChangeListener<Integer>) (observable, oldValue, newValue) -> {
-            ChartsController.getInstance().populateCharts(String.valueOf(newValue));
+            CountDownLatch latch = new CountDownLatch(1);
+            ChartsController.getInstance().populateCharts(String.valueOf(newValue), latch);
+            new LoadingPopupView(latch);
             barChart.setTitle("Biglietti venduti per Location " + String.valueOf(newValue));
         });
         BarChartModel.getInstance().addObserver(this);

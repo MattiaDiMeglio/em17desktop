@@ -12,9 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.EventListModel;
+import model.EventModel;
 import view.*;
 
 import java.io.IOException;
@@ -29,6 +31,7 @@ import java.util.concurrent.ExecutionException;
  * @author ingSW20
  */
 public class ViewSourceController extends Application {
+
     /**
      * Attributo stage, che rappresenta lo stage principale dell'applicazione
      *
@@ -117,6 +120,10 @@ public class ViewSourceController extends Application {
     private DatePicker insertFineDataPicker;
     @FXML
     private TextField insertMaxGuestsLabel;
+    @FXML
+    private ToolBar searchToolBar;
+    @FXML
+    private VBox eventListViewVBox;
 
 
     /**
@@ -229,6 +236,7 @@ public class ViewSourceController extends Application {
         //dashBoardImage2Button.setOnAction(event -> changeView(eventListBox));
         //listener per il bottone sulla prima immagine nei risultati di ricerca
         eventListResult1Button.setOnAction(event -> changeView(eventBox));
+        //eventListResult1Button.setOnAction(event -> changeView(eventBox));
         //listener per il bottone "torna alla dashboard" della schermata evento
         eventoBackButton.setOnAction(event -> changeView(dashBoardBox));
     }
@@ -270,7 +278,7 @@ public class ViewSourceController extends Application {
      * metodo che si occupa di creare la dashboardview e cambiare la schermata
      */
     public void toDashBoardView() throws ExecutionException, InterruptedException {
-        new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, dashBoardTabPane, dashBoardInsertButton, this);
+                dashBoardTabPane, dashBoardInsertButton, this, searchToolBar);
         changeView(dashBoardBox);
         DBController dbController = DBController.getInstance();
         dbController.dashBoard();
@@ -294,11 +302,12 @@ public class ViewSourceController extends Application {
 
     }
 
-    public void toInsertView(){
+    public void toInsertView() {
 
         InsertController insertController = new InsertController(this);
         new InsertView(insertController, insertCancelButton, insertConfirmButton, insertTextArea,
                 insertLocationLabel, insertNameLabel, insertSlideshow, insertInizioDataPicker, insertFineDataPicker, insertMaxGuestsLabel);
+
         changeView(insertBox);
 
     }
@@ -312,4 +321,8 @@ public class ViewSourceController extends Application {
         LoginController.getInstance().shutdown();
     }
 
+    public void toEventListView(List<EventModel> foundedEventInSearch) {
+        new EventListView(eventListTabPane, foundedEventInSearch, eventListViewVBox);
+        changeView(eventListBox);
+    }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Observable;
 
 import com.google.firebase.database.IgnoreExtraProperties;
+import javafx.scene.image.Image;
 
 /**
  * Model contenente i dati del singolo evento
@@ -13,6 +14,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
  */
 @IgnoreExtraProperties
 public class EventModel extends Observable {
+
     /**
      * sottoclasse contenente i dati dei singoli settori
      */
@@ -56,9 +58,9 @@ public class EventModel extends Observable {
      */
     private boolean active;
     /**
-     * url della locandina
+     * immagine della locandina
      */
-    private String billboard;
+    private Image billboard;
     /**
      * data inizio
      */
@@ -95,6 +97,7 @@ public class EventModel extends Observable {
      * array di biglietti venduti per mese
      */
     private Integer[] ticketsSoldPerMonth = new Integer[12];
+    private Integer[] revenuePerMonth = new Integer[12];
     /**
      * biglietti venduti
      */
@@ -110,7 +113,7 @@ public class EventModel extends Observable {
     /**
      * lista di url della galleria immagini
      */
-    private List<String> slideshow;
+    private List<Image> slideshow;
 
 
     /**
@@ -226,7 +229,7 @@ public class EventModel extends Observable {
      * getter di locandina
      * @return
      */
-    public String getBillboard() {
+    public Image getBillboard() {
         return billboard;
     }
 
@@ -234,7 +237,7 @@ public class EventModel extends Observable {
      * setter di Locdandina
      * @param billboard
      */
-    public void setBillboard(String billboard) {
+    public void setBillboard(Image billboard) {
         this.billboard = billboard;
         setChanged(); //attiva il flag per gli observer
         notifyObservers(); //notifica gli observer
@@ -438,8 +441,8 @@ public class EventModel extends Observable {
 
     /**
      * metodo che aggiunge un'elemento a ticketsSoldPerMonth, in posizione num
-     * @param num
-     * @param accesses
+     * @param num mese
+     * @param accesses numero di biglietti
      */
     public void addOneSoldPerMonth(Integer num, Integer accesses) {
         ticketsSoldPerMonth[num] = ticketsSoldPerMonth[num] + accesses;
@@ -467,10 +470,40 @@ public class EventModel extends Observable {
     }
 
     /**
+     * getter di revenuePerMonth
+     * @return {@link #revenuePerMonth}
+     */
+    public Integer[] getRevenuePerMonth() {
+        return revenuePerMonth;
+    }
+
+    /**
+     * metodo per l'inizializzazione degli elementi di revenuePerMonth a 0
+     */
+    public void initializeRevenuePerMonth(){
+        for (int i = 0; i< revenuePerMonth.length; i++){
+            revenuePerMonth[i] = 0;
+        }
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
+     * metodo che aggiunge somma il parametro in ingresso "revenue" a quello contenuto nella stessa posizione di "num"
+     * @param num mese
+     * @param revenues guadagni da somare
+     */
+    public void addOneRevenuePerMonth(Integer num, Integer revenues) {
+        revenuePerMonth[num] = revenuePerMonth[num] + revenues;
+        setChanged();
+        notifyObservers();
+    }
+
+    /**
      * getter di Slideshow
      * @return
      */
-    public List<String> getSlideshow() {
+    public List<Image> getSlideshow() {
         return slideshow;
     }
 
@@ -478,7 +511,7 @@ public class EventModel extends Observable {
      * setter di slideshow
      * @param slideshow
      */
-    public void setSlideshow(List<String> slideshow) {
+    public void setSlideshow(List<Image> slideshow) {
         this.slideshow = slideshow;
         setChanged();
         notifyObservers();

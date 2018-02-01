@@ -6,8 +6,10 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
 import controller.chartsController.ChartsController;
+import javafx.scene.image.Image;
 import model.EventListModel;
 import model.EventModel;
+import view.LoadingPopupView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 
 public class DBController {
@@ -63,16 +66,14 @@ public class DBController {
         System.out.println("Collegamento al database...");
         //Scelgo la root di partenza del database
         database = FirebaseDatabase.getInstance().getReference("luogo");
-
         ChartsController.getInstance().setDatabase(database);
-        ChartsController.getInstance().populateCharts("2018");
-
-
+        databaseListener();
     }
 
-
     public void dashBoard() {
-        database.addListenerForSingleValueEvent(new ValueEventListener() {
+        CountDownLatch latch = new CountDownLatch(2);
+        new Thread(() -> ChartsController.getInstance().populateCharts("2018", latch)).start();
+        new Thread(() -> database.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -102,6 +103,7 @@ public class DBController {
                             EventModel event = new EventModel();//creo un nuovo event model
                             Integer ticketSold = 0;
                             event.initializeTicketPerMonth();
+                            event.initializeRevenuePerMonth();
                             Iterable<DataSnapshot> eventiIteable = eventiSnap.child("biglietti").getChildren();
                             while (eventiIteable.iterator().hasNext()) {
                                 DataSnapshot bigliettiSnap = eventiIteable.iterator().next();
@@ -111,11 +113,13 @@ public class DBController {
                                         settoriMap.get(bigliettiSnap.child("settore").getValue().toString()) + accesses);
 
                                 ticketSold = ticketSold + accesses;
+                                Integer revenue = accesses * Integer.valueOf(bigliettiSnap.child("prezzo").getValue().toString());
 
                                 String eventEndDate = bigliettiSnap.child("data vendita").getValue().toString();
                                 Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
 
                                 event.addOneSoldPerMonth(eventEndTime.getMonth(), accesses);
+                                event.addOneRevenuePerMonth(eventEndTime.getMonth(), revenue);
                             }
                             event.setEventKey(eventiSnap.getKey());
                             event.setSectorNameList(settoriName);
@@ -128,7 +132,16 @@ public class DBController {
                             event.setEventName(eventiSnap.child("nome").getValue().toString());
                             event.setActive((boolean) eventiSnap.child("attivo").getValue());
                             event.setEventDescription(eventiSnap.child("descrizione").getValue().toString());
-                            event.setBillboard(eventiSnap.child("copertina").getValue().toString());
+
+                            CountDownLatch latch1 = new CountDownLatch(1);
+                            new Thread(() -> {
+                                System.out.println("scarico l'immagine");
+                                Image image = new Image(eventiSnap.child("copertina").getValue().toString());
+                                event.setBillboard(image);
+                                System.out.println("settato");
+                                latch1.countDown();
+                            }).start();
+
                             DataSnapshot dataSnapshot = eventiSnap.child("data");
                             DataSnapshot timeSnapshot = eventiSnap.child("ora");
                             String eventStartDate = dataSnapshot.child("inizio").getValue().toString();
@@ -152,30 +165,70 @@ public class DBController {
                                 e.printStackTrace();
                             }
                             try {
-                                List <String> slidehow = new ArrayList<>();
+                                List<Image> slidehow = new ArrayList<>();
                                 DataSnapshot slideSnap = eventiSnap.child("galleria");
-                                Integer j=0;
+                                Integer j = 0;
+
+                                CountDownLatch latchSlideShow = new CountDownLatch(Math.toIntExact(slideSnap.getChildrenCount()));
                                 while (j < slideSnap.getChildrenCount()) {
-                                    String index = j.toString();
-                                    slidehow.add(slideSnap.child(index).getValue().toString());
+                                    Integer finalJ = j;
+                                    new Thread(() -> {
+                                        String index = finalJ.toString();
+                                        slidehow.add(new Image(slideSnap.child(index).getValue().toString()));
+                                        latchSlideShow.countDown();
+                                    }).start();
+
                                     j++;
                                 }
+                                latchSlideShow.await();
                                 event.setSlideshow(slidehow);
 
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
+
+                            latch1.await();
                             eventListModel.setListaEventi(event);
                             i++;
-
                         }
-
-
                     }
-                } catch (IndexOutOfBoundsException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
+                }
+                latch.countDown();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.out.println(error.getMessage());
+                latch.countDown();
+            }
+        })).start();
+        new LoadingPopupView(latch);
+    }
+
+    /**
+     * @param key
+     * @return
+     */
+    public void delete(String key) {
+
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                try {
+                    Iterable<DataSnapshot> location = snapshot.getChildren();
+                    while (location.iterator().hasNext()) {
+                        DataSnapshot locationSnap = location.iterator().next();
+                        Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
+                        while (eventi.iterator().hasNext()) {
+                            DataSnapshot eventiSnap = eventi.iterator().next();
+                            if (key.equals(eventiSnap.getKey())) {
+                                eventiSnap.getRef().removeValue();
+                            }
+                        }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -183,19 +236,38 @@ public class DBController {
 
             @Override
             public void onCancelled(DatabaseError error) {
+                System.out.println(error.getMessage());
+            }
+        });
+    }
+
+    private void databaseListener(){
+        database.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
+                System.out.println("cambiato");
+                // todo all'eliminazione si deve riaggiornare la dash. Se aggiorno i model la view rimane uguale
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot snapshot) {
+                System.out.println("rimosso");
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
 
             }
         });
-
-
-        return;
     }
-
-    public boolean delete(String key) {
-
-
-        return false;
-    }
-
-
 }

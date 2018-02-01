@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * View che si occupa dello slideshow di immagini
@@ -126,7 +127,7 @@ public class SlideShowView implements Observer {
             for (i = 0; i < eventModel.getSlideshow().size(); i++) {
                 Button button = new Button();
                 buttonList.add(button);
-                Image image = new Image(eventModel.getSlideshow().get(i));
+                Image image = eventModel.getSlideshow().get(i);
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(300.0);
                 imageView.setFitHeight(280.0);
@@ -180,13 +181,13 @@ public class SlideShowView implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         hBox.getChildren().removeAll();
-
         if (o instanceof EventListModel) {
             int eventIndex = (int) arg;
 
             if (eventIndex < buttonList.size()) {
-                //TODO mettere il popolamento in un thread separato
-                Image image = new Image(eventListModel.getListaEventi().get(eventIndex).getBillboard());
+                System.out.println("sono in update");
+                Image image = eventListModel.getListaEventi().get(eventIndex).getBillboard();
+                System.out.println(image.toString());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(300.0);
                 imageView.setFitHeight(280.0);
@@ -198,7 +199,7 @@ public class SlideShowView implements Observer {
         } else {
             int i=0;
             while (i < eventModel.getSlideshow().size()){
-                Image image = new Image(eventModel.getSlideshow().get(i));
+                Image image = eventModel.getSlideshow().get(i);
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(300.0);
                 imageView.setFitHeight(280.0);
