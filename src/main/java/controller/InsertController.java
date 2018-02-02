@@ -25,7 +25,7 @@ public class InsertController
     public void next(InsertView insertView, List<String> texts) {
         System.out.println("avanti");
         EventModel newEvent =  new EventModel();
-        viewSourceController.toInsetTicketView();
+        viewSourceController.toInsetTicketTypeView();
         //newEvent.setEventName(insertView.ge);
 
     }

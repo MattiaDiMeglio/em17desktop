@@ -23,8 +23,9 @@ public class LocationListModel extends Observable {
             return locationList;
         }
 
-        public void setListaEventi(LocationModel location) {
+        public void setListaLocation(LocationModel location) {
             this.locationList.add(location);
+            System.out.println("model " + location.getLocationName());
             Platform.runLater(() -> {
                 setChanged();
                 notifyObservers(locationList.size());

@@ -82,15 +82,20 @@ public class DBController {
                     Iterable<DataSnapshot> location = snapshot.getChildren();
                     eventListModel = EventListModel.getInstance();//ottengo l'instanza di event controller
                     locationListModel = LocationListModel.getInstance();
-                    LocationModel locationModel = new LocationModel();
 
 
                     int i = 0;
                     while (location.iterator().hasNext()) {
+                        LocationModel locationModel = new LocationModel();
+
                         DataSnapshot locationSnap = location.iterator().next();
 
                         Iterable<DataSnapshot> settori = locationSnap.child("settori").getChildren();
                         Integer totTickets = 0;
+
+                        locationModel.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
+                        locationModel.setLocationName(locationSnap.child("nome").getValue().toString());
+                        System.out.println(locationModel.getLocationName() + locationModel.getLocationAddress());
 
                         List<String> settoriName = new ArrayList<>();
                         List<String> settoriSeats = new ArrayList<>();
@@ -102,8 +107,6 @@ public class DBController {
                         }
                         locationModel.setSectorList(settoriName);
                         locationModel.setSeatsList(settoriSeats);
-                        locationModel.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
-                        locationModel.setLocationName(locationSnap.child("nome").getValue().toString());
                         Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
                         while (eventi.iterator().hasNext()) {
                             DataSnapshot eventiSnap = eventi.iterator().next();
@@ -200,13 +203,15 @@ public class DBController {
                             eventListModel.setListaEventi(event);
                             i++;
                         }
-                        locationListModel.setListaEventi(locationModel);
+                        locationListModel.setListaLocation(locationModel);
+                        System.out.println(locationListModel.getListaEventi().toString());
 
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 latch.countDown();
+                System.out.println(locationListModel.getListaEventi().get(0).getLocationName() + locationListModel.getListaEventi().get(1).getLocationName() );
             }
 
             @Override
