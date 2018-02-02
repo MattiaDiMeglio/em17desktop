@@ -9,13 +9,13 @@ import java.util.Observable;
 public class LocationListModel extends Observable {
 
         private static LocationListModel instance = new LocationListModel();
-        List<LocationModel> locationList = new ArrayList<>();
+        private List<LocationModel> locationList = new ArrayList<>();
 
         public static LocationListModel getInstance() {
             return instance;
         }
 
-        protected LocationListModel (){
+        private LocationListModel (){
         };
 
 

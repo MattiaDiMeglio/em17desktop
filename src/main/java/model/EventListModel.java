@@ -10,13 +10,13 @@ import java.util.Observable;
 public class EventListModel extends Observable{
 
     private static EventListModel instance = new EventListModel();
-    List<EventModel> listaEventi = new ArrayList<>();
+    private List<EventModel> listaEventi = new ArrayList<>();
 
     public static EventListModel getInstance() {
         return instance;
     }
 
-    protected EventListModel (){
+    private EventListModel (){
     };
 
 
