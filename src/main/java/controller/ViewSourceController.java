@@ -126,6 +126,8 @@ public class ViewSourceController extends Application {
     private ImageView insertPlaybillImageView;
     @FXML
     private Button insertUploadButton;
+    @FXML
+    private VBox InsertTickerVbox;
 
     /**
      * toolbar presente nella dashboard
@@ -365,7 +367,7 @@ public class ViewSourceController extends Application {
     }
 
     public void toInsetTicketView() {
-
+       // InsertTickerVbox
         changeView(insertTicketBox);
     }
 

@@ -608,24 +608,24 @@
     <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
         <center>
-            <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <GridPane fx:id="insertTicketGrid">
-                    <Label GridPane.columnIndex="1" GridPane.rowIndex="1" text="Nome Settore"></Label>
-                    <Label GridPane.columnIndex="2" GridPane.rowIndex="1" text="Numero Posti"></Label>
-                    <Label GridPane.columnIndex="3" GridPane.rowIndex="1" text="Costo Intero"></Label>
-                    <Separator GridPane.rowIndex="2"/>
-                </GridPane>
-            </VBox>
-            <HBox VBox.vgrow="ALWAYS"></HBox>
-            <HBox spacing="20">
+            <VBox fx:id="InsertTickerVbox" VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                 <padding>
-                    <Insets  left="20.0" right="20.0" bottom="10.0" />
+                    <Insets top="10.0d"  left="10.0" right="10.0" bottom="10.0" />
                 </padding>
-                <Button text="Indietro"></Button>
-                <VBox HBox.hgrow="ALWAYS"></VBox>
-                <Button style=" -fx-background-color: #199ED9; -fx-text-fill: white" text="Conferma">
-                </Button>
-            </HBox>
+                <HBox spacing="50">
+                    <Label text="Nome Settore"></Label>
+                    <Label text="Numero Posti"></Label>
+                    <Label text="Costo Intero"></Label>
+                </HBox>
+                <Separator></Separator>
+                <HBox VBox.vgrow="ALWAYS"></HBox>
+                <HBox spacing="20" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                    <Button text="Indietro" ></Button>
+                    <VBox HBox.hgrow="ALWAYS"></VBox>
+                    <Button style=" -fx-background-color: #199ED9; -fx-text-fill: white" text="Conferma" >
+                    </Button>
+                </HBox>
+            </VBox>
         </center>
         <!-- left della schermata, contenente la barra laterale-->
         <left>
