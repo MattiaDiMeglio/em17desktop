@@ -7,6 +7,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
@@ -92,11 +94,12 @@ public class EventListView {
 
     /**
      * costruttore per inizializzare la classe
-     * @param eventListTabPane TabPane contenente i grafici
-     * @param foundedEventInSearch elementi trovati
-     * @param eventListViewVBox VBox popolata con i risultati della ricerca
+     *
+     * @param eventListTabPane           TabPane contenente i grafici
+     * @param foundedEventInSearch       elementi trovati
+     * @param eventListViewVBox          VBox popolata con i risultati della ricerca
      * @param searchToolBarEventListView ToolBar con gli elementi per la ricerca
-     * @param viewSourceController istanza di {@link ViewSourceController} per il cambio di view
+     * @param viewSourceController       istanza di {@link ViewSourceController} per il cambio di view
      */
     public EventListView(TabPane eventListTabPane, List<EventModel> foundedEventInSearch, VBox eventListViewVBox,
                          ToolBar searchToolBarEventListView, ViewSourceController viewSourceController) {
@@ -118,6 +121,7 @@ public class EventListView {
 
     /**
      * inizializza la tabella che verrà visualizzata nel TabPane
+     *
      * @param tabPane TabPane che conterrà la tabella
      */
     private void initalizeTableView(TabPane tabPane) {
@@ -159,13 +163,14 @@ public class EventListView {
 
     /**
      * inizializza  la barra di ricerca
+     *
      * @param toolBar ToolBar che conterrà la barra di ricerca
      */
     private void initalizeSearch(ToolBar toolBar) {
         notFoundLabel = new Label();
         notFoundLabel.setText("non è stato trovato nessun elemento");
         notFoundLabel.fontProperty().setValue(new Font(20));
-        searchController = new SearchController();
+        searchController = new SearchController(this);
 
         TextField textField = (TextField) toolBar.getItems().get(2);
         List<String> eventsName = searchController.getEventsName();
@@ -173,15 +178,12 @@ public class EventListView {
 
         Button button = (Button) toolBar.getItems().get(3);
         button.setOnAction(event -> {
-            resetSearch();
-            foundedEventInSearch.addAll(searchController.search(textField.getText()));
-            if (foundedEventInSearch.isEmpty()) {
-                resetSearch();
-                foundedElementsVBox.getChildren().add(notFoundLabel);
-                populateWithSelectedItems();
-            } else {
-                createResult();
-            }
+            search(textField.getText());
+        });
+
+        Button advancedSearchButton = (Button) toolBar.getItems().get(4);
+        advancedSearchButton.setOnAction(event -> {
+            new AdvancedSearchView(searchController);
         });
 
         //bottone settato a defalt, per essere premuto con invio
@@ -202,8 +204,24 @@ public class EventListView {
         foundedElementsVBox.getChildren().clear();
         foundedElementsVBox.paddingProperty().setValue(new Insets(5.0, 5.0, 2.0, 12.0));
         foundedElementsVBox.getChildren().add(selectAllCheckBox);
+    }
 
-        advancedSearch = new AdvancedSearchView(searchController);
+    private void search(String string) {
+        resetSearch();
+        foundedEventInSearch.addAll(searchController.search(string));
+        if (foundedEventInSearch.isEmpty()) {
+            resetSearch();
+            foundedElementsVBox.getChildren().add(notFoundLabel);
+            populateWithSelectedItems();
+        } else {
+            createResult();
+        }
+    }
+
+    public void advancedSearch(List<EventModel> foundedEventInSearch) {
+        resetSearch();
+        this.foundedEventInSearch = foundedEventInSearch;
+        createResult();
     }
 
     /**
