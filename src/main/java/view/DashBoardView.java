@@ -34,14 +34,9 @@ import java.util.*;
  */
 public class DashBoardView implements Observer {
 
-    ViewSourceController viewSourceController;
-    EventListModel eventListModel = EventListModel.getInstance();
-    SlideShowController slideShowController = new SlideShowController();
-    HBox dashSlide;
-    int i = 0;
+    private ViewSourceController viewSourceController;
     private SearchController searchController;
     private List<EventModel> foundedEventInSearch;
-
 
     public DashBoardView(HBox dashSlide, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton,
                          TabPane dashBoardTabPane, Button dashBoardInsertButton,
@@ -49,13 +44,14 @@ public class DashBoardView implements Observer {
         this.viewSourceController = viewSourceController;
         initalizeCharts(dashBoardTabPane);
         initalizeSearch(searchToolBar);
+        EventListModel eventListModel = EventListModel.getInstance();
         eventListModel.addObserver(this);
 
-        this.dashSlide = dashSlide;
-        while (dashSlide.getChildren().size() > 0){
-            dashSlide.getChildren().remove(dashSlide.getChildren().size() -1);
+        while (dashSlide.getChildren().size() > 0) {
+            dashSlide.getChildren().remove(dashSlide.getChildren().size() - 1);
         }
 
+        SlideShowController slideShowController = new SlideShowController();
         slideShowController.createSlide(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, viewSourceController);
         dashBoardInsertButton.setOnAction(event -> {
             viewSourceController.toInsertView();
@@ -73,12 +69,7 @@ public class DashBoardView implements Observer {
         Button button = (Button) toolBar.getItems().get(1);
         button.setOnAction(event -> {
             foundedEventInSearch = searchController.search(textField.getText());
-            if (foundedEventInSearch.isEmpty()){
-                System.out.println("non è stato trovato niente");
-                viewSourceController.toEventListView(foundedEventInSearch);
-            }else {
-                viewSourceController.toEventListView(foundedEventInSearch);
-            }
+            viewSourceController.toEventListView(foundedEventInSearch);
         });
         //bottone settato a defalt, per essere premuto con invio
         button.setDefaultButton(true);
@@ -124,7 +115,7 @@ public class DashBoardView implements Observer {
 
         new PieChartView(pieChart, comboBox2);
         new LineChartView(lineChart, comboBox1);
-        new BarChartView(barChart,comboBox3);
+        new BarChartView(barChart, comboBox3);
         new LineChartView(stackedAreaChart, comboBox4);
 
     }

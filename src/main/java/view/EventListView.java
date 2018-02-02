@@ -108,6 +108,7 @@ public class EventListView {
         } else {
             createResult();
         }
+
     }
 
     /**
@@ -168,7 +169,6 @@ public class EventListView {
         Button button = (Button) toolBar.getItems().get(3);
         button.setOnAction(event -> {
             resetSearch();
-            //mergedController.resetModel();
             foundedEventInSearch.addAll(searchController.search(textField.getText()));
             if (foundedEventInSearch.isEmpty()) {
                 resetSearch();
@@ -178,6 +178,7 @@ public class EventListView {
                 createResult();
             }
         });
+
         //bottone settato a defalt, per essere premuto con invio
         button.setDefaultButton(true);
         selectAllCheckBox = new CheckBox();
@@ -196,6 +197,8 @@ public class EventListView {
         foundedElementsVBox.getChildren().clear();
         foundedElementsVBox.paddingProperty().setValue(new Insets(5.0, 5.0, 2.0, 12.0));
         foundedElementsVBox.getChildren().add(selectAllCheckBox);
+
+        new AdvancedSearchView(searchController);
     }
 
     /**
