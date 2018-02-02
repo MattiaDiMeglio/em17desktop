@@ -140,6 +140,44 @@ public class SlideShowView implements Observer {
         }
     }
 
+    public SlideShowView(HBox hBox, Button left, Button right, SlideShowController slideShowController, List<String> immagini) {
+        int i=0; //
+        buttonList = new ArrayList<>();
+        activeList = new ArrayList<>();
+
+        this.slideShowController = slideShowController;
+        this.hBox=hBox;
+
+        right.setOnAction(event -> {
+            right();
+        });
+        left.setOnAction(event -> {
+            left();
+        });
+
+        if (hBox != null) {
+            while (hBox.getChildren().size() > 0){
+                hBox.getChildren().remove(hBox.getChildren().size() -1);
+            }
+            hBox.setAlignment(Pos.CENTER);
+            hBox.setSpacing(20);
+            for (i = 0; i < immagini.size(); i++) {
+                Button button = new Button();
+                buttonList.add(button);
+                Image image = new Image(immagini.get(i));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(300.0);
+                imageView.setFitHeight(280.0);
+                buttonList.get(i).setGraphic(imageView);
+                if (i<4){
+                    hBox.getChildren().add(button);
+                    activeList.add(i);
+                }
+            }
+        }
+    }
+
+
 
     private void right() {
         if (activeList.get(3)< (buttonList.size() -1)){

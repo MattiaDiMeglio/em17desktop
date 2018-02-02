@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.beans.Observable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import model.EventListModel;
@@ -38,5 +39,10 @@ public class SlideShowController {
         viewSourceController.toEventView(index);
 
 
+    }
+
+    public void createSlide(Button left, HBox hbox, Button right, List<String> immagini) {
+        SlideShowView slideShowView = new SlideShowView(hbox, left, right, this, immagini);
+        this.viewSourceController = viewSourceController;
     }
 }

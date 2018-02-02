@@ -124,6 +124,8 @@ public class ViewSourceController extends Application {
     private Button insertPlayBillLabel;
     @FXML
     private ImageView insertPlaybillImageView;
+    @FXML
+    private Button insertUploadButton;
 
     /**
      * toolbar presente nella dashboard
@@ -341,15 +343,29 @@ public class ViewSourceController extends Application {
     public void toInsertView() {
 
         InsertController insertController = new InsertController(this);
-        new InsertView(insertController, insertCancelButton, insertConfirmButton, insertTextArea,
-                insertLocationLabel, insertNameLabel, insertSlideshow, insertInizioDataPicker, insertFineDataPicker, insertMaxGuestsLabel,
-                insertPlayBillLabel, insertPlaybillImageView, insertSlideshow);
+        List<Button> buttonList = new ArrayList<>();
+        List<TextField> texts = new ArrayList<>();
+
+        buttonList.add(insertCancelButton);
+        buttonList.add(insertConfirmButton);
+        buttonList.add(insertPlayBillLabel);
+        buttonList.add(insertUploadButton);
+
+        texts.add(insertNameLabel);
+        texts.add(insertLocationLabel);
+        texts.add(insertMaxGuestsLabel);
+
+        new InsertView(insertController, buttonList, texts, insertTextArea, insertSlideshow, insertInizioDataPicker,
+                insertFineDataPicker, insertPlaybillImageView);
+
+
 
         changeView(insertBox);
 
     }
 
     public void toInsetTicketView() {
+
         changeView(insertTicketBox);
     }
 

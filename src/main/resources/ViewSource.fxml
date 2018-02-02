@@ -559,13 +559,6 @@
 
                     <HBox spacing="20">
                         <Button fx:id="insertUploadButton" text="Upload Galleria"></Button>
-                        <VBox>
-                            <HBox>
-                                <Label text="Uploading: "></Label>
-                                <Label fx:id="insertPercentageLabel" text="x"></Label>
-                            </HBox>
-                            <ProgressBar ></ProgressBar>
-                        </VBox>
                     </HBox>
                 </VBox>
                 <HBox VBox.vgrow="ALWAYS"></HBox>

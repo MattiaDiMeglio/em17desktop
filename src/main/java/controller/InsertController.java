@@ -6,7 +6,6 @@ import view.InsertView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class InsertController
 {
@@ -18,7 +17,7 @@ public class InsertController
         this.viewSourceController=viewSourceController;
     }
 
-    public void back () throws ExecutionException, InterruptedException {
+    public void back() {
         System.out.println("indietro");
         viewSourceController.turnBack();
     }
@@ -31,7 +30,7 @@ public class InsertController
 
     }
 
-    public String maxVisitors ( String location) throws InterruptedException {
+    public String maxVisitors ( String location) {
         int i=0;
         while (i < eventListModel.getListaEventi().size()-1){
             if (location.toLowerCase().equals(eventListModel.getListaEventi().get(i).getLocationName().toLowerCase())){
