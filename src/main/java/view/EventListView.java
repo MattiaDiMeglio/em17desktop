@@ -41,6 +41,11 @@ public class EventListView {
     private Label notFoundLabel;
 
     /**
+     * classe per la gestione del popup per la ricerca avanzata
+     */
+    private AdvancedSearchView advancedSearch;
+
+    /**
      * variabile per la gestione dei dati visualizzati nei chart
      */
     private MergedController mergedController;
@@ -198,7 +203,7 @@ public class EventListView {
         foundedElementsVBox.paddingProperty().setValue(new Insets(5.0, 5.0, 2.0, 12.0));
         foundedElementsVBox.getChildren().add(selectAllCheckBox);
 
-        new AdvancedSearchView(searchController);
+        advancedSearch = new AdvancedSearchView(searchController);
     }
 
     /**
