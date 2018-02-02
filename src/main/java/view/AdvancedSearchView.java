@@ -1,21 +1,21 @@
 package view;
 
 import controller.SearchController;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.util.List;
 
 public class AdvancedSearchView {
-    AdvancedSearchView(SearchController searchController) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+   public AdvancedSearchView(SearchController searchController) {
         alert.setTitle("Ricerca Avanzata");
         alert.setHeaderText("Ricerca avanzata");
 
@@ -47,13 +47,7 @@ public class AdvancedSearchView {
         TextField locationName = new TextField();
         locationName.setPromptText("Nome location");
         List<String> locationNames = searchController.getLocationNames();
-        TextFields.bindAutoCompletion(locationName, locationNames).onAutoCompletedProperty().set(new EventHandler<AutoCompletionBinding.AutoCompletionEvent<String>>() {
-            @Override
-            public void handle(AutoCompletionBinding.AutoCompletionEvent<String> event) {
-
-                System.out.println("autocompletatp");
-            }
-        });
+        TextFields.bindAutoCompletion(locationName, locationNames);
 
         grid.add(new Label("Prezzo: "), 0, 0);
         grid.add(prezzoMaxText, 1, 0);
@@ -63,8 +57,10 @@ public class AdvancedSearchView {
         grid.add(endDatePicker, 2, 1);
         grid.add(new Label("Nome Location"), 0, 2);
         grid.add(locationName, 1, 2);
-
         alert.getDialogPane().setContent(grid);
+    }
+
+    public void showDialog(){
         alert.showAndWait();
     }
 }

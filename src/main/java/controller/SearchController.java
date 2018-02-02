@@ -39,7 +39,7 @@ public class SearchController {
     public List<String> getLocationNames(){
         List<String> locationNames = new ArrayList<>();
         for (LocationModel locationModel : locationList){
-            locationNames.add(locationModel.getLocationName());
+            locationNames.add(locationModel.getLocationName() + " - " + locationModel.getLocationAddress());
         }
         return locationNames;
     }
