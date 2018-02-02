@@ -80,6 +80,8 @@ public class DashBoardView implements Observer {
                 viewSourceController.toEventListView(foundedEventInSearch);
             }
         });
+        //bottone settato a defalt, per essere premuto con invio
+        button.setDefaultButton(true);
     }
 
     private void initalizeCharts(TabPane tabPane) {
