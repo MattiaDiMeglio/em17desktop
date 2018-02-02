@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import model.EventListModel;
 import model.EventModel;
 import view.InsertView;
@@ -9,9 +11,10 @@ import java.util.List;
 
 public class InsertController
 {
-    ViewSourceController viewSourceController;
-    DBController dbController = DBController.getInstance();
-    EventListModel eventListModel = EventListModel.getInstance();
+    private EventModel newEvent =  new EventModel();
+    private ViewSourceController viewSourceController;
+    private DBController dbController = DBController.getInstance();
+    private EventListModel eventListModel = EventListModel.getInstance();
 
     public InsertController(ViewSourceController viewSourceController) {
         this.viewSourceController=viewSourceController;
@@ -22,11 +25,19 @@ public class InsertController
         viewSourceController.turnBack();
     }
 
-    public void next(InsertView insertView, List<String> texts) {
+    public void next(List<String> strings, List<Image> immagini, ImageView insertPlaybillImageView) {
         System.out.println("avanti");
-        EventModel newEvent =  new EventModel();
+
+        newEvent.setEventName(strings.get(0));
+        newEvent.setEventDescription(strings.get(3));
+        newEvent.setBillboard(insertPlaybillImageView.getImage());
+        newEvent.setStartingDate(strings.get(4));
+        newEvent.setEndingDate(strings.get(5));
+        newEvent.setLocationName(strings.get(1));
+        newEvent.setMaxVisitors(Integer.parseInt(strings.get(2)));
+        newEvent.setSlideshow(immagini);
         viewSourceController.toInsetTicketTypeView();
-        //newEvent.setEventName(insertView.ge);
+
 
     }
 

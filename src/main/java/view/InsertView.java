@@ -19,6 +19,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class InsertView {
     InsertController insertController;
@@ -38,7 +39,7 @@ public class InsertView {
     private final Integer[] oldVal = {0};
     private Integer newVal = 0;
     private SlideShowController slideShowController = new SlideShowController();
-    private List<String> immagini = new ArrayList<>();
+    private List<Image> immagini = new ArrayList<>();
     private List<String> texts = new ArrayList<>();
 
 
@@ -143,7 +144,8 @@ public class InsertView {
         texts.add(insertInizioDataPicker.getValue().toString());
         texts.add(insertFineDataPicker.getValue().toString());
 
-        insertController.next(this, texts);
+
+        insertController.next( texts, immagini, insertPlaybillImageView);
     }
 
     private void playbill(){
@@ -158,13 +160,13 @@ public class InsertView {
         );
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
-            System.out.println(file.getAbsolutePath());
             insertPlaybillImageView.setImage(new Image(file.toURI().toString()));
         }
     }
 
     private void slideshow() {
         Stage stage = new Stage();
+        List<String> immaginiUri = new ArrayList<>();
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
@@ -176,12 +178,17 @@ public class InsertView {
         List<File> list = fileChooser.showOpenMultipleDialog(stage);
         if (list != null) {
             for (File file : list) {
-                    immagini.add(file.toURI().toString());
+
+                    file.getAbsolutePath().replaceAll("\\d+", "_");
+                immaginiUri.add(file.toURI().toString());
             }
             Button left = (Button)insertSlideshow.getChildren().get(0);
             HBox slide = (HBox)insertSlideshow.getChildren().get(1);
             Button right= (Button) insertSlideshow.getChildren().get(2);
-            slideShowController.createSlide(left, slide, right, immagini);
+            slideShowController.createSlide(left, slide, right, immaginiUri);
+        }
+        for(String string: immaginiUri){
+            immagini.add(new Image(string));
         }
     }
 

@@ -95,7 +95,6 @@ public class DBController {
 
                         locationModel.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
                         locationModel.setLocationName(locationSnap.child("nome").getValue().toString());
-                        System.out.println(locationModel.getLocationName() + locationModel.getLocationAddress());
 
                         List<String> settoriName = new ArrayList<>();
                         List<String> settoriSeats = new ArrayList<>();
@@ -204,14 +203,12 @@ public class DBController {
                             i++;
                         }
                         locationListModel.setListaLocation(locationModel);
-                        System.out.println(locationListModel.getListaEventi().toString());
 
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 latch.countDown();
-                System.out.println(locationListModel.getListaEventi().get(0).getLocationName() + locationListModel.getListaEventi().get(1).getLocationName() );
             }
 
             @Override
