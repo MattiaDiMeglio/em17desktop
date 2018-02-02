@@ -82,10 +82,11 @@ public class DBController {
                     Iterable<DataSnapshot> location = snapshot.getChildren();
                     eventListModel = EventListModel.getInstance();//ottengo l'instanza di event controller
                     locationListModel = LocationListModel.getInstance();
+                    LocationModel locationModel = new LocationModel();
+
 
                     int i = 0;
                     while (location.iterator().hasNext()) {
-                        LocationModel locationModel = new LocationModel();
                         DataSnapshot locationSnap = location.iterator().next();
 
                         Iterable<DataSnapshot> settori = locationSnap.child("settori").getChildren();
@@ -101,6 +102,8 @@ public class DBController {
                         }
                         locationModel.setSectorList(settoriName);
                         locationModel.setSeatsList(settoriSeats);
+                        locationModel.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
+                        locationModel.setLocationName(locationSnap.child("nome").getValue().toString());
                         Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
                         while (eventi.iterator().hasNext()) {
                             DataSnapshot eventiSnap = eventi.iterator().next();
@@ -136,9 +139,7 @@ public class DBController {
                             event.setMaxVisitors(totTickets);
                             event.setTicketSold(ticketSold);
                             event.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
-                            locationModel.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
                             event.setLocationName(locationSnap.child("nome").getValue().toString());
-                            locationModel.setLocationName(locationSnap.child("nome").getValue().toString());
                             event.setEventName(eventiSnap.child("nome").getValue().toString());
                             event.setActive((boolean) eventiSnap.child("attivo").getValue());
                             event.setEventDescription(eventiSnap.child("descrizione").getValue().toString());
@@ -196,10 +197,11 @@ public class DBController {
                             }
 
                             latch1.await();
-                            locationListModel.setListaEventi(locationModel);
                             eventListModel.setListaEventi(event);
                             i++;
                         }
+                        locationListModel.setListaEventi(locationModel);
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

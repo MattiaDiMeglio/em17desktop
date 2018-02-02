@@ -180,7 +180,7 @@ public class ViewSourceController extends Application {
      */
     private Node insertBox;
 
-    private Node insertTicketBox;
+    private Node insertTicketTypeBox;
 
     /**
      * variabile per memorizzare la view precedente alla quale si vuole tornare
@@ -258,7 +258,7 @@ public class ViewSourceController extends Application {
         loginBox = mainAnchorPane.getChildren().get(3);
         recoveryBox = mainAnchorPane.getChildren().get(4);
         insertBox = mainAnchorPane.getChildren().get(5);
-        insertTicketBox = mainAnchorPane.getChildren().get(6);
+        insertTicketTypeBox = mainAnchorPane.getChildren().get(6);
 
 
         //metodo per passare alla loginview
@@ -366,9 +366,9 @@ public class ViewSourceController extends Application {
 
     }
 
-    public void toInsetTicketView() {
+    public void toInsetTicketTypeView() {
        // InsertTickerVbox
-        changeView(insertTicketBox);
+        changeView(insertTicketTypeBox);
     }
 
     public void shutdown() {
