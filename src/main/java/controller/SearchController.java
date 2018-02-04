@@ -20,7 +20,7 @@ public class SearchController {
     public SearchController(EventListView eventListView) {
         this.eventListView = eventListView;
         eventList = EventListModel.getInstance().getListaEventi();
-        locationList = LocationListModel.getInstance().getListaEventi();
+        locationList = LocationListModel.getInstance().getLocationList();
     }
 
     public SearchController() {

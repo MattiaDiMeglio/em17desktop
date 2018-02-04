@@ -624,12 +624,7 @@
                 <padding>
                     <Insets top="10.0d"  left="10.0" right="10.0" bottom="10.0" />
                 </padding>
-                <HBox spacing="50">
-                    <Label text="Nome Settore"></Label>
-                    <Label text="Numero Posti"></Label>
-                    <Label text="Costo Intero"></Label>
-                </HBox>
-                <Separator></Separator>
+
                 <HBox VBox.vgrow="ALWAYS"></HBox>
                 <HBox spacing="20" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                     <Button fx:id="ticketTypeBackButton" text="Indietro" ></Button>

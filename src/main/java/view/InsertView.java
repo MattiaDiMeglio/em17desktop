@@ -4,10 +4,7 @@ import controller.InsertController;
 import controller.SlideShowController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -15,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
 
+import javax.swing.*;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -75,6 +73,7 @@ public class InsertView {
     }
 
     private void initListeners() {
+
         insertPlayBillLabel.setOnAction(event -> {
             playbill();
         });
@@ -123,11 +122,12 @@ public class InsertView {
         });
 
         insertCancelButton.setOnAction(event -> {
-                back();
+            back();
         });
 
 
         insertConfirmButton.setOnAction(event -> {
+
             next();
         });
     }
@@ -137,15 +137,14 @@ public class InsertView {
     }
 
     private void next() {
-        texts.add(insertNameLabel.getText());
-        texts.add(insertLocationLabel.getText());
-        texts.add(insertMaxGuestsLabel.getText());
-        texts.add(insertTextArea.getText());
-        texts.add(insertInizioDataPicker.getValue().toString());
-        texts.add(insertFineDataPicker.getValue().toString());
+            texts.add(insertNameLabel.getText());
+            texts.add(insertLocationLabel.getText());
+            texts.add(insertMaxGuestsLabel.getText());
+            texts.add(insertTextArea.getText());
+            texts.add(insertInizioDataPicker.getValue().toString());
+            texts.add(insertFineDataPicker.getValue().toString());
+            insertController.next(texts, immagini, insertPlaybillImageView);
 
-
-        insertController.next( texts, immagini, insertPlaybillImageView);
     }
 
     private void playbill(){
@@ -193,20 +192,26 @@ public class InsertView {
     }
 
     private void maxVisitorControl(String newValue){
-        if (!newValue.matches("\\d*")){
-            insertMaxGuestsLabel.setText(oldVal[0].toString());
-        }
-        if (insertMaxGuestsLabel.getText().length() > 7) {
-            String s = insertMaxGuestsLabel.getText().substring(0, 7);
-            insertMaxGuestsLabel.setText(s);
+        try {
+            if (!newValue.matches("\\d*")) {
+                insertMaxGuestsLabel.setText(oldVal[0].toString());
+            }
+            if (insertMaxGuestsLabel.getText().length() > 7) {
+                String s = insertMaxGuestsLabel.getText().substring(0, 7);
+                insertMaxGuestsLabel.setText(s);
+            }
+        } catch (NullPointerException e){
         }
     }
 
     private void focusLocation (Boolean newPropertyValue){
-        if (!newPropertyValue)
-        {
-            insertMaxGuestsLabel.setText(insertController.maxVisitors(insertLocationLabel.getText()));
-            oldVal[0] = Integer.parseInt(insertController.maxVisitors(insertLocationLabel.getText()));
+        try {
+            if (!newPropertyValue) {
+                String[] parts = insertLocationLabel.getText().split("\\-");
+                insertMaxGuestsLabel.setText(insertController.maxVisitors(parts[0]));
+                oldVal[0] = Integer.parseInt(insertController.maxVisitors(parts[0]));
+            }
+        } catch (NumberFormatException e){
         }
 
     }
