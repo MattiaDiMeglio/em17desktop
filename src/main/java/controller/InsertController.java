@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.EventListModel;
 import model.EventModel;
-import view.InsertView;
+import model.LocationListModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +15,17 @@ public class InsertController
     private ViewSourceController viewSourceController;
     private DBController dbController = DBController.getInstance();
     private EventListModel eventListModel = EventListModel.getInstance();
+    private LocationListModel locationListModel = LocationListModel.getInstance();
 
     public InsertController(ViewSourceController viewSourceController) {
         this.viewSourceController=viewSourceController;
     }
 
     public void back() {
-        System.out.println("indietro");
         viewSourceController.turnBack();
     }
 
     public void next(List<String> strings, List<Image> immagini, ImageView insertPlaybillImageView) {
-        System.out.println("avanti");
-
         newEvent.setEventName(strings.get(0));
         newEvent.setEventDescription(strings.get(3));
         newEvent.setBillboard(insertPlaybillImageView.getImage());
@@ -36,10 +34,10 @@ public class InsertController
         newEvent.setLocationName(strings.get(1));
         newEvent.setMaxVisitors(Integer.parseInt(strings.get(2)));
         newEvent.setSlideshow(immagini);
-        viewSourceController.toInsetTicketTypeView();
-
-
+        viewSourceController.toInsetTicketTypeView(this, newEvent);
     }
+
+
 
     public String maxVisitors ( String location) {
         int i=0;
@@ -55,10 +53,8 @@ public class InsertController
     public List<String> getLocations () {
         List<String> locations = new ArrayList<>();
         int i=0;
-        while (i < eventListModel.getListaEventi().size()-1){
-            if (!locations.contains(eventListModel.getListaEventi().get(i).getLocationName())){
-                locations.add(eventListModel.getListaEventi().get(i).getLocationName());
-            }
+        while (i < locationListModel.getLocationList().size()-1){
+            locations.add(locationListModel.getLocationList().get(i).getLocationName());
             i++;
         }
 

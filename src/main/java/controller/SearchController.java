@@ -15,7 +15,7 @@ public class SearchController {
 
     public SearchController(){
         eventList = EventListModel.getInstance().getListaEventi();
-        locationList = LocationListModel.getInstance().getListaEventi();
+        locationList = LocationListModel.getInstance().getLocationList();
     }
 
     public List<EventModel> search(String text) {

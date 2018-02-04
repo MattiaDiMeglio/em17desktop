@@ -19,7 +19,7 @@ public class LocationListModel extends Observable {
         };
 
 
-        public List<LocationModel> getListaEventi() {
+        public List<LocationModel> getLocationList() {
             return locationList;
         }
 
