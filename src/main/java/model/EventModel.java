@@ -115,6 +115,16 @@ public class EventModel extends Observable {
      */
     private List<Image> slideshow;
 
+    private Double price;
+
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
 
     /**
      * getter di sectorNameList

@@ -172,7 +172,7 @@
                     <Button mnemonicParsing="false"
                             style="-fx-background-color: inherit" textFill="white">
                         <graphic>
-                            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="false">
+                            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="false">
                                 <image>
                                     <Image url="@image/Filter_96px.png"/>
                                 </image>

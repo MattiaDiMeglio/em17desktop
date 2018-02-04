@@ -114,6 +114,11 @@ public class DBController {
                                 settoriMap.put(aSettoriName, 0);
                             }
                             EventModel event = new EventModel();//creo un nuovo event model
+                            if (eventiSnap.hasChild("prezzo")){
+                                event.setPrice(Double.valueOf(eventiSnap.child("prezzo").getValue().toString()));
+                            }else {
+                                event.setPrice(0.0);
+                            }
                             Integer ticketSold = 0;
                             event.initializeTicketPerMonth();
                             event.initializeRevenuePerMonth();
