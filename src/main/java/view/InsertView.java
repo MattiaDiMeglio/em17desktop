@@ -74,6 +74,10 @@ public class InsertView {
 
     private void initListeners() {
 
+        insertPlaybillImageView.setOnMouseClicked(event -> {
+            playbill();
+        });
+
         insertPlayBillLabel.setOnAction(event -> {
             playbill();
         });
@@ -133,17 +137,18 @@ public class InsertView {
     }
 
     private void back() {
-        insertController.back();
+        insertController.toDash();
     }
 
     private void next() {
-            texts.add(insertNameLabel.getText());
-            texts.add(insertLocationLabel.getText());
-            texts.add(insertMaxGuestsLabel.getText());
-            texts.add(insertTextArea.getText());
-            texts.add(insertInizioDataPicker.getValue().toString());
-            texts.add(insertFineDataPicker.getValue().toString());
-            insertController.next(texts, immagini, insertPlaybillImageView);
+        texts.clear();
+        texts.add(insertNameLabel.getText());
+        texts.add(insertLocationLabel.getText());
+        texts.add(insertMaxGuestsLabel.getText());
+        texts.add(insertTextArea.getText());
+        texts.add(insertInizioDataPicker.getValue().toString());
+        texts.add(insertFineDataPicker.getValue().toString());
+        insertController.next(texts, immagini, insertPlaybillImageView);
 
     }
 

@@ -18,7 +18,7 @@ public class EventModel extends Observable {
     /**
      * sottoclasse contenente i dati dei singoli settori
      */
-    private class Sectors {
+    public class Sectors {
         /**
          * nome del settore
          */
@@ -26,11 +26,45 @@ public class EventModel extends Observable {
         /**
          * prezzo base per settore
          */
+        private int seats;
+
         private int prize;
         /**
          * flag
          */
         private boolean reduction;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getPrize() {
+            return prize;
+        }
+
+        public void setPrize(int prize) {
+            this.prize = prize;
+        }
+
+        public boolean isReduction() {
+            return reduction;
+        }
+
+        public void setReduction(boolean reduction) {
+            this.reduction = reduction;
+        }
+
+        public int getSeats() {
+            return seats;
+        }
+
+        public void setSeats(int seats) {
+            this.seats = seats;
+        }
     }
 
     /**

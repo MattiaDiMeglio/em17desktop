@@ -654,4 +654,43 @@
 
     </BorderPane>
 
+    <!-- Schermata Inserimento riduzioni -->
+    <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
+        <center>
+            <VBox fx:id="InsertReductionVbox" VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                <padding>
+                    <Insets top="10.0d"  left="10.0" right="10.0" bottom="10.0" />
+                </padding>
+
+                <HBox VBox.vgrow="ALWAYS"></HBox>
+                <HBox spacing="20" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                    <Button fx:id="ticketReductionBackButton" text="Indietro" ></Button>
+                    <VBox HBox.hgrow="ALWAYS"></VBox>
+                    <Button fx:id="ticketReductionNextButton" style=" -fx-background-color: #199ED9; -fx-text-fill: white" text="Conferma" >
+                    </Button>
+                </HBox>
+            </VBox>
+        </center>
+        <!-- left della schermata, contenente la barra laterale-->
+        <left>
+            <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" style="-fx-background-color: darkgray">
+                <padding>
+                    <Insets bottom="5.0" left="12.0" right="12.0" top="5.0"/>
+                </padding>
+                <!-- ImageView contenente la foto di Locandina-->
+                <ImageView fx:id="insertReductionPlaybillImageView" fitHeight="300.0" fitWidth="280.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <!-- L'url dell'immagine è momentaneo e contenuto in resources/image. Sostituire da view -->
+                        <Image url="@image/Picture_80px.png" />
+                    </image>
+                </ImageView>
+                <Separator/>
+            </VBox>
+        </left>
+
+
+    </BorderPane>
+
+
 </AnchorPane>

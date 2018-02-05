@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
  * @author ingSW20
  */
 public class ViewSourceController extends Application {
+
     /**
      * Attributo stage, che rappresenta lo stage principale dell'applicazione
      *
@@ -134,6 +135,14 @@ public class ViewSourceController extends Application {
     private Button ticketTypeNextButton;
     @FXML
     private ImageView insertTicketPlaybillImageView;
+    @FXML
+    private VBox InsertReductionVbox;
+    @FXML
+    private Button ticketReductionBackButton;
+    @FXML
+    private Button ticketReductionNextButton;
+    @FXML
+    private ImageView insertReductionPlaybillImageView;
 
     /**
      * toolbar presente nella dashboard
@@ -187,6 +196,8 @@ public class ViewSourceController extends Application {
     private Node insertBox;
 
     private Node insertTicketTypeBox;
+
+    private Node insertReductionBox;
 
     /**
      * variabile per memorizzare la view precedente alla quale si vuole tornare
@@ -265,6 +276,7 @@ public class ViewSourceController extends Application {
         recoveryBox = mainAnchorPane.getChildren().get(4);
         insertBox = mainAnchorPane.getChildren().get(5);
         insertTicketTypeBox = mainAnchorPane.getChildren().get(6);
+        insertReductionBox = mainAnchorPane.getChildren().get(7);
 
 
         //metodo per passare alla loginview
@@ -373,7 +385,8 @@ public class ViewSourceController extends Application {
     }
 
     public void toInsetTicketTypeView(InsertController insertController, EventModel newEvent) {
-        new InsertTicketTypeView(insertController, newEvent, InsertTicketVbox, ticketTypeBackButton, ticketTypeNextButton, insertTicketPlaybillImageView);
+        new InsertTicketTypeView(insertController, newEvent, InsertTicketVbox, ticketTypeBackButton,
+                ticketTypeNextButton, insertTicketPlaybillImageView);
         changeView(insertTicketTypeBox);
     }
 
@@ -387,7 +400,16 @@ public class ViewSourceController extends Application {
         changeView(eventListBox);
     }
 
+    public void toInsertReductionView(InsertController insertController, EventModel newEvent){
+        new InsertReductionView(insertController,  newEvent, InsertReductionVbox, ticketReductionBackButton, ticketReductionNextButton, insertReductionPlaybillImageView);
+        changeView(insertReductionBox);
+    }
+
     public void turnBack() {
         changeView(prevView);
+    }
+
+    public void toDash() {
+        changeView(dashBoardBox);
     }
 }
