@@ -127,7 +127,13 @@ public class ViewSourceController extends Application {
     @FXML
     private Button insertUploadButton;
     @FXML
-    private VBox InsertTickerVbox;
+    private VBox InsertTicketVbox;
+    @FXML
+    private Button ticketTypeBackButton;
+    @FXML
+    private Button ticketTypeNextButton;
+    @FXML
+    private ImageView insertTicketPlaybillImageView;
 
     /**
      * toolbar presente nella dashboard
@@ -366,8 +372,8 @@ public class ViewSourceController extends Application {
 
     }
 
-    public void toInsetTicketTypeView() {
-       // InsertTickerVbox
+    public void toInsetTicketTypeView(InsertController insertController, EventModel newEvent) {
+        new InsertTicketTypeView(insertController, newEvent, InsertTicketVbox, ticketTypeBackButton, ticketTypeNextButton, insertTicketPlaybillImageView);
         changeView(insertTicketTypeBox);
     }
 

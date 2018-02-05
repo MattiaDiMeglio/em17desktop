@@ -37,7 +37,7 @@ public class SearchController {
     public SearchController(EventListView eventListView) {
         this.eventListView = eventListView;
         eventList = EventListModel.getInstance().getListaEventi();
-        locationList = LocationListModel.getInstance().getListaEventi();
+        locationList = LocationListModel.getInstance().getLocationList();
     }
 
     /**
@@ -45,7 +45,7 @@ public class SearchController {
      */
     public SearchController() {
         eventList = EventListModel.getInstance().getListaEventi();
-        locationList = LocationListModel.getInstance().getListaEventi();
+        locationList = LocationListModel.getInstance().getLocationList();
     }
 
     /**

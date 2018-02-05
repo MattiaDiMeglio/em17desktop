@@ -620,21 +620,16 @@
     <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
         <center>
-            <VBox fx:id="InsertTickerVbox" VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <VBox fx:id="InsertTicketVbox" VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                 <padding>
                     <Insets top="10.0d"  left="10.0" right="10.0" bottom="10.0" />
                 </padding>
-                <HBox spacing="50">
-                    <Label text="Nome Settore"></Label>
-                    <Label text="Numero Posti"></Label>
-                    <Label text="Costo Intero"></Label>
-                </HBox>
-                <Separator></Separator>
+
                 <HBox VBox.vgrow="ALWAYS"></HBox>
                 <HBox spacing="20" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                    <Button text="Indietro" ></Button>
+                    <Button fx:id="ticketTypeBackButton" text="Indietro" ></Button>
                     <VBox HBox.hgrow="ALWAYS"></VBox>
-                    <Button style=" -fx-background-color: #199ED9; -fx-text-fill: white" text="Conferma" >
+                    <Button fx:id="ticketTypeNextButton" style=" -fx-background-color: #199ED9; -fx-text-fill: white" text="Conferma" >
                     </Button>
                 </HBox>
             </VBox>

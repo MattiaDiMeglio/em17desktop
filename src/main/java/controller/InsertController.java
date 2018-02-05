@@ -4,8 +4,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.EventListModel;
 import model.EventModel;
-import view.InsertView;
+import model.LocationListModel;
+import model.LocationModel;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,30 +17,64 @@ public class InsertController
     private ViewSourceController viewSourceController;
     private DBController dbController = DBController.getInstance();
     private EventListModel eventListModel = EventListModel.getInstance();
+    private LocationListModel locationListModel = LocationListModel.getInstance();
 
     public InsertController(ViewSourceController viewSourceController) {
         this.viewSourceController=viewSourceController;
     }
 
     public void back() {
-        System.out.println("indietro");
         viewSourceController.turnBack();
     }
 
+    public void toDash(){
+        viewSourceController.toDashBoardView();
+    }
+
     public void next(List<String> strings, List<Image> immagini, ImageView insertPlaybillImageView) {
-        System.out.println("avanti");
+        try {
+            newEvent.setEventName(strings.get(0));
+            newEvent.setEventDescription(strings.get(3));
+            newEvent.setBillboard(insertPlaybillImageView.getImage());
+            newEvent.setStartingDate(strings.get(4));
+            newEvent.setEndingDate(strings.get(5));
+            String[] parts= strings.get(1).split("\\-");
+            newEvent.setLocationName(parts[0]);
+            newEvent.setLocationAddress(parts[1]);
+            newEvent.setMaxVisitors(Integer.parseInt(strings.get(2)));
+            newEvent.setSlideshow(immagini);
 
-        newEvent.setEventName(strings.get(0));
-        newEvent.setEventDescription(strings.get(3));
-        newEvent.setBillboard(insertPlaybillImageView.getImage());
-        newEvent.setStartingDate(strings.get(4));
-        newEvent.setEndingDate(strings.get(5));
-        newEvent.setLocationName(strings.get(1));
-        newEvent.setMaxVisitors(Integer.parseInt(strings.get(2)));
-        newEvent.setSlideshow(immagini);
-        viewSourceController.toInsetTicketTypeView();
+            viewSourceController.toInsetTicketTypeView(this, newEvent);
+        } catch (NullPointerException e){
+            JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException e ){
+            JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
 
+    }
 
+    public List<String> getSectorName(String name, String address ){
+        for (LocationModel location: locationListModel.getLocationList()) {
+
+            if ((location.getLocationAddress().equals(address)) && (location.getLocationName().equals(name))){
+                return location.getSectorList();
+            }
+
+        }
+        return null;
+    }
+
+    public List<String> getSteatsList(String name, String address ){
+        for (LocationModel location: locationListModel.getLocationList()) {
+
+            if ((location.getLocationAddress().equals(address)) && (location.getLocationName().equals(name))){
+                return location.getSeatsList();
+            }
+
+        }
+        return null;
     }
 
     public String maxVisitors ( String location) {
@@ -54,14 +90,9 @@ public class InsertController
 
     public List<String> getLocations () {
         List<String> locations = new ArrayList<>();
-        int i=0;
-        while (i < eventListModel.getListaEventi().size()-1){
-            if (!locations.contains(eventListModel.getListaEventi().get(i).getLocationName())){
-                locations.add(eventListModel.getListaEventi().get(i).getLocationName());
-            }
-            i++;
+        for (LocationModel locationModel: locationListModel.getLocationList()) {
+            locations.add(locationModel.getLocationName() + "-" + locationModel.getLocationAddress());
         }
-
         return locations;
     }
 }
