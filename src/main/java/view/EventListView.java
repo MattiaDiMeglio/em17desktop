@@ -7,8 +7,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
@@ -28,12 +26,16 @@ import view.chartsViews.BarChartView;
 import view.chartsViews.LineChartView;
 import view.chartsViews.PieChartView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Classe View per la schermata Event List
- * <p>
+ * Classe View per la schermata Event List.
  * Implementa Observer, come definito dall'architettura MVC implementata per il progetto
+ *
+ * @author ingSW20
  */
 public class EventListView {
 
@@ -41,11 +43,6 @@ public class EventListView {
      * Label mostrata in caso di risultati non trovati
      */
     private Label notFoundLabel;
-
-    /**
-     * classe per la gestione del popup per la ricerca avanzata
-     */
-    private AdvancedSearchView advancedSearch;
 
     /**
      * variabile per la gestione dei dati visualizzati nei chart
@@ -75,7 +72,7 @@ public class EventListView {
     /**
      * lista contenente le checkbox relative agli elementi trovati
      */
-    private List<CheckBox> checkBoxList = new ArrayList<>();
+    private List<CheckBox> checkBoxList;
 
     /**
      * checkbox per selezionare tutti gli elementi trovati
@@ -85,12 +82,12 @@ public class EventListView {
     /**
      * hasmap per la memorizzazione degli elementi selezionati
      */
-    private HashMap<Integer, HBox> selectedItems = new HashMap<>();
+    private HashMap<Integer, HBox> selectedItems;
 
     /**
      * ObservableList per il popolamento della tabella
      */
-    private ObservableList<EventTable> data = FXCollections.observableArrayList();
+    private ObservableList<EventTable> data;
 
     /**
      * costruttore per inizializzare la classe
@@ -106,6 +103,9 @@ public class EventListView {
         this.foundedElementsVBox = eventListViewVBox;
         this.foundedEventInSearch = foundedEventInSearch;
         this.viewSourceController = viewSourceController;
+        checkBoxList = new ArrayList<>();
+        selectedItems = new HashMap<>();
+        data = FXCollections.observableArrayList();
 
         initalizeSearch(searchToolBarEventListView); // inizializzo la barra di ricerca
         initializeCharts(eventListTabPane); // inizializzo i grafici
@@ -116,7 +116,6 @@ public class EventListView {
         } else {
             createResult();
         }
-
     }
 
     /**
@@ -206,6 +205,10 @@ public class EventListView {
         foundedElementsVBox.getChildren().add(selectAllCheckBox);
     }
 
+    /**
+     * effettua una ricerca con la stringa passata come parametro
+     * @param string stringa da cercare
+     */
     private void search(String string) {
         resetSearch();
         foundedEventInSearch.addAll(searchController.search(string));
@@ -218,6 +221,10 @@ public class EventListView {
         }
     }
 
+    /**
+     * lista con i risultati trivati dalla ricerca avanzata
+     * @param foundedEventInSearch lita con i risultati
+     */
     public void advancedSearch(List<EventModel> foundedEventInSearch) {
         resetSearch();
         this.foundedEventInSearch = foundedEventInSearch;
@@ -347,6 +354,9 @@ public class EventListView {
         new BarChartView(barChart);
     }
 
+    /**
+     * popolamento che memorizza i dati selezionati nella precedente ricerca
+     */
     private void populateWithSelectedItems() {
         for (Object o : selectedItems.entrySet()) {
             Map.Entry entry = (Map.Entry) o;
@@ -356,6 +366,9 @@ public class EventListView {
         }
     }
 
+    /**
+     * sottoclasse per il popolamento della tabella
+     */
     public class EventTable {
         private SimpleStringProperty eventName;
         private SimpleIntegerProperty ticketsSold;
