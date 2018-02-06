@@ -289,5 +289,34 @@ public class DBController {
         });
     }
 
+    public void insert(EventModel newEvent){
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                try {
+                    Iterable<DataSnapshot> location = snapshot.getChildren();
+                    while (location.iterator().hasNext()) {
+                        DataSnapshot locationSnap = location.iterator().next();
+                        System.out.println(locationSnap.child("nome").getValue().toString());
+                        if (locationSnap.child("nome").getValue().toString().equals(newEvent.getLocationName())){
+                            System.out.println("duro");
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.out.println(error.getMessage());
+            }
+        });
+
+
+    }
+
 
 }

@@ -115,6 +115,6 @@ public class InsertController {
     }
 
     public void insert(){
-
+        dbController.insert(newEvent);
     }
 }
