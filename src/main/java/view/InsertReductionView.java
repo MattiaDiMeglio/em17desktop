@@ -28,7 +28,8 @@ public class InsertReductionView {
 
 
     public InsertReductionView(InsertController insertController, EventModel newEvent,
-                               VBox insertReductionVbox, Button ticketReductionBackButton, Button ticketReductionNextButton, ImageView insertReductionPlaybillImageView) {
+                               VBox insertReductionVbox, Button ticketReductionBackButton,
+                               Button ticketReductionNextButton, ImageView insertReductionPlaybillImageView) {
 
         this.insertReductionVbox = insertReductionVbox;
         this.insertController = insertController;
@@ -66,7 +67,7 @@ public class InsertReductionView {
 
         Label bambini = new Label("Bambini");
         gridPane.add(bambini, 0, 2);
-        bambiniReduction.setMaxSize(50.0, bambiniReduction.getHeight());
+        bambiniReduction.setMaxSize(80.0, bambiniReduction.getHeight());
         HBox hBox1 = new HBox();
         hBox1.getChildren().add(bambiniReduction);
         hBox1.getChildren().add(new Label("%"));
@@ -74,7 +75,7 @@ public class InsertReductionView {
 
         Label anziani = new Label("Anziani");
         gridPane.add(anziani, 0, 3);
-        anzianiReduction.setMaxSize(50.0, anzianiReduction.getHeight());
+        anzianiReduction.setMaxSize(80.0, anzianiReduction.getHeight());
         HBox hBox2 = new HBox();
         hBox2.getChildren().add(anzianiReduction);
         hBox2.getChildren().add(new Label("%"));
@@ -82,7 +83,7 @@ public class InsertReductionView {
 
         Label studenti = new Label("Studenti");
         gridPane.add(studenti, 0, 4);
-        studentiReduction.setMaxSize(50.0, studentiReduction.getHeight());
+        studentiReduction.setMaxSize(80.0, studentiReduction.getHeight());
         HBox hBox3 = new HBox();
         hBox3.getChildren().add(studentiReduction);
         hBox3.getChildren().add(new Label("%"));
@@ -118,18 +119,16 @@ public class InsertReductionView {
 
     private void textFieldControl(TextField textField, String oldValue, String newValue) {
         try {
-            if (!newValue.matches("\\d*")) {
-                textField.setText(oldValue);
+            if (!newValue.matches("\\d*\\.?\\d+")) {
+                textField.setText(newValue.replaceAll("[^\\d\\.?\\d+]", ""));
             }
             if (textField.getText().length() > 7) {
                 String s = textField.getText().substring(0, 7);
                 textField.setText(s);
             }
-            System.out.println(Integer.parseInt(textField.getText()));
             if (Integer.parseInt(textField.getText()) > 100){
                 textField.setText(oldValue);
             }
-
             if (Integer.parseInt(textField.getText()) < 0){
                 textField.setText(oldValue);
             }
@@ -148,16 +147,18 @@ public class InsertReductionView {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                //insertController.ticketTypeNext(sectorsList);
+                insertController.ticketReductionNext();
             }
 
 
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
                     JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
                     JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
 
     }

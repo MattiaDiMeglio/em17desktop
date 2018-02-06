@@ -100,6 +100,21 @@ public class InsertController {
 
     public void ticketTypeNext(List<EventModel.Sectors> sectorsList) {
         newEvent.setSectorList(sectorsList);
+        double price = newEvent.getSectorList().get(0).getPrize();
+        for (int i=1; i< newEvent.getSectorList().size(); i++){
+            if(newEvent.getSectorList().get(i).getPrize()<price){
+                price = newEvent.getSectorList().get(i).getPrize();
+            }
+        }
+        newEvent.setPrice(price);
         viewSourceController.toInsertReductionView(this, newEvent);
+    }
+
+    public void ticketReductionNext(){
+        viewSourceController.toInsertRecap(this, newEvent);
+    }
+
+    public void insert(){
+
     }
 }

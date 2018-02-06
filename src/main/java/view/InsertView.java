@@ -15,6 +15,7 @@ import org.controlsfx.control.textfield.TextFields;
 import javax.swing.*;
 import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -141,13 +142,15 @@ public class InsertView {
     }
 
     private void next() {
+        String pattern = "dd/MM/yyy";
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
         texts.clear();
         texts.add(insertNameLabel.getText());
         texts.add(insertLocationLabel.getText());
         texts.add(insertMaxGuestsLabel.getText());
         texts.add(insertTextArea.getText());
-        texts.add(insertInizioDataPicker.getValue().toString());
-        texts.add(insertFineDataPicker.getValue().toString());
+        texts.add(dateFormatter.format(insertInizioDataPicker.getValue()));
+        texts.add(dateFormatter.format(insertFineDataPicker.getValue()));
         insertController.next(texts, immagini, insertPlaybillImageView);
 
     }
@@ -170,7 +173,7 @@ public class InsertView {
 
     private void slideshow() {
         Stage stage = new Stage();
-        List<String> immaginiUri = new ArrayList<>();
+        List<Image> immaginiUri = new ArrayList<>();
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
@@ -184,15 +187,15 @@ public class InsertView {
             for (File file : list) {
 
                     file.getAbsolutePath().replaceAll("\\d+", "_");
-                immaginiUri.add(file.toURI().toString());
+                immaginiUri.add(new Image(file.toURI().toString()));
             }
             Button left = (Button)insertSlideshow.getChildren().get(0);
             HBox slide = (HBox)insertSlideshow.getChildren().get(1);
             Button right= (Button) insertSlideshow.getChildren().get(2);
             slideShowController.createSlide(left, slide, right, immaginiUri);
         }
-        for(String string: immaginiUri){
-            immagini.add(new Image(string));
+        for(Image image: immaginiUri){
+            immagini.add(image);
         }
     }
 

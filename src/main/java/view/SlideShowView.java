@@ -140,7 +140,7 @@ public class SlideShowView implements Observer {
         }
     }
 
-    public SlideShowView(HBox hBox, Button left, Button right, SlideShowController slideShowController, List<String> immagini) {
+    public SlideShowView(HBox hBox, Button left, Button right, SlideShowController slideShowController, List<Image> immagini) {
         int i=0; //
         buttonList = new ArrayList<>();
         activeList = new ArrayList<>();
@@ -164,8 +164,7 @@ public class SlideShowView implements Observer {
             for (i = 0; i < immagini.size(); i++) {
                 Button button = new Button();
                 buttonList.add(button);
-                Image image = new Image(immagini.get(i));
-                ImageView imageView = new ImageView(image);
+                ImageView imageView = new ImageView(immagini.get(i));
                 imageView.setFitWidth(300.0);
                 imageView.setFitHeight(280.0);
                 buttonList.get(i).setGraphic(imageView);

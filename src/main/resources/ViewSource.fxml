@@ -692,5 +692,102 @@
 
     </BorderPane>
 
+    <!-- Schermata Riepilogo Inserimento -->
+    <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
+        <center>
+            <VBox  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <VBox spacing="20" VBox.vgrow="ALWAYS" fx:id="riepilogoTextBox">
+                    <HBox alignment="BOTTOM_LEFT" spacing="10.0">
+                        <Label fx:id="riepilogoTitleLabel" text="Evento1">
+                            <font>
+                                <Font size="45.0"/>
+                            </font>
+                        </Label>
+                        <!-- label  "Location:" col il rispettivo testo modificabile "EventLocationText",
+                             dove verrà inserito il nome della location-->
+                        <Label text="Location: "/>
+                        <Text fx:id="riepilogoLocationText" text="locazione1"/>
+                    </HBox>
+                    <!-- Hbox contenente le due label delle date con i rispettivi testi da modificare -->
+                    <HBox spacing="4">
+                        <Label text="Data Inizio:"></Label>
+                        <Text fx:id="riepilogoDataInizioText" text="data Inizio"></Text>
+                        <Label text="Data Fine:" translateX="10"></Label>
+                        <Text fx:id="riepilogoDataFineText" text="data fine" translateX="10"></Text>
+                    </HBox>
+                    <!-- TextArea che andrà ad ospitare la descrizione dell'evento -->
+                    <VBox spacing="20"  alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TextArea disable="true" VBox.vgrow="ALWAYS" fx:id="riepilogoTextArea" text="piripiripillo"></TextArea>
+                    </VBox>
+                    <!-- Hbox contenente le label, rispettivamente, di prezzo, max visitatori
+                     e biglietti venduti-->
+                    <HBox spacing="5">
+                        <Label text="Prezzo:" translateX="10"></Label>
+                        <Text fx:id="riepilogoPrezzoText" text="prezzo" translateX="10"></Text>
+                        <Label text="Max Visitatori:" translateX="20"></Label>
+                        <Text fx:id="riepilogoMaxVisitatoriText" text="Max Visitatori" translateX="20"></Text>
+                    </HBox>
+                    <HBox spacing="20" fx:id="recapSlideshow" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" alignment="CENTER">
+                        <children>
+                            <!-- icona "left", sarà il bottone per scorrere verso sx.-->
+                            <Button fx:id="riepilogoSlideShowLeftButton" mnemonicParsing="false"
+                                    style="-fx-background-color: inherit" AnchorPane.leftAnchor="0.0">
+                                <graphic>
+                                    <ImageView pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@image/Sort Left_96px.png" />
+                                        </image>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                            <HBox HBox.hgrow="ALWAYS"  fx:id="riepilogoSlide" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"></HBox>
+                            <!-- icona "right", sarà il bottone per scorrere verso sx. -->
+                            <Button  fx:id="riepilogoSlideShowRightButton" mnemonicParsing="false"
+                                     style="-fx-background-color: inherit" AnchorPane.rightAnchor="0.0">
+                                <graphic>
+                                    <ImageView pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@image/Sort Right_96px.png" />
+                                        </image>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                        </children>
+                    </HBox>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                    <HBox VBox.vgrow="ALWAYS"></HBox>
+                    <HBox spacing="20" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                        <Button fx:id="recapBackButton" text="Indietro" ></Button>
+                        <VBox HBox.hgrow="ALWAYS"></VBox>
+                        <Button fx:id="recapNextButton" style=" -fx-background-color: #199ED9; -fx-text-fill: white" text="Conferma" >
+                    </Button>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </center>
+        <!-- left della schermata, contenente la barra laterale-->
+        <left>
+            <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" style="-fx-background-color: darkgray">
+                <padding>
+                    <Insets bottom="5.0" left="12.0" right="12.0" top="5.0"/>
+                </padding>
+                <!-- ImageView contenente la foto di Locandina-->
+                <ImageView fx:id="RecapPlaybillImageView" fitHeight="300.0" fitWidth="280.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <!-- L'url dell'immagine è momentaneo e contenuto in resources/image. Sostituire da view -->
+                        <Image url="@image/Picture_80px.png" />
+                    </image>
+                </ImageView>
+                <Separator/>
+            </VBox>
+        </left>
+
+    </BorderPane>
+
+
 
 </AnchorPane>

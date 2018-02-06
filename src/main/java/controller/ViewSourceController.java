@@ -32,7 +32,6 @@ import java.util.concurrent.ExecutionException;
  * @author ingSW20
  */
 public class ViewSourceController extends Application {
-
     /**
      * Attributo stage, che rappresenta lo stage principale dell'applicazione
      *
@@ -143,6 +142,10 @@ public class ViewSourceController extends Application {
     private Button ticketReductionNextButton;
     @FXML
     private ImageView insertReductionPlaybillImageView;
+    @FXML
+    private VBox riepilogoTextBox;
+    @FXML
+    private ImageView RecapPlaybillImageView;
 
     /**
      * toolbar presente nella dashboard
@@ -198,6 +201,8 @@ public class ViewSourceController extends Application {
     private Node insertTicketTypeBox;
 
     private Node insertReductionBox;
+
+    private Node insertRecapBox;
 
     /**
      * variabile per memorizzare la view precedente alla quale si vuole tornare
@@ -277,6 +282,7 @@ public class ViewSourceController extends Application {
         insertBox = mainAnchorPane.getChildren().get(5);
         insertTicketTypeBox = mainAnchorPane.getChildren().get(6);
         insertReductionBox = mainAnchorPane.getChildren().get(7);
+        insertRecapBox = mainAnchorPane.getChildren().get(8);
 
 
         //metodo per passare alla loginview
@@ -403,6 +409,11 @@ public class ViewSourceController extends Application {
     public void toInsertReductionView(InsertController insertController, EventModel newEvent){
         new InsertReductionView(insertController,  newEvent, InsertReductionVbox, ticketReductionBackButton, ticketReductionNextButton, insertReductionPlaybillImageView);
         changeView(insertReductionBox);
+    }
+
+    public void toInsertRecap(InsertController insertController, EventModel newEvent){
+        new InsertRecapView(insertController, newEvent, riepilogoTextBox, RecapPlaybillImageView);
+        changeView(insertRecapBox);
     }
 
     public void turnBack() {

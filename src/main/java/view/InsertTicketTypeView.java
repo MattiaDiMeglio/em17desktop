@@ -31,7 +31,6 @@ public class InsertTicketTypeView {
     private List<TextField> seatsFieldsList = new ArrayList<>();
     private List<TextField> prizeList = new ArrayList<>();
     private List<CheckBox> reductionCheckList = new ArrayList<>();
-    private final Integer[] oldVal = {0};
 
 
     public InsertTicketTypeView(InsertController insertController, EventModel newEvent, VBox insertTicketVbox,
@@ -85,11 +84,11 @@ public class InsertTicketTypeView {
             gridPane.add(label, 0, i);
             TextField textField = new TextField();
             textField.setText(seats.get(j));
-            textField.setMaxSize(50.0, textField.getHeight());
+            textField.setMaxSize(80.0, textField.getHeight());
             seatsFieldsList.add(textField);
             gridPane.add(textField, 1, i);
             TextField textField1 = new TextField();
-            textField1.setMaxSize(50.0, textField1.getHeight());
+            textField1.setMaxSize(80.0, textField1.getHeight());
             prizeList.add(textField1);
             Label label1 = new Label("\u20ac");
             HBox hBox = new HBox();
@@ -114,14 +113,14 @@ public class InsertTicketTypeView {
         textField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                oldVal[0] = Integer.parseInt(textFieldControl(textField, oldValue, newValue));
+               textFieldControl(textField, oldValue, newValue);
             }
         });
 
         textField1.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                oldVal[0] = Integer.parseInt(textFieldControl(textField1, oldValue, newValue));
+                textFieldControl(textField1, oldValue, newValue);
             }
         });
 
@@ -138,8 +137,8 @@ public class InsertTicketTypeView {
 
     private String textFieldControl(TextField textField, String oldValue, String newValue) {
         try {
-            if (!newValue.matches("\\d*")) {
-                textField.setText(oldValue.toString());
+            if (!newValue.matches("\\d*\\.?\\d+")) {
+                textField.setText(newValue.replaceAll("[^\\d\\.?\\d+]", ""));
             }
             if (textField.getText().length() > 7) {
                 String s = textField.getText().substring(0, 7);

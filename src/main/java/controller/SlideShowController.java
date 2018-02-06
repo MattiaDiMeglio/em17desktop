@@ -3,6 +3,7 @@ package controller;
 import javafx.beans.Observable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import model.EventListModel;
 import model.EventModel;
@@ -22,26 +23,21 @@ public class SlideShowController {
 
     public void createSlide(HBox hBox, Button dashBoardSlideShowLeftButton,
                             Button dashBoardSlideShowRightButton, ViewSourceController viewSourceController){
-        SlideShowView slideShowView = new SlideShowView(hBox, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, this);
+        new SlideShowView(hBox, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, this);
         this.viewSourceController = viewSourceController;
-
     }
 
     public void createSlide (HBox hBox, Button dashBoardSlideShowLeftButton,
                              Button dashBoardSlideShowRightButton, ViewSourceController viewSourceControl, EventModel eventModel){
         SlideShowView slideShowView = new SlideShowView(hBox, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, this, eventModel);
         this.viewSourceController = viewSourceController;
-
     }
 
     public void handler(int index) {
-
         viewSourceController.toEventView(index);
-
-
     }
 
-    public void createSlide(Button left, HBox hbox, Button right, List<String> immagini) {
+    public void createSlide(Button left, HBox hbox, Button right, List<Image> immagini) {
         SlideShowView slideShowView = new SlideShowView(hbox, left, right, this, immagini);
         this.viewSourceController = viewSourceController;
     }
