@@ -159,7 +159,6 @@ public class SlideShowView implements Observer {
             for (i = 0; i < immagini.size(); i++) {
                 Button button = new Button();
                 buttonList.add(button);
-                buttonList.add(button);
                 if (i < 4) {
                     hBox.getChildren().add(button);
                     activeList.add(i);

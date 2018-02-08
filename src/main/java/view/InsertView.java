@@ -151,7 +151,7 @@ public class InsertView {
         texts.add(insertTextArea.getText());
         texts.add(dateFormatter.format(insertInizioDataPicker.getValue()));
         texts.add(dateFormatter.format(insertFineDataPicker.getValue()));
-        insertController.next(texts, immagini, insertPlaybillImageView);
+        insertController.next(texts, immagini, insertPlaybillImageView.getImage());
 
     }
 
@@ -192,7 +192,7 @@ public class InsertView {
             Button left = (Button)insertSlideshow.getChildren().get(0);
             HBox slide = (HBox)insertSlideshow.getChildren().get(1);
             Button right= (Button) insertSlideshow.getChildren().get(2);
-            slideShowController.createSlide( left, slide, right, immaginiUri);
+            slideShowController.createSlide(left, slide, right, immaginiUri);
         }
         for(Image image: immaginiUri){
             immagini.add(image);

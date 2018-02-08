@@ -190,7 +190,7 @@ public class DBController {
                                     Integer finalJ = j;
                                     new Thread(() -> {
                                         String index = finalJ.toString();
-                                        slidehow.add(new Image(slideSnap.child(index).getValue().toString()));
+                                        slidehow.add(new Image( slideSnap.child(index).getValue().toString()));
                                         latchSlideShow.countDown();
                                     }).start();
 
@@ -309,6 +309,7 @@ public class DBController {
                             insert.child("nome").setValueAsync(newEvent.getEventName());
                             insert.child("descrizione").setValueAsync(newEvent.getEventDescription());
                             insert.child("prezzo").setValueAsync(newEvent.getPrice());
+                            insert.child("copertina").setValueAsync(newEvent.getBillboard());
                             DatabaseReference reduction = insert.child("riduzioni").getRef();
                             reduction.child("Anziani").setValueAsync(newEvent.getEldersReduction());
                             reduction.child("Bambini").setValueAsync(newEvent.getChildrenReduction());

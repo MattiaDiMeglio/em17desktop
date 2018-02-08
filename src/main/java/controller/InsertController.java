@@ -21,6 +21,7 @@ public class InsertController {
     private EventListModel eventListModel = EventListModel.getInstance();
     private LocationListModel locationListModel = LocationListModel.getInstance();
     private List<Image> imagesList;
+    private Image playbill;
 
     public InsertController(ViewSourceController viewSourceController) {
         this.viewSourceController = viewSourceController;
@@ -34,12 +35,13 @@ public class InsertController {
         viewSourceController.toDash();
     }
 
-    public void next(List<String> strings, List<Image> immagini, ImageView insertPlaybillImageView) {
+    public void next(List<String> strings, List<Image> immagini, Image insertPlaybillImageView) {
         imagesList = immagini;
         try {
             newEvent.setEventName(strings.get(0));
             newEvent.setEventDescription(strings.get(3));
-            newEvent.setBillboard(insertPlaybillImageView.getImage());
+            newEvent.setBillboard(insertPlaybillImageView);
+            playbill = insertPlaybillImageView;
             newEvent.setStartingDate(strings.get(4));
             newEvent.setEndingDate(strings.get(5));
             String[] parts = strings.get(1).split("\\-");
@@ -124,8 +126,11 @@ public class InsertController {
         CountDownLatch latch = new CountDownLatch(1);
 
         try {
+            List<Image> imageList = sg.upload(image, playbill, latch);
 
-            newEvent.setSlideshow(sg.upload(image, latch));
+            newEvent.setBillboard(imageList.get(0));
+            imageList.remove(0);
+            newEvent.setSlideshow(imageList);
             new LoadingPopupView(latch);
             dbController.insert(newEvent);
             viewSourceController.toDash();

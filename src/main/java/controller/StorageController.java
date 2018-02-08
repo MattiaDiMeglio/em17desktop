@@ -40,19 +40,22 @@ public class StorageController {
 
     }
 
-    public List<Image> upload (List<Image> imageList, CountDownLatch latch) throws FileNotFoundException, InterruptedException {
+    public List<Image> upload(List<Image> imageList, Image playbill, CountDownLatch latch) throws FileNotFoundException, InterruptedException {
         List<Image> imagesUploaded = new ArrayList<>();
         CountDownLatch latch1 = new CountDownLatch(1);
+        imageList.add(0, playbill);
         uploadThread.execute(new Thread(() -> {
             Thread.currentThread().setName("loginThread");
             bucket = StorageClient.getInstance().bucket();
             try {
                 for (Image image:imageList) {
-                    String blobName = image.impl_getUrl().substring(5);
+                    String[] name = image.impl_getUrl().split("/");
+                    String blobName = name[name.length-1];
+                    String[] type = image.impl_getUrl().split("\\.");
                     BlobId blobId = BlobId.of(bucket.getName(), blobName);
-                    InputStream inputStream;
-                    inputStream = new FileInputStream(image.impl_getUrl().substring(5));
-                    BlobInfo blobInfo = BlobInfo.newBuilder(bucket.getName(), image.impl_getUrl().substring(5)).setContentType("image/").build();
+                    InputStream inputStream = new FileInputStream(new File(image.impl_getUrl().substring(5)).getAbsolutePath().replaceAll("%20", " "));
+                    System.out.println("nome: " + name[name.length-1] + " tipo: " + type[type.length-1] );
+                    BlobInfo blobInfo = BlobInfo.newBuilder(bucket.getName(), name[name.length-1]).setContentType("image/"+type[type.length-1]).build();
 
                     Storage storage = bucket.getStorage();
 
