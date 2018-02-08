@@ -170,6 +170,7 @@ public class SlideShowView implements Observer {
                         activeList.remove(finalI);
                         immagini.remove(finalI);
                         hBox.getChildren().remove(button);
+                        slideShowController.setImageList(immagini);
                     }
                 });
                 ImageView imageView = new ImageView(immagini.get(i));

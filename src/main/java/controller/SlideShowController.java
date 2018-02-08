@@ -1,26 +1,16 @@
 package controller;
 
-import javafx.beans.Observable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
-import model.EventListModel;
 import model.EventModel;
-import view.InsertView;
 import view.SlideShowView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
 public class SlideShowController {
-
-
-    EventListModel eventListModel = EventListModel.getInstance();
-    ViewSourceController viewSourceController;
-
-   //SlideShowView slideShowView = new SlideShowView();
+    private InsertController insertController;
+    private ViewSourceController viewSourceController;
 
     public void createSlide(HBox hBox, Button dashBoardSlideShowLeftButton,
                             Button dashBoardSlideShowRightButton, ViewSourceController viewSourceController){
@@ -34,7 +24,8 @@ public class SlideShowController {
         this.viewSourceController = viewSourceController;
     }
 
-    public void createSlide( Button left, HBox hbox, Button right, List<Image> immagini) {
+    public void createSlide(InsertController insertController, Button left, HBox hbox, Button right, List<Image> immagini) {
+        this.insertController = insertController;
         SlideShowView slideShowView = new SlideShowView( hbox, left, right, this, immagini);
         this.viewSourceController = viewSourceController;
     }
@@ -43,5 +34,10 @@ public class SlideShowController {
     public void handler(int index) {
         viewSourceController.toEventView(index);
     }
+
+    public void setImageList(List<Image> imageList){
+        insertController.setImagesList(imageList);
+    }
+
 
 }

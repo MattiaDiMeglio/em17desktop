@@ -125,7 +125,7 @@ public class InsertRecapView {
          *
          * Costruttore della sottoclasse per il popolamento della prima tabella nella schermata
          */
-        public tab1(String sectors, String maxVisitors, String reductions) {
+        tab1(String sectors, String maxVisitors, String reductions) {
             this.sectors = new SimpleStringProperty(sectors);
             this.maxVisitors = new SimpleStringProperty(maxVisitors);
             this.reductions = new SimpleStringProperty(reductions);
@@ -167,7 +167,7 @@ public class InsertRecapView {
         private final SimpleStringProperty reduction;
         private final SimpleStringProperty percent;
 
-        public tab2(String reduction, String percent){
+        tab2(String reduction, String percent){
             this.reduction = new SimpleStringProperty(reduction);
             this.percent = new SimpleStringProperty(percent);
         }
@@ -328,7 +328,7 @@ public class InsertRecapView {
     }
 
     private void initSlide(Button left, Button right, HBox slide) {
-        slideShowController.createSlide(left, slide, right, imageList);
+        slideShowController.createSlide(insertController, left, slide, right, imageList);
     }
 
 
