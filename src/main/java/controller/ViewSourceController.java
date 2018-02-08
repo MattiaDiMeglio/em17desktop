@@ -37,98 +37,230 @@ public class ViewSourceController extends Application {
     private Stage primaryStage;
 
     /**
-     * Vbox prinicipale, contenente tutte le schemate
+     * AnchorPane prinicipale, contenente tutte le schemate
      */
     @FXML
     private AnchorPane mainAnchorPane;
     @FXML
     private Button eventListResult1Button;
+    /**
+     * bottone back della schermata di visualizzazione evento
+     */
     @FXML
     private Button eventoBackButton;
+    /**
+     * bottone di login
+     */
     @FXML
     private Button loginButton;
+    /**
+     * Campo per l'username, nella schermata login
+     */
     @FXML
     private TextField userName;
+    /**
+     * Campo per la password, della schermata login
+     */
     @FXML
     private PasswordField password;
+    /**
+     * Campo per la mail, nella schermata di recuper password
+     */
     @FXML
     private TextField recoveryEmail;
+    /**
+     * Bottone per confermare il recupero password
+     */
     @FXML
     private Button recoveryButton;
+    /**
+     * Bottone per andare alla schermata di recupero password da quella di login
+     */
     @FXML
     private Button recoveryLabelButton;
+    /**
+     * Bottone indietro della schermata recupero password
+     */
     @FXML
     private Button recoveryBackButton;
+    /**
+     * Hbox in cui si inseriranno le foto per lo slideshow nella dashboard
+     */
     @FXML
     private HBox dashSlide;
+    /**
+     * Tab pane della schermata evento
+     */
     @FXML
     private TabPane eventoTabPane;
+    /**
+     * tab pane della schermata di dashboard
+     */
     @FXML
     private TabPane dashBoardTabPane;
+    /**
+     * Lbel del titollo nella schermata visualizzazione evento
+     */
     @FXML
     private Label eventoTitleLabel;
+    /**
+     * Text della location nella schermata visualizzazione evento
+     */
     @FXML
     private Text eventLocationText;
+    /**
+     * Text della data di inizio nella schermata visualizzazione evento
+     */
     @FXML
     private Text eventoDataInizioText;
+    /**
+     * Text della data di fine nella schermata visualizzazione evento
+     */
     @FXML
     private Text eventoDataFineText;
+    /**
+     * * TextArea della descrizione nella schermata visualizzazione evento
+     */
     @FXML
     private TextArea eventTextArea;
+    /**
+     * Text del prezzo nella schermata visualizzazione evento
+     */
     @FXML
     private Text eventoPrezzoText;
+    /**
+     * Text del massimo dei visitatori nella schermata visualizzazione evento
+     */
     @FXML
     private Text eventoMaxVisitatoriText;
+    /**
+     * Text del numero di biglietti venduti nella schermata visualizzazione evento
+     */
     @FXML
     private Text eventoBigliettiVendutiText;
+    /**
+     * Imageview della copertina nella schermata visualizzazione evento
+     */
     @FXML
     private ImageView eventPlaybillImageView;
+    /**
+     * bottone sinistro dello slideshow nell aschermata dashboard
+     */
     @FXML
     private Button dashBoardSlideShowLeftButton;
+    /**
+     * bottone sinistro dello slideshow nell aschermata dashboard
+     */
     @FXML
     private Button dashBoardSlideShowRightButton;
+    /**
+     * bottone delete della schermata visualizzazione evento
+     */
     @FXML
     private Button eventoDeleteButton;
+    /**
+     * Hbox in cui si inseriranno le foto per lo slideshow nella schermata visualizzazione evento
+     */
     @FXML
     private HBox eventSlide;
+    /**
+     * bottone sinistro dello slideshow nell aschermata visualizzazione evento
+     */
     @FXML
     private Button eventSlideShowLeftButton;
+    /**
+     * bottone destro dello slideshow nell aschermata visualizzazione evento
+     */
     @FXML
     private Button eventSlideShowRightButton;
+    /**
+     * Bottone per l'inserimento evento dalla schermata dashboard
+     */
     @FXML
     private Button dashBoardInsertButton;
+    /**
+     * TabPane della schermata eventList
+     */
     @FXML
     private TabPane eventListTabPane;
+    /**
+     * TextField del nome nella scheramta di inserimento
+     */
     @FXML
-    private TextField insertNameLabel;
+    private TextField insertNameTextField;
+    /**
+     * TextField del nome location della schermata di inserimento
+     */
     @FXML
-    private TextField insertLocationLabel;
+    private TextField insertLocationTextField;
+    /**
+     * TextArea della descrizione nella schermata di inserimento
+     */
     @FXML
     private TextArea insertTextArea;
+    /**
+     * Hbox che andrà a contenere le immagini inserite nella schermata di inserimento
+     */
     @FXML
     private HBox insertSlideshow;
+    /**
+     * bottone indietro nella schermata di inserimento
+     */
     @FXML
     private Button insertCancelButton;
+    /**
+     * Bottone conferma della schermata di inserimento
+     */
     @FXML
     private Button insertConfirmButton;
+    /**
+     * DatePicker della data di inizio della schermata di inserimento
+     */
     @FXML
     private DatePicker insertInizioDataPicker;
+    /**
+     * DatePicker della data di fine della schermata di inserimento
+     */
     @FXML
     private DatePicker insertFineDataPicker;
+    /**
+     * TextField del massimo di posti della schermata di inserimento
+     */
     @FXML
-    private TextField insertMaxGuestsLabel;
+    private TextField insertMaxGuestsTextArea;
+    /**
+     * Button per l'inserimento della copertaina della schermata di inserimento
+     */
     @FXML
     private Button insertPlayBillLabel;
+    /**
+     * ImageView che andrà a contenere l'immagine selezionata nella schermata di inserimento
+     */
     @FXML
     private ImageView insertPlaybillImageView;
+    /**
+     * Bottone per l'inserimento delle immagini della schermata di inserimento
+     */
     @FXML
     private Button insertUploadButton;
+    /**
+     * Vbox in cui si inseriranno i textField per i dati dei settori, nella schermata ticketType
+     */
     @FXML
     private VBox InsertTicketVbox;
+    /**
+     * bottone indietro per la schermata ticketType
+     */
     @FXML
     private Button ticketTypeBackButton;
+    /**
+     * bottone conferma per la schermata ticketType
+     */
     @FXML
     private Button ticketTypeNextButton;
+    /**
+     * ImageView che andrà a contenere l'immagine selezionata nella schermata TicketType
+     */
     @FXML
     private ImageView insertTicketPlaybillImageView;
     @FXML
@@ -374,13 +506,12 @@ public class ViewSourceController extends Application {
         buttonList.add(insertPlayBillLabel);
         buttonList.add(insertUploadButton);
 
-        texts.add(insertNameLabel);
-        texts.add(insertLocationLabel);
-        texts.add(insertMaxGuestsLabel);
+        texts.add(insertNameTextField);
+        texts.add(insertLocationTextField);
+        texts.add(insertMaxGuestsTextArea);
 
         new InsertView(insertController, buttonList, texts, insertTextArea, insertSlideshow, insertInizioDataPicker,
                 insertFineDataPicker, insertPlaybillImageView);
-
 
 
         changeView(insertBox);
@@ -403,13 +534,13 @@ public class ViewSourceController extends Application {
         changeView(eventListBox);
     }
 
-    public void toInsertReductionView(InsertController insertController, EventModel newEvent){
+    public void toInsertReductionView(InsertController insertController, EventModel newEvent) {
         new InsertReductionView(insertController, newEvent,
                 InsertReductionVbox, ticketReductionBackButton, ticketReductionNextButton, insertReductionPlaybillImageView);
         changeView(insertReductionBox);
     }
 
-    public void toInsertRecap(InsertController insertController, List<Image> imagesList, EventModel newEvent){
+    public void toInsertRecap(InsertController insertController, List<Image> imagesList, EventModel newEvent) {
         new InsertRecapView(insertController, newEvent, imagesList, riepilogoTextBox, RecapPlaybillImageView);
         changeView(insertRecapBox);
     }

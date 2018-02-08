@@ -121,7 +121,7 @@ public class InsertReductionView {
     private void textFieldControl(TextField textField, String oldValue, String newValue) {
         try {
             if (!newValue.matches("\\d*\\.?\\d+")) {
-                textField.setText(newValue.replaceAll("[^\\d\\.?\\d+]", ""));
+                textField.setText(newValue.replaceAll("[^\\d.?\\d+]", ""));
             }
             if (textField.getText().length() > 7) {
                 String s = textField.getText().substring(0, 7);
@@ -133,7 +133,7 @@ public class InsertReductionView {
             if (Integer.parseInt(textField.getText()) < 0){
                 textField.setText(oldValue);
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException ignored){
         }
     }
 
@@ -152,11 +152,7 @@ public class InsertReductionView {
             }
 
 
-        } catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
-                    JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        } catch (NumberFormatException e) {
+        } catch (NullPointerException | NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
                     JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();

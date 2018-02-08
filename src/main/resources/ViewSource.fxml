@@ -507,11 +507,11 @@
                     <HBox spacing="50">
                         <VBox>
                             <Label text="Nome Evento"></Label>
-                            <TextField fx:id="insertNameLabel"></TextField>
+                            <TextField fx:id="insertNameTextField"></TextField>
                         </VBox>
                         <VBox  fx:id="vbox">
                             <Label text="Nome Location"></Label>
-                            <TextField fx:id="insertLocationLabel" styleClass="inherit"></TextField>
+                            <TextField fx:id="insertLocationTextField" styleClass="inherit"></TextField>
                         </VBox>
                     </HBox>
                     <HBox spacing="20">
@@ -527,7 +527,7 @@
                         </VBox>
                         <VBox>
                             <Label text="N° Massimo di Visitatori"></Label>
-                            <TextField fx:id="insertMaxGuestsLabel"></TextField>
+                            <TextField fx:id="insertMaxGuestsTextArea"></TextField>
                         </VBox>
                     </HBox>
                     <Label text="Descrizione Evento"></Label>
