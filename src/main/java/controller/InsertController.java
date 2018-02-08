@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import model.EventListModel;
 import model.EventModel;
 import model.LocationListModel;
@@ -14,30 +13,67 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * Classe controller che si occupa dell'inserimento di un nuovo evento
+ */
 public class InsertController {
+    /**
+     * {@link EventModel} contenente i dati del nuovo evento da inserire
+     */
     private EventModel newEvent = new EventModel();
+    /**
+     * instanza di {@link ViewSourceController}
+     */
     private ViewSourceController viewSourceController;
+    /**
+     * Instanza di {@link DBController}
+     */
     private DBController dbController = DBController.getInstance();
+    /**
+     * Instanza di {@link EventListModel}
+     */
     private EventListModel eventListModel = EventListModel.getInstance();
+    /**
+     * instanza di {@link LocationListModel}
+     */
     private LocationListModel locationListModel = LocationListModel.getInstance();
+    /**
+     * Lista delle immagini che verranno caricate nello storage del server
+     */
     private List<Image> imagesList = new ArrayList<>();
+    /**
+     * copertina dell'evento
+     */
     private Image playbill;
 
 
+    /**
+     * costruttore dell'insertController
+     *
+     * @param viewSourceController
+     */
     InsertController(ViewSourceController viewSourceController) {
         this.viewSourceController = viewSourceController;
     }
 
+    /**
+     * metodo chiamato dai listener dei bottoni indietro di tutta la sequenza
+     * di schermate. chiama {@link ViewSourceController#turnBack()}
+     */
     public void back() {
         viewSourceController.turnBack();
     }
 
+    /**
+     * metodo chiamato dal listener del bottone indietro della prima schermata di inserimento
+     * chiama {@link ViewSourceController#toDash()}
+     *
+     */
     public void toDash() {
         viewSourceController.toDash();
     }
 
-
-    public void next(List<String> strings, Image insertPlaybillImageView) {
+    public void insertNext(List<String> strings, Image insertPlaybillImageView) {
         try {
             newEvent.setEventName(strings.get(0));
             newEvent.setEventDescription(strings.get(3));
@@ -58,6 +94,24 @@ public class InsertController {
         }
 
     }
+
+    public void ticketTypeNext(List<EventModel.Sectors> sectorsList) {
+        newEvent.setSectorList(sectorsList);
+        double price = newEvent.getSectorList().get(0).getPrize();
+        for (int i = 1; i < newEvent.getSectorList().size(); i++) {
+            if (newEvent.getSectorList().get(i).getPrize() < price) {
+                price = newEvent.getSectorList().get(i).getPrize();
+            }
+        }
+        newEvent.setPrice(price);
+        viewSourceController.toInsertReductionView(this, newEvent);
+    }
+
+    public void ticketReductionNext() {
+        viewSourceController.toInsertRecap(this, imagesList, newEvent);
+    }
+
+
 
     public List<String> getSectorName(String name, String address) {
         for (LocationModel location : locationListModel.getLocationList()) {
@@ -100,22 +154,6 @@ public class InsertController {
         return locations;
     }
 
-    public void ticketTypeNext(List<EventModel.Sectors> sectorsList) {
-        newEvent.setSectorList(sectorsList);
-        double price = newEvent.getSectorList().get(0).getPrize();
-        for (int i=1; i< newEvent.getSectorList().size(); i++){
-            if(newEvent.getSectorList().get(i).getPrize()<price){
-                price = newEvent.getSectorList().get(i).getPrize();
-            }
-        }
-        newEvent.setPrice(price);
-        viewSourceController.toInsertReductionView(this, newEvent);
-    }
-
-    public void ticketReductionNext(){
-        viewSourceController.toInsertRecap(this, imagesList, newEvent);
-    }
-
     public void insert(List<Image> image) throws IOException {
         StorageController sg = new StorageController();
         CountDownLatch latch = new CountDownLatch(1);
@@ -134,7 +172,7 @@ public class InsertController {
         }
     }
 
-    public void setImagesList(List<Image> imagesList){
+    public void setImagesList(List<Image> imagesList) {
         this.imagesList.clear();
         this.imagesList.addAll(imagesList);
     }

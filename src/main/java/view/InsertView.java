@@ -34,7 +34,6 @@ public class InsertView {
     private Button insertPlayBillLabel;
     private Button insertUploadButton;
     private final Integer[] oldVal = {0};
-    private Integer newVal = 0;
     private SlideShowController slideShowController = new SlideShowController();
     private List<Image> immagini = new ArrayList<>();
     private List<String> texts = new ArrayList<>();
@@ -150,7 +149,7 @@ public class InsertView {
         texts.add(dateFormatter.format(insertInizioDataPicker.getValue()));
         texts.add(dateFormatter.format(insertFineDataPicker.getValue()));
 
-        insertController.next(texts, insertPlaybillImageView.getImage());
+        insertController.insertNext(texts, insertPlaybillImageView.getImage());
 
     }
 
@@ -209,7 +208,7 @@ public class InsertView {
                 String s = insertMaxGuestsLabel.getText().substring(0, 7);
                 insertMaxGuestsLabel.setText(s);
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException ignored){
         }
     }
 
@@ -220,7 +219,7 @@ public class InsertView {
                 insertMaxGuestsLabel.setText(insertController.maxVisitors(parts[0]));
                 oldVal[0] = Integer.parseInt(insertController.maxVisitors(parts[0]));
             }
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException ignored){
         }
 
     }
@@ -228,8 +227,8 @@ public class InsertView {
     private void focusGuests(Boolean newPropertyValue) {
         if (!newPropertyValue)
         {
-            newVal= Integer.parseInt(insertMaxGuestsLabel.getText());
-            if (newVal> oldVal[0]){
+            Integer newVal = Integer.parseInt(insertMaxGuestsLabel.getText());
+            if (newVal > oldVal[0]){
                 insertMaxGuestsLabel.setText( String.valueOf(oldVal[0]) );
             }
         }

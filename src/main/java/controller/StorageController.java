@@ -45,7 +45,7 @@ public class StorageController {
         CountDownLatch latch1 = new CountDownLatch(1);
         imageList.add(0, playbill);
         uploadThread.execute(new Thread(() -> {
-            Thread.currentThread().setName("loginThread");
+            Thread.currentThread().setName("uploadThread");
             bucket = StorageClient.getInstance().bucket();
             try {
                 for (Image image:imageList) {
@@ -71,8 +71,8 @@ public class StorageController {
                             // handle exception
                         } finally {
                             writer.close();
-                            System.out.println(storage.get(blobId).getMediaLink());
-                            imagesUploaded.add(new Image(storage.get(blobId).getMediaLink()));
+                            System.out.println(storage.get(blobId).getSelfLink());
+                            imagesUploaded.add(new Image("https://storage.googleapis.com/ingws-20.appspot.com/" + blobName));
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -88,7 +88,7 @@ public class StorageController {
                 System.out.println("Finelly");
             }
 
-        }, "loginThread"));
+        }, "uploadThread"));
         latch1.await();
         return imagesUploaded;
     }

@@ -309,7 +309,7 @@ public class DBController {
                             insert.child("nome").setValueAsync(newEvent.getEventName());
                             insert.child("descrizione").setValueAsync(newEvent.getEventDescription());
                             insert.child("prezzo").setValueAsync(newEvent.getPrice());
-                            insert.child("copertina").setValueAsync(newEvent.getBillboard());
+                            insert.child("copertina").setValueAsync(newEvent.getBillboard().impl_getUrl());
                             DatabaseReference reduction = insert.child("riduzioni").getRef();
                             reduction.child("Anziani").setValueAsync(newEvent.getEldersReduction());
                             reduction.child("Bambini").setValueAsync(newEvent.getChildrenReduction());
@@ -325,7 +325,7 @@ public class DBController {
                             }
                             DatabaseReference gallery = insert.child("galleria").getRef();
                             for (Integer i=0; i<newEvent.getSlideshow().size(); i++){
-                                gallery.child(i.toString()).setValueAsync(newEvent.getSlideshow().get(i).impl_getUrl().substring(5));
+                                gallery.child(i.toString()).setValueAsync(newEvent.getSlideshow().get(i).impl_getUrl());
                             }
                         }
                     }
