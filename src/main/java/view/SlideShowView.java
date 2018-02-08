@@ -159,7 +159,6 @@ public class SlideShowView implements Observer {
             for (i = 0; i < immagini.size(); i++) {
                 Button button = new Button();
                 buttonList.add(button);
-                buttonList.add(button);
                 if (i < 4) {
                     hBox.getChildren().add(button);
                     activeList.add(i);
@@ -171,6 +170,7 @@ public class SlideShowView implements Observer {
                         activeList.remove(finalI);
                         immagini.remove(finalI);
                         hBox.getChildren().remove(button);
+                        slideShowController.setImageList(immagini);
                     }
                 });
                 ImageView imageView = new ImageView(immagini.get(i));

@@ -20,9 +20,9 @@ public class InsertController {
     private DBController dbController = DBController.getInstance();
     private EventListModel eventListModel = EventListModel.getInstance();
     private LocationListModel locationListModel = LocationListModel.getInstance();
-    private List<Image> imagesList;
+    private List<Image> imagesList = new ArrayList<>();
 
-    public InsertController(ViewSourceController viewSourceController) {
+    InsertController(ViewSourceController viewSourceController) {
         this.viewSourceController = viewSourceController;
     }
 
@@ -34,8 +34,7 @@ public class InsertController {
         viewSourceController.toDash();
     }
 
-    public void next(List<String> strings, List<Image> immagini, ImageView insertPlaybillImageView) {
-        imagesList = immagini;
+    public void next(List<String> strings, ImageView insertPlaybillImageView) {
         try {
             newEvent.setEventName(strings.get(0));
             newEvent.setEventDescription(strings.get(3));
@@ -49,13 +48,7 @@ public class InsertController {
 
 
             viewSourceController.toInsetTicketTypeView(this, newEvent);
-        } catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (NullPointerException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -129,14 +122,13 @@ public class InsertController {
             new LoadingPopupView(latch);
             dbController.insert(newEvent);
             viewSourceController.toDash();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
-        //return immagini;
-
-
+    public void setImagesList(List<Image> imagesList){
+        this.imagesList.clear();
+        this.imagesList.addAll(imagesList);
     }
 }
