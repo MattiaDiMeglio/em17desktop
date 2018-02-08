@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import model.EventListModel;
 import model.EventModel;
+import view.InsertView;
 import view.SlideShowView;
 
 import java.util.ArrayList;
@@ -33,12 +34,14 @@ public class SlideShowController {
         this.viewSourceController = viewSourceController;
     }
 
+    public void createSlide( Button left, HBox hbox, Button right, List<Image> immagini) {
+        SlideShowView slideShowView = new SlideShowView( hbox, left, right, this, immagini);
+        this.viewSourceController = viewSourceController;
+    }
+
+
     public void handler(int index) {
         viewSourceController.toEventView(index);
     }
 
-    public void createSlide(Button left, HBox hbox, Button right, List<Image> immagini) {
-        SlideShowView slideShowView = new SlideShowView(hbox, left, right, this, immagini);
-        this.viewSourceController = viewSourceController;
-    }
 }

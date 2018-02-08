@@ -185,14 +185,14 @@ public class InsertView {
         List<File> list = fileChooser.showOpenMultipleDialog(stage);
         if (list != null) {
             for (File file : list) {
-
-                    file.getAbsolutePath().replaceAll("\\d+", "_");
+                //file.getAbsolutePath().replaceAll(" ", "%20");
                 immaginiUri.add(new Image(file.toURI().toString()));
+                System.out.println(file.toURI().toString());
             }
             Button left = (Button)insertSlideshow.getChildren().get(0);
             HBox slide = (HBox)insertSlideshow.getChildren().get(1);
             Button right= (Button) insertSlideshow.getChildren().get(2);
-            slideShowController.createSlide(left, slide, right, immaginiUri);
+            slideShowController.createSlide( left, slide, right, immaginiUri);
         }
         for(Image image: immaginiUri){
             immagini.add(image);

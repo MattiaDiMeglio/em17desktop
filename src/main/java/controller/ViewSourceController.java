@@ -1,6 +1,5 @@
 package controller;
 
-import com.google.api.services.storage.Storage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -9,21 +8,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.EventListModel;
 import model.EventModel;
-import np.com.ngopal.control.AutoFillTextBox;
 import view.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -407,12 +404,13 @@ public class ViewSourceController extends Application {
     }
 
     public void toInsertReductionView(InsertController insertController, EventModel newEvent){
-        new InsertReductionView(insertController,  newEvent, InsertReductionVbox, ticketReductionBackButton, ticketReductionNextButton, insertReductionPlaybillImageView);
+        new InsertReductionView(insertController, newEvent,
+                InsertReductionVbox, ticketReductionBackButton, ticketReductionNextButton, insertReductionPlaybillImageView);
         changeView(insertReductionBox);
     }
 
-    public void toInsertRecap(InsertController insertController, EventModel newEvent){
-        new InsertRecapView(insertController, newEvent, riepilogoTextBox, RecapPlaybillImageView);
+    public void toInsertRecap(InsertController insertController, List<Image> imagesList, EventModel newEvent){
+        new InsertRecapView(insertController, newEvent, imagesList, riepilogoTextBox, RecapPlaybillImageView);
         changeView(insertRecapBox);
     }
 

@@ -140,7 +140,7 @@ public class SlideShowView implements Observer {
         }
     }
 
-    public SlideShowView(HBox hBox, Button left, Button right, SlideShowController slideShowController, List<Image> immagini) {
+    public SlideShowView( HBox hBox, Button left, Button right, SlideShowController slideShowController, List<Image> immagini) {
         int i=0; //
         buttonList = new ArrayList<>();
         activeList = new ArrayList<>();
@@ -156,9 +156,7 @@ public class SlideShowView implements Observer {
         });
 
         if (hBox != null) {
-            while (hBox.getChildren().size() > 0){
-                hBox.getChildren().remove(hBox.getChildren().size() -1);
-            }
+
             hBox.setAlignment(Pos.CENTER);
             hBox.setSpacing(20);
             for (i = 0; i < immagini.size(); i++) {
@@ -175,7 +173,6 @@ public class SlideShowView implements Observer {
             }
         }
     }
-
 
 
     private void right() {

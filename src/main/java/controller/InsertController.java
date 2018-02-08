@@ -6,10 +6,13 @@ import model.EventListModel;
 import model.EventModel;
 import model.LocationListModel;
 import model.LocationModel;
+import view.LoadingPopupView;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class InsertController {
     private EventModel newEvent = new EventModel();
@@ -17,6 +20,7 @@ public class InsertController {
     private DBController dbController = DBController.getInstance();
     private EventListModel eventListModel = EventListModel.getInstance();
     private LocationListModel locationListModel = LocationListModel.getInstance();
+    private List<Image> imagesList;
 
     public InsertController(ViewSourceController viewSourceController) {
         this.viewSourceController = viewSourceController;
@@ -31,6 +35,7 @@ public class InsertController {
     }
 
     public void next(List<String> strings, List<Image> immagini, ImageView insertPlaybillImageView) {
+        imagesList = immagini;
         try {
             newEvent.setEventName(strings.get(0));
             newEvent.setEventDescription(strings.get(3));
@@ -41,7 +46,7 @@ public class InsertController {
             newEvent.setLocationName(parts[0]);
             newEvent.setLocationAddress(parts[1]);
             newEvent.setMaxVisitors(Integer.parseInt(strings.get(2)));
-            newEvent.setSlideshow(immagini);
+
 
             viewSourceController.toInsetTicketTypeView(this, newEvent);
         } catch (NullPointerException e) {
@@ -111,10 +116,27 @@ public class InsertController {
     }
 
     public void ticketReductionNext(){
-        viewSourceController.toInsertRecap(this, newEvent);
+        viewSourceController.toInsertRecap(this, imagesList, newEvent);
     }
 
-    public void insert(){
-        dbController.insert(newEvent);
+    public void insert(List<Image> image) throws IOException {
+        StorageController sg = new StorageController();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        try {
+
+            newEvent.setSlideshow(sg.upload(image, latch));
+            new LoadingPopupView(latch);
+            dbController.insert(newEvent);
+            viewSourceController.toDash();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //return immagini;
+
+
     }
 }

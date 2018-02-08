@@ -138,7 +138,6 @@ public class LoginController {
 
         }
         latch.await();
-        System.out.println("andreachiatto" + latch.toString());
 
         return token[0];
     }

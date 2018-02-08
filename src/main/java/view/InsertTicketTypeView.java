@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -89,6 +90,7 @@ public class InsertTicketTypeView {
             gridPane.add(textField, 1, i);
             TextField textField1 = new TextField();
             textField1.setMaxSize(80.0, textField1.getHeight());
+            textField1.setText("0");
             prizeList.add(textField1);
             Label label1 = new Label("\u20ac");
             HBox hBox = new HBox();
@@ -132,8 +134,18 @@ public class InsertTicketTypeView {
 
             }
         });
+        textField1.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+
+                focusText1(textField1, Integer.parseInt(textField.getText()), newPropertyValue);
+
+            }
+        });
 
     }
+
+
 
     private String textFieldControl(TextField textField, String oldValue, String newValue) {
         try {
@@ -154,6 +166,22 @@ public class InsertTicketTypeView {
         if (!newPropertyValue) {
             if (newVal > oldVal) {
                 textField.setText(String.valueOf(oldVal));
+            }
+            if (newVal.equals("")){
+                textField.setText("0");
+            }
+        } else {
+            if (newVal.equals("0")) {
+                textField.setText("");
+            }
+        }
+
+    }
+
+    private void focusText1(TextField textField1, Integer newVal, Boolean newPropertyValue) {
+        if (newPropertyValue) {
+            if (newVal.equals("0")) {
+                textField1.setText("");
             }
         }
     }

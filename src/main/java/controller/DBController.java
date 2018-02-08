@@ -52,7 +52,7 @@ public class DBController {
 
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(inputStream))
-                    .setDatabaseUrl(DATABASE_URL)
+                    .setDatabaseUrl(DATABASE_URL).setStorageBucket("ingws-20.appspot.com")
                     .build();
             FirebaseApp.initializeApp(options);
             System.out.println("database.Database inizializzato\n");
@@ -298,9 +298,34 @@ public class DBController {
                     Iterable<DataSnapshot> location = snapshot.getChildren();
                     while (location.iterator().hasNext()) {
                         DataSnapshot locationSnap = location.iterator().next();
-                        System.out.println(locationSnap.child("nome").getValue().toString());
                         if (locationSnap.child("nome").getValue().toString().equals(newEvent.getLocationName())){
-                            System.out.println("duro");
+                            DatabaseReference insert = locationSnap.getRef().child("Eventi").push().getRef();
+                            newEvent.setActive(true);
+                            insert.child("attivo").setValueAsync(newEvent.isActive());
+                            //insert.child("copertina").setValueAsync(newEvent.getBillboard());
+                            DatabaseReference data = insert.child("data").getRef();
+                            data.child("inizio").setValueAsync(newEvent.getStartingDate());
+                            data.child("fine").setValueAsync(newEvent.getStartingDate());
+                            insert.child("nome").setValueAsync(newEvent.getEventName());
+                            insert.child("descrizione").setValueAsync(newEvent.getEventDescription());
+                            insert.child("prezzo").setValueAsync(newEvent.getPrice());
+                            DatabaseReference reduction = insert.child("riduzioni").getRef();
+                            reduction.child("Anziani").setValueAsync(newEvent.getEldersReduction());
+                            reduction.child("Bambini").setValueAsync(newEvent.getChildrenReduction());
+                            reduction.child("Studenti").setValueAsync(newEvent.getStudentReduction());
+                            DatabaseReference sectors = insert.child("settori").getRef();
+                            for (int i=0; i < newEvent.getSectorList().size(); i++) {
+                                sectors.child(newEvent.getSectorList().get(i).getName());
+                                String nome =newEvent.getSectorList().get(i).getName();
+                                DatabaseReference inSector = sectors.child(nome).getRef();
+                                inSector.child("posti").setValueAsync(newEvent.getSectorList().get(i).getSeats());
+                                inSector.child("prezzo").setValueAsync(newEvent.getSectorList().get(i).getPrize());
+                                inSector.child("riduzione").setValueAsync(newEvent.getSectorList().get(i).isReduction());
+                            }
+                            DatabaseReference gallery = insert.child("galleria").getRef();
+                            for (Integer i=0; i<newEvent.getSlideshow().size(); i++){
+                                gallery.child(i.toString()).setValueAsync(newEvent.getSlideshow().get(i).impl_getUrl().substring(5));
+                            }
                         }
                     }
 
