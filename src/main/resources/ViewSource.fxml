@@ -1,39 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.chart.PieChart?>
-
-
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.StackedAreaChart?>
-<?import np.com.ngopal.control.AutoFillTextBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.121"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewSourceController" fx:id="mainAnchorPane">
     <!-- Schermata DashBoard -->
@@ -499,7 +472,7 @@
 
     <!-- Schermata Inserimento-->
     <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
+        <!-- center della schermata, contenente gli elementi in cui inserire i dati dell'evento-->
         <center>
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <VBox VBox.vgrow="ALWAYS" translateX="20">
@@ -514,6 +487,7 @@
                             <TextField fx:id="insertLocationTextField" styleClass="inherit"></TextField>
                         </VBox>
                     </HBox>
+                    <!-- Hbox contenente le etichette, textBox e date picker per date e massimo visistatori -->
                     <HBox spacing="20">
                         <VBox>
                             <Label text="Data Inizio"></Label>
@@ -531,13 +505,14 @@
                         </VBox>
                     </HBox>
                     <Label text="Descrizione Evento"></Label>
+
                     <!-- TextArea che andrà ad ospitare la descrizione dell'evento -->
                     <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <VBox  alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <TextArea VBox.vgrow="ALWAYS" fx:id="insertTextArea"></TextArea>
                         </VBox>
                     </AnchorPane>
-
+                    <!-- Hbox contenente lo slideshow -->
                     <HBox VBox.vgrow="ALWAYS" fx:id="insertSlideshow" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" alignment="CENTER">
                         <children>
                             <!-- icona "left", sarà il bottone per scorrere verso sx.-->
@@ -569,6 +544,7 @@
                         <Insets bottom="50.0" left="0.0" right="0.0" top="10.0"/>
                     </padding>
 
+                    <!-- Hbox contenente il bottone per l'inserimento della galleria immagini -->
                     <HBox spacing="20">
                         <Button fx:id="insertUploadButton" text="Upload Galleria"></Button>
                     </HBox>
@@ -599,7 +575,7 @@
                     </image>
                 </ImageView>
                 <Separator/>
-                <!-- Bottone per la modifica dell'evento corrente -->
+                <!-- Bottone per il caricamento della locandina -->
                 <Button fx:id="insertPlayBillLabel" mnemonicParsing="false" style="-fx-background-color: inherit" text="Carica Locandina" textFill="white">
                     <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -618,14 +594,17 @@
 
     <!-- Schermata Inserimento Biglietti-->
     <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
+        <!-- center della schermata, -->
         <center>
             <VBox fx:id="InsertTicketVbox" VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                 <padding>
                     <Insets top="10.0d"  left="10.0" right="10.0" bottom="10.0" />
                 </padding>
 
+                <!-- Hbox dove saranno inseriti Label e TextField  per l'inserimento dei posti per settore-->
                 <HBox VBox.vgrow="ALWAYS"></HBox>
+
+                <!--Hbox contenente i bottoni di indietro e conferma-->
                 <HBox spacing="20" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                     <Button fx:id="ticketTypeBackButton" text="Indietro" ></Button>
                     <VBox HBox.hgrow="ALWAYS"></VBox>
@@ -662,8 +641,9 @@
                 <padding>
                     <Insets top="10.0d"  left="10.0" right="10.0" bottom="10.0" />
                 </padding>
-
+                <!-- Hbox dove verranno inserite le textBox e le label con le percentuali di sconto-->
                 <HBox VBox.vgrow="ALWAYS"></HBox>
+                <!--Hbxo contenente i bottoni indietro e conferma-->
                 <HBox spacing="20" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                     <Button fx:id="ticketReductionBackButton" text="Indietro" ></Button>
                     <VBox HBox.hgrow="ALWAYS"></VBox>
@@ -694,10 +674,10 @@
 
     <!-- Schermata Riepilogo Inserimento -->
     <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <!-- center della schermata, contenente i dati dell'evento e il tabpane con i grafici-->
+        <!-- center della schermata, contenente i dati dell'evento e lo slideshow delle immagini-->
         <center>
             <VBox  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <VBox spacing="20" VBox.vgrow="ALWAYS" fx:id="riepilogoTextBox">
+                <VBox spacing="20" VBox.vgrow="ALWAYS" fx:id="recapVBox">
                     <HBox alignment="BOTTOM_LEFT" spacing="10.0">
                         <Label fx:id="riepilogoTitleLabel" text="Evento1">
                             <font>

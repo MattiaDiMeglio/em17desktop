@@ -120,7 +120,7 @@ public class InsertController {
      * metodo chiamato dal listener del bottone conferma della terza schermata di isnerimento
      */
     public void ticketReductionNext() {
-        viewSourceController.toInsertRecap(this, imagesList, newEvent);//cambio schermata
+        viewSourceController.toInsertRecapView(this, imagesList, newEvent);//cambio schermata
     }
 
 

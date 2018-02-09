@@ -35,19 +35,12 @@ public class ViewSourceController extends Application {
      * @see javafx.stage.Stage
      */
     private Stage primaryStage;
-
     /**
      * AnchorPane prinicipale, contenente tutte le schemate
      */
     @FXML
     private AnchorPane mainAnchorPane;
-    @FXML
-    private Button eventListResult1Button;
-    /**
-     * bottone back della schermata di visualizzazione evento
-     */
-    @FXML
-    private Button eventoBackButton;
+
     /**
      * bottone di login
      */
@@ -64,40 +57,94 @@ public class ViewSourceController extends Application {
     @FXML
     private PasswordField password;
     /**
-     * Campo per la mail, nella schermata di recuper password
+     * Bottone per andare alla schermata di recupero password da quella di login
      */
     @FXML
-    private TextField recoveryEmail;
+    private Button recoveryLabelButton;
+
     /**
      * Bottone per confermare il recupero password
      */
     @FXML
     private Button recoveryButton;
     /**
-     * Bottone per andare alla schermata di recupero password da quella di login
+     * Campo per la mail, nella schermata di recupero password
      */
     @FXML
-    private Button recoveryLabelButton;
+    private TextField recoveryEmail;
     /**
      * Bottone indietro della schermata recupero password
      */
     @FXML
     private Button recoveryBackButton;
+
+
     /**
      * Hbox in cui si inseriranno le foto per lo slideshow nella dashboard
      */
     @FXML
     private HBox dashSlide;
     /**
-     * Tab pane della schermata evento
-     */
-    @FXML
-    private TabPane eventoTabPane;
-    /**
      * tab pane della schermata di dashboard
      */
     @FXML
     private TabPane dashBoardTabPane;
+    /**
+     * bottone sinistro dello slideshow nell aschermata dashboard
+     */
+    @FXML
+    private Button dashBoardSlideShowLeftButton;
+    /**
+     * bottone sinistro dello slideshow nell aschermata dashboard
+     */
+    @FXML
+    private Button dashBoardSlideShowRightButton;
+    /**
+     * Bottone per l'inserimento evento dalla schermata dashboard
+     */
+    @FXML
+    private Button dashBoardInsertButton;
+    /**
+     * toolbar presente nella dashboard
+     */
+    @FXML
+    private ToolBar searchToolBar;
+
+
+    @FXML
+    private Button eventListResult1Button;
+    /**
+     * TabPane della schermata eventList
+     */
+    @FXML
+    private TabPane eventListTabPane;
+    /**
+     * Vbox in eventListView contenente i risultati della ricerca
+     */
+    @FXML
+    private VBox eventListViewVBox;
+    /**
+     * toolbar presente in eventListView
+     */
+    @FXML
+    private ToolBar searchToolBarEventListView;
+    /**
+     * bottone per tornare indietro dalla schermata eventListView
+     */
+    @FXML
+    private Button eventListViewBackButton;
+
+
+    /**
+     * bottone back della schermata di visualizzazione evento
+     */
+    @FXML
+    private Button eventoBackButton;
+    /**
+     * Tab pane della schermata evento
+     */
+    @FXML
+    private TabPane eventoTabPane;
     /**
      * Lbel del titollo nella schermata visualizzazione evento
      */
@@ -144,16 +191,6 @@ public class ViewSourceController extends Application {
     @FXML
     private ImageView eventPlaybillImageView;
     /**
-     * bottone sinistro dello slideshow nell aschermata dashboard
-     */
-    @FXML
-    private Button dashBoardSlideShowLeftButton;
-    /**
-     * bottone sinistro dello slideshow nell aschermata dashboard
-     */
-    @FXML
-    private Button dashBoardSlideShowRightButton;
-    /**
      * bottone delete della schermata visualizzazione evento
      */
     @FXML
@@ -173,16 +210,8 @@ public class ViewSourceController extends Application {
      */
     @FXML
     private Button eventSlideShowRightButton;
-    /**
-     * Bottone per l'inserimento evento dalla schermata dashboard
-     */
-    @FXML
-    private Button dashBoardInsertButton;
-    /**
-     * TabPane della schermata eventList
-     */
-    @FXML
-    private TabPane eventListTabPane;
+
+
     /**
      * TextField del nome nella scheramta di inserimento
      */
@@ -248,6 +277,8 @@ public class ViewSourceController extends Application {
      */
     @FXML
     private VBox InsertTicketVbox;
+
+
     /**
      * bottone indietro per la schermata ticketType
      */
@@ -263,40 +294,39 @@ public class ViewSourceController extends Application {
      */
     @FXML
     private ImageView insertTicketPlaybillImageView;
+
+    /**
+     * Vbox in cui verranno inseriti i textField in cui si inseriranno i dati relativi alle riduzioni, schermata Reduction
+     */
     @FXML
     private VBox InsertReductionVbox;
+    /**
+     * bottone indietro della schermata di Reduction
+     */
     @FXML
     private Button ticketReductionBackButton;
+    /**
+     * bottone confermadella schermata di Reduction
+     */
     @FXML
     private Button ticketReductionNextButton;
+    /**
+     * ImageView contenente la locandina nella schermata Reduction
+     */
     @FXML
     private ImageView insertReductionPlaybillImageView;
+
+
+    /**
+     * Vbox che contiene il center della schermata Recap, da cui verranno presi i vari nodi necessari
+     */
     @FXML
-    private VBox riepilogoTextBox;
+    private VBox recapVBox;
+    /**
+     * ImageView della copertina nella schermata Recap
+     */
     @FXML
     private ImageView RecapPlaybillImageView;
-
-    /**
-     * toolbar presente nella dashboard
-     */
-    @FXML
-    private ToolBar searchToolBar;
-    /**
-     * Vbox in eventListView contenente i risultati della ricerca
-     */
-    @FXML
-    private VBox eventListViewVBox;
-
-    /**
-     * toolbar presente in eventListView
-     */
-    @FXML
-    private ToolBar searchToolBarEventListView;
-    /**
-     * bottone per tornare indietro dalla schermata eventListView
-     */
-    @FXML
-    private Button eventListViewBackButton;
 
 
     /**
@@ -327,10 +357,19 @@ public class ViewSourceController extends Application {
      */
     private Node insertBox;
 
+    /**
+     * Schermata TicketTyoe
+     */
     private Node insertTicketTypeBox;
 
+    /**
+     * Schermata Reduction
+     */
     private Node insertReductionBox;
 
+    /**
+     * schermata Recap
+     */
     private Node insertRecapBox;
 
     /**
@@ -370,7 +409,7 @@ public class ViewSourceController extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ViewSource.fxml"));
         Parent root = null;
         try {
-            root = loader.load();
+            root = loader.load(); //setta la root da cui prendere i dati dell'FXML
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -382,12 +421,14 @@ public class ViewSourceController extends Application {
 
         //schermata non ridimensionabile
         this.primaryStage.setResizable(true);
+        //setta le dimensioni minime della schermata
         this.primaryStage.setMinHeight(800);
         this.primaryStage.setMinWidth(800);
-        this.primaryStage.show();
+        this.primaryStage.show(); //mostra la schermata
         this.primaryStage.centerOnScreen();
         this.primaryStage.setTitle("Em-17");
-        this.primaryStage.setMaximized(true);
+        this.primaryStage.setMaximized(true); //setta la schermata come massimizzata
+        //Listener che chiude i thread aperti, in caso la finestra venga chiusa
         this.primaryStage.setOnCloseRequest(event -> {
             ViewSourceController viewSourceController = new ViewSourceController();
             viewSourceController.shutdown();
@@ -417,14 +458,7 @@ public class ViewSourceController extends Application {
         //metodo per passare alla loginview
         toLoginView();
 
-        //listener per il bottone sulla prima immagine nella dashboard
-        //dashBoardImage1Button.setOnAction(event -> changeView(eventListBox));
-        //dashBoardImage2Button.setOnAction(event -> changeView(eventListBox));
-        //listener per il bottone sulla prima immagine nei risultati di ricerca
-
-//        eventListResult1Button.setOnAction(event -> changeView(eventBox));
-
-        //eventListResult1Button.setOnAction(event -> changeView(eventBox));
+        //todo si può togliere sta roba da qua?
         //listener per il bottone "torna alla dashboard" della schermata evento
         eventoBackButton.setOnAction(event -> turnBack());
         eventListViewBackButton.setOnAction(event -> changeView(dashBoardBox));
@@ -461,7 +495,6 @@ public class ViewSourceController extends Application {
     public void toRecoveryView() {
         new RecoveryView(recoveryEmail, recoveryButton, recoveryBackButton, this);
         changeView(recoveryBox);
-        primaryStage.setTitle("Em-17 - Password Recovery");
 
     }
 
@@ -472,13 +505,21 @@ public class ViewSourceController extends Application {
     public void toDashBoardView() {
         new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton,
                 dashBoardTabPane, dashBoardInsertButton, this, searchToolBar);
+
         changeView(dashBoardBox);
+
         DBController dbController = DBController.getInstance();
         dbController.dashBoard();
 
     }
 
+    /**
+     * Metodo che si occupa di creare la EventView e cambiuare schermata
+     *
+     * @param index
+     */
     public void toEventView(int index) {
+        //si crea una lista di Text, delle parti della schermata
         List<Text> texts = new ArrayList<>();
         texts.add(eventLocationText);
         texts.add(eventoDataInizioText);
@@ -491,16 +532,33 @@ public class ViewSourceController extends Application {
 
         new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
                 eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, this);
+
         changeView(eventBox);
 
     }
 
+    /**
+     * metodo che si occupa di creare la EventListView e cambiare la schermata
+     *
+     * @param foundedEventInSearch
+     */
+    public void toEventListView(List<EventModel> foundedEventInSearch) {
+        new EventListView(eventListTabPane, foundedEventInSearch, eventListViewVBox, searchToolBarEventListView, this);
+
+        changeView(eventListBox);
+    }
+
+    /**
+     * metodo che si occupa di creare la InsertView e cambiare la schermata
+     */
     public void toInsertView() {
 
         InsertController insertController = new InsertController(this);
+        //si creano due liste, una per i bottoni e una per i textField della schermata
         List<Button> buttonList = new ArrayList<>();
         List<TextField> texts = new ArrayList<>();
 
+        //si inseriscono bottoni e textFields nelle rispettive liste
         buttonList.add(insertCancelButton);
         buttonList.add(insertConfirmButton);
         buttonList.add(insertPlayBillLabel);
@@ -518,38 +576,61 @@ public class ViewSourceController extends Application {
 
     }
 
+    /**
+     * Metodo che si occupa di creare la InserTicketTypeView e cambiare la schermata
+     *
+     * @param insertController
+     * @param newEvent
+     */
     public void toInsetTicketTypeView(InsertController insertController, EventModel newEvent) {
         new InsertTicketTypeView(insertController, newEvent, InsertTicketVbox, ticketTypeBackButton,
                 ticketTypeNextButton, insertTicketPlaybillImageView);
+
         changeView(insertTicketTypeBox);
     }
 
-    public void shutdown() {
-
-        LoginController.getInstance().shutdown();
-    }
-
-    public void toEventListView(List<EventModel> foundedEventInSearch) {
-        new EventListView(eventListTabPane, foundedEventInSearch, eventListViewVBox, searchToolBarEventListView, this);
-        changeView(eventListBox);
-    }
-
+    /**
+     * Metodo che si occupa di creare la InsertReductionView e cambiare la schermata
+     *
+     * @param insertController
+     * @param newEvent
+     */
     public void toInsertReductionView(InsertController insertController, EventModel newEvent) {
         new InsertReductionView(insertController, newEvent,
                 InsertReductionVbox, ticketReductionBackButton, ticketReductionNextButton, insertReductionPlaybillImageView);
         changeView(insertReductionBox);
     }
 
-    public void toInsertRecap(InsertController insertController, List<Image> imagesList, EventModel newEvent) {
-        new InsertRecapView(insertController, newEvent, imagesList, riepilogoTextBox, RecapPlaybillImageView);
+    /**
+     * Metodo che si occupa di creare la InsertRecapView e cambiare la schermata
+     *
+     * @param insertController
+     * @param imagesList
+     * @param newEvent
+     */
+    public void toInsertRecapView(InsertController insertController, List<Image> imagesList, EventModel newEvent) {
+        new InsertRecapView(insertController, newEvent, imagesList, recapVBox, RecapPlaybillImageView);
         changeView(insertRecapBox);
     }
 
+    /**
+     * Metodo per tornare alla schermata precedente
+     */
     public void turnBack() {
         changeView(prevView);
     }
 
+    /**
+     * Metodo per andare alla schermata dashboard senza chiarame il DBController
+     */
     public void toDash() {
         changeView(dashBoardBox);
+    }
+
+    /**
+     * Metodo per la chiusura dei thread aperti
+     */
+    public void shutdown() {
+        LoginController.getInstance().shutdown();
     }
 }

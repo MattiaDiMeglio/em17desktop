@@ -25,31 +25,61 @@ import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 
+/**
+ * Classe controller del database
+ */
 public class DBController {
 
+    /**
+     * Url del database
+     */
     private static final String DATABASE_URL = "https://ingws-20.firebaseio.com/";
+    /**
+     * reference al database
+     */
     private DatabaseReference database;
+    /**
+     * instanza del dbcontroller
+     */
     private static DBController instance = new DBController();
+    /**
+     * instanza di eventListModel
+     */
     private EventListModel eventListModel;
+    /**
+     * instanza di locationListModel
+     */
     private LocationListModel locationListModel;
 
+    /**
+     * metodo che restituisce l'instanza
+     *
+     * @return
+     */
     public static DBController getInstance() {
         return instance;
     }
 
+    /**
+     * costruttore che chiama il metodo per inizializzare il db
+     */
     private DBController() {
         initializeDatabase();
     }
 
+    /**
+     * metodo per l'inizializzazione del database
+     */
     private void initializeDatabase() {
 
         System.out.println("Inizializzo database...");
 
         try {
-
+            //si crea il loader che andrà a caricare il json con i dati admin
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            //si fa caricare il json con i dati admin
             InputStream inputStream = loader.getResourceAsStream("ingws-20-firebase-adminsdk.json");
-
+            //si inizializza l'app con le opzioni di firebase
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(inputStream))
                     .setDatabaseUrl(DATABASE_URL).setStorageBucket("ingws-20.appspot.com")
@@ -67,64 +97,93 @@ public class DBController {
         System.out.println("Collegamento al database...");
         //Scelgo la root di partenza del database
         database = FirebaseDatabase.getInstance().getReference("luogo");
-        ChartsController.getInstance().setDatabase(database);
-        databaseListener();
+        ChartsController.getInstance().setDatabase(database);//si setta il db nel controller per i charts
+        databaseListener(); //inizializza i listener per il cambio del database
     }
 
+    /**
+     * metodo chiamato dalla dashboard, che scarica i dati degli eventi sul db
+     */
     public void dashBoard() {
+        //latch per il thread
         CountDownLatch latch = new CountDownLatch(2);
+        //thread per il popolamento dei grafici
         new Thread(() -> ChartsController.getInstance().populateCharts("2018", latch)).start();
+        //thread per il download degli eventi
         new Thread(() -> database.addListenerForSingleValueEvent(new ValueEventListener() {
 
+            /**
+             * listner che si attiva sul cambio dati, permette il download degli eventi
+             *
+             * @param snapshot snapshot del database
+             */
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 try {
+                    //si ottiene un iterable con le location
                     Iterable<DataSnapshot> location = snapshot.getChildren();
-                    eventListModel = EventListModel.getInstance();//ottengo l'instanza di event controller
-                    locationListModel = LocationListModel.getInstance();
+                    eventListModel = EventListModel.getInstance(); //si ottiene l'instanza di eventListModel
+                    locationListModel = LocationListModel.getInstance(); //si ottiene l'instanza di locationlistModel
 
 
                     int i = 0;
+                    //finché esistono elementi nell'iterator location
                     while (location.iterator().hasNext()) {
-                        LocationModel locationModel = new LocationModel();
+                        LocationModel locationModel = new LocationModel(); //creiamo un nuovo locationModel
 
-                        DataSnapshot locationSnap = location.iterator().next();
+                        DataSnapshot locationSnap = location.iterator().next(); //snap con gli elementi della location
 
-                        Iterable<DataSnapshot> settori = locationSnap.child("settori").getChildren();
+                        Iterable<DataSnapshot> settori = locationSnap.child("settori").getChildren(); //snapshot con i settori
                         Integer totTickets = 0;
 
+                        //si settano nome e indirizzo della location
                         locationModel.setLocationAddress(locationSnap.child("indirizzo").getValue().toString());
                         locationModel.setLocationName(locationSnap.child("nome").getValue().toString());
 
+                        //si creano le liste di nomi e posti per settore
                         List<String> settoriName = new ArrayList<>();
                         List<String> settoriSeats = new ArrayList<>();
+                        //si valorizzano le liste appena create
                         while (settori.iterator().hasNext()) {
                             DataSnapshot settoriSnap = settori.iterator().next();
                             settoriName.add(settoriSnap.getKey());
                             settoriSeats.add(settoriSnap.getValue().toString());
                             totTickets = totTickets + Integer.valueOf(settoriSnap.getValue().toString());
                         }
+                        //si settano le liste nel locationModel creato in precedenza
                         locationModel.setSectorList(settoriName);
                         locationModel.setSeatsList(settoriSeats);
+                        //iterable con gli eventi per la location
                         Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
+                        //finché esistono altri eventi nella location
                         while (eventi.iterator().hasNext()) {
-                            DataSnapshot eventiSnap = eventi.iterator().next();
+                            DataSnapshot eventiSnap = eventi.iterator().next(); //snap con i datii dell'evento
+
+                            //si crea un'hashmap con i settori
                             HashMap<String, Integer> settoriMap = new HashMap<>();
                             for (String aSettoriName : settoriName) {
                                 settoriMap.put(aSettoriName, 0);
                             }
+
                             EventModel event = new EventModel();//creo un nuovo event model
+                            //se c'è il prezzo lo si inserisce nell'eventModel
                             if (eventiSnap.hasChild("prezzo")){
                                 event.setPrice(Double.valueOf(eventiSnap.child("prezzo").getValue().toString()));
                             }else {
-                                event.setPrice(0.0);
+                                event.setPrice(0.0); //altrimenti è settato a 0
                             }
+
                             Integer ticketSold = 0;
+                            //si inizializzano ticketPerMonth e revenuePerMonth
                             event.initializeTicketPerMonth();
                             event.initializeRevenuePerMonth();
-                            Iterable<DataSnapshot> eventiIteable = eventiSnap.child("biglietti").getChildren();
-                            while (eventiIteable.iterator().hasNext()) {
-                                DataSnapshot bigliettiSnap = eventiIteable.iterator().next();
+
+                            //iterable per i biglietti dell'evento
+                            Iterable<DataSnapshot> eventiIterable = eventiSnap.child("biglietti").getChildren();
+
+                            //si valorizzano i dati relativi ai biglietti venduti
+                            while (eventiIterable.iterator().hasNext()) {
+                                DataSnapshot bigliettiSnap = eventiIterable.iterator().next();
                                 Integer accesses = Integer.valueOf(bigliettiSnap.child("accessi").getValue().toString());
 
                                 settoriMap.put(bigliettiSnap.child("settore").getValue().toString(),
@@ -139,6 +198,7 @@ public class DBController {
                                 event.addOneSoldPerMonth(eventEndTime.getMonth(), accesses);
                                 event.addOneRevenuePerMonth(eventEndTime.getMonth(), revenue);
                             }
+                            //si settano i dati dell'evento
                             event.setEventKey(eventiSnap.getKey());
                             event.setSectorNameList(settoriName);
                             event.setSoldPerSectorList(settoriMap);
@@ -151,6 +211,7 @@ public class DBController {
                             event.setActive((boolean) eventiSnap.child("attivo").getValue());
                             event.setEventDescription(eventiSnap.child("descrizione").getValue().toString());
 
+                            //nuovo latch per il thread di download della locandina
                             CountDownLatch latch1 = new CountDownLatch(1);
                             new Thread(() -> {
                                 Image image = new Image(eventiSnap.child("copertina").getValue().toString());
@@ -158,8 +219,11 @@ public class DBController {
                                 latch1.countDown();
                             }).start();
 
+                            //snap per data e ora
                             DataSnapshot dataSnapshot = eventiSnap.child("data");
                             DataSnapshot timeSnapshot = eventiSnap.child("ora");
+
+                            //si valorizza la data d'inizio nell'evento
                             String eventStartDate = dataSnapshot.child("inizio").getValue().toString();
                             try {
                                 Date eventStartTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventStartDate);
@@ -170,6 +234,8 @@ public class DBController {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+
+                            //si valorizza la data di fine dell'evento
                             String eventEndDate = dataSnapshot.child("fine").getValue().toString();
                             try {
                                 Date eventEndTime = new SimpleDateFormat("dd/MM/yyyy").parse(eventEndDate);
@@ -180,11 +246,13 @@ public class DBController {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+                            //si ottengono le immagini della galleria e le si inserisce nell'evento
                             try {
                                 List<Image> slidehow = new ArrayList<>();
                                 DataSnapshot slideSnap = eventiSnap.child("galleria");
                                 Integer j = 0;
 
+                                //l'inserimento viene fatto tramite thread
                                 CountDownLatch latchSlideShow = new CountDownLatch(Math.toIntExact(slideSnap.getChildrenCount()));
                                 while (j < slideSnap.getChildrenCount()) {
                                     Integer finalJ = j;
