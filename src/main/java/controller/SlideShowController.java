@@ -69,7 +69,25 @@ public class SlideShowController {
     /**
      * metodo per passare alla view per la visualizzazione di evento specifico
      *
-     * @param index indice identificativo dell'evento
+     * @param hBox                      hbox dove si isneriranno le immagini
+     * @param eventSlideShowLeftButton  bottone sinistro
+     * @param eventSlideShowRightButton bottone destro
+     * @param viewSourceController         viewSourceController
+     * @param eventModel                eventModel da cui ottenere le immagini
+     */
+    public void createSlide (HBox hBox, Button eventSlideShowLeftButton,
+                             Button eventSlideShowRightButton, ViewSourceController viewSourceController, EventModel eventModel){
+
+        new SlideShowView(hBox, eventSlideShowLeftButton, eventSlideShowRightButton, this, eventModel);
+
+        this.viewSourceController = viewSourceController;
+    }
+
+
+
+    /**
+     * metodo per l'handler nella dahasboard, che permette di indirizzare all'evento selezionato
+     * @param index indice dell'evento
      */
     public void handler(int index) {
         viewSourceController.toEventView(index);
@@ -81,7 +99,8 @@ public class SlideShowController {
      *
      * @param imageList lista di immagini che verrà caricata sul server
      */
-    public void setImageList(List<Image> imageList) {
+
+    public void setImageList(List<Image> imageList){
         insertController.setImagesList(imageList);
     }
 }

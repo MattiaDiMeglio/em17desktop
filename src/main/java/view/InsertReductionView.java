@@ -18,54 +18,76 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe view che si occupa della schermata di riduzioni pre i biglieti
+ */
 public class InsertReductionView {
-    private VBox insertReductionVbox;
+    private VBox insertReductionVbox; //Vbox dove verranno inseriti gli elementi per le riduzioni
     private InsertController insertController;
+    //Creo le tre textField per i tipi di riduzione
     private TextField bambiniReduction = new TextField("0");
     private TextField anzianiReduction = new TextField("0");
     private TextField studentiReduction = new TextField("0");
 
 
-
-
+    /**
+     * Costruttore della classe
+     *
+     * @param insertController
+     * @param newEvent
+     * @param insertReductionVbox
+     * @param ticketReductionBackButton
+     * @param ticketReductionNextButton
+     * @param insertReductionPlaybillImageView
+     */
     public InsertReductionView(InsertController insertController, EventModel newEvent,
                                VBox insertReductionVbox, Button ticketReductionBackButton,
                                Button ticketReductionNextButton, ImageView insertReductionPlaybillImageView) {
 
-        this.insertReductionVbox = insertReductionVbox;
-        this.insertController = insertController;
+        this.insertReductionVbox = insertReductionVbox; //valorizzazione della Vbox principale
+        this.insertController = insertController; //valorizzazione del controller
+        //Si inserisce l'immagine di locandina presa dal nuovo evento
         insertReductionPlaybillImageView.setImage(newEvent.getBillboard());
 
+        //listener del bottone conferma
         ticketReductionNextButton.setOnAction(event -> {
             next();
         });
 
+        //listener del bottone indietro
         ticketReductionBackButton.setOnAction(event -> {
             insertController.back();
         });
 
-
-
+        //inizializzazione della schermata
         init();
     }
 
+    /**
+     * Metodo che inizializza la schermata
+     */
     private void init() {
-        int i=2;
-        int j=0;
+       // int i = 2;
+       // int j = 0;
+        //gridpane in cui si inseriranno gli altri elementi
         GridPane gridPane = new GridPane();
 
+        //si settano le dimensioni base della gridpane e si inseriscono i primi due figli
+        //che faranno da titoli per le "colonne"
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(20, 150, 10, 10));
         gridPane.add(new Label("Riduzioni Applicabili"), 0, 0);
         gridPane.add(new Label("Percentuale di Sconto da Applicare"), 1, 0);
 
+        //separator che divide la prima riga dal resto dell aschermata
         Separator separator = new Separator();
         separator.setValignment(VPos.CENTER);
         GridPane.setConstraints(separator, 0, 1);
         GridPane.setColumnSpan(separator, 7);
         gridPane.getChildren().add(separator);
 
+        //Riga con gli elementi per la riduzione per i Bambini
         Label bambini = new Label("Bambini");
         gridPane.add(bambini, 0, 2);
         bambiniReduction.setMaxSize(80.0, bambiniReduction.getHeight());
@@ -74,6 +96,7 @@ public class InsertReductionView {
         hBox1.getChildren().add(new Label("%"));
         gridPane.add(hBox1, 1, 2);
 
+        //Riga con gli elementi per la riduzione per i Anziani
         Label anziani = new Label("Anziani");
         gridPane.add(anziani, 0, 3);
         anzianiReduction.setMaxSize(80.0, anzianiReduction.getHeight());
@@ -82,6 +105,7 @@ public class InsertReductionView {
         hBox2.getChildren().add(new Label("%"));
         gridPane.add(hBox2, 1, 3);
 
+        //Riga con gli elementi per la riduzione per i Studenti
         Label studenti = new Label("Studenti");
         gridPane.add(studenti, 0, 4);
         studentiReduction.setMaxSize(80.0, studentiReduction.getHeight());
@@ -90,25 +114,38 @@ public class InsertReductionView {
         hBox3.getChildren().add(new Label("%"));
         gridPane.add(hBox3, 1, 4);
 
-
+        //inizializzazione dei listener per gli elementi creati
         initListeners(bambiniReduction, anzianiReduction, studentiReduction);
 
+        //si aggiunge la gridpane creata nella Vbox principale
         insertReductionVbox.getChildren().add(0, gridPane);
     }
 
+    /**
+     * Metodo che si occupa dell'inizializzazione dei listner per le textField bambini, anziani e studenti
+     *
+     * @param bambini
+     * @param anziani
+     * @param studenti
+     */
     private void initListeners(TextField bambini, TextField anziani, TextField studenti) {
+        //Listener per il cambio del valore nella textfield
         bambini.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-               textFieldControl(bambini, oldValue, newValue);
+                textFieldControl(bambini, oldValue, newValue);
             }
         });
+
+        //Listener per il cambio del valore nella textfield
         anziani.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
                 textFieldControl(anziani, oldValue, newValue);
             }
         });
+
+        //Listener per il cambio del valore nella textfield
         studenti.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -118,27 +155,43 @@ public class InsertReductionView {
     }
 
 
+    /**
+     * Metodo che si occupa dei controlli sulla textfield
+     *
+     * @param textField
+     * @param oldValue
+     * @param newValue
+     */
     private void textFieldControl(TextField textField, String oldValue, String newValue) {
         try {
+            //controlla che gli elementi inseriti siano solo numerici e "."
             if (!newValue.matches("\\d*\\.?\\d+")) {
-                textField.setText(newValue.replaceAll("[^\\d\\.?\\d+]", ""));
+                textField.setText(newValue.replaceAll("[^\\d.?\\d+]", ""));
             }
+            //permette di inserire al massimo 7 caratteri
             if (textField.getText().length() > 7) {
                 String s = textField.getText().substring(0, 7);
                 textField.setText(s);
             }
-            if (Integer.parseInt(textField.getText()) > 100){
+            //se il valore è maggiore di 100, torna al valore subito precedente
+            if (Integer.parseInt(textField.getText()) > 100) {
                 textField.setText(oldValue);
             }
-            if (Integer.parseInt(textField.getText()) < 0){
+            //se il valore è meno di 0 torna al valore subito precedente
+            if (Integer.parseInt(textField.getText()) < 0) {
                 textField.setText(oldValue);
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException ignored) {
+
         }
     }
 
+    /**
+     * metodo che viene chiamato dal listener del bottone next
+     */
     private void next() {
         try {
+            //mostra un alert di conferma, che mostra un riepilogo delle percentuali inserite
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Attenzione!");
             alert.setHeaderText("Verranno applicate le seguenti riduzioni:");
@@ -148,15 +201,11 @@ public class InsertReductionView {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
+                //avanza di schermata in caso venga premuto ok
                 insertController.ticketReductionNext();
             }
-
-
-        } catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
-                    JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        } catch (NumberFormatException e) {
+        } catch (NullPointerException | NumberFormatException e) {
+            //in caso non tutti gli elementi siano valorizzati mostra un'errore
             JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
                     JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();

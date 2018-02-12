@@ -216,8 +216,8 @@ public class InsertView {
         try {
             if (!newPropertyValue) {
                 String[] parts = insertLocationLabel.getText().split("\\-");
-                insertMaxGuestsLabel.setText(insertController.maxVisitors(parts[0]));
-                oldVal[0] = Integer.parseInt(insertController.maxVisitors(parts[0]));
+                insertMaxGuestsLabel.setText(insertController.getMaxVisitors(parts[0]));
+                oldVal[0] = Integer.parseInt(insertController.getMaxVisitors(parts[0]));
             }
         } catch (NumberFormatException ignored){
         }
