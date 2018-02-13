@@ -1,14 +1,10 @@
 package view;
 
-import com.google.api.services.storage.Storage;
 import controller.InsertController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -16,55 +12,46 @@ import javafx.scene.layout.VBox;
 import model.EventModel;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-public class InsertTicketTypeView {
+public class InsertTicketTypeView implements Observer {
 
     private InsertController insertController;
-    private EventModel newEvent;
-    private Button next;
-    private Button back;
     private VBox form;
     private List<String> sectors = new ArrayList<>();
-    private List<String> seats = new ArrayList<>();
     private List<TextField> seatsFieldsList = new ArrayList<>();
     private List<TextField> prizeList = new ArrayList<>();
     private List<CheckBox> reductionCheckList = new ArrayList<>();
-
+    private ImageView insertTicketPlaybillImageView;
 
     public InsertTicketTypeView(InsertController insertController, EventModel newEvent, VBox insertTicketVbox,
                                 Button ticketTypeBackButton, Button ticketTypeNextButton, ImageView insertTicketPlaybillImageView) {
-        next = ticketTypeNextButton;
-        back = ticketTypeBackButton;
         form = insertTicketVbox;
         this.insertController = insertController;
-        this.newEvent = newEvent;
-        insertTicketPlaybillImageView.setImage(newEvent.getBillboard());
+        this.insertTicketPlaybillImageView = insertTicketPlaybillImageView;
+        newEvent.addObserver(this);
+        insertController.update(newEvent);
+        //this.newEvent = newEvent;
+       /* insertTicketPlaybillImageView.setImage(newEvent.getBillboard());
         if (form.getChildren().get(0) instanceof GridPane) {
             form.getChildren().remove(0);
-        }
+        }*/
 
 
-        next.setOnAction(event -> {
+        ticketTypeNextButton.setOnAction(event -> {
             next();
         });
 
-        back.setOnAction(event -> {
+        ticketTypeBackButton.setOnAction(event -> {
             insertController.back();
         });
-
-        init();
-
-
     }
 
-    private void init() {
+    private void init(EventModel eventModel) {
         int i = 2;
         int j = 0;
-        sectors = insertController.getSectorName(newEvent.getLocationName(), newEvent.getLocationAddress());
-        seats = insertController.getSteatsList(newEvent.getLocationName(), newEvent.getLocationAddress());
+        sectors = insertController.getSectorName(eventModel.getLocationName(), eventModel.getLocationAddress());
+        List<String> seats = insertController.getSteatsList(eventModel.getLocationName(), eventModel.getLocationAddress());
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);
@@ -112,42 +99,20 @@ public class InsertTicketTypeView {
     }
 
     private void initListeners(TextField textField, String s, TextField textField1) {
-        textField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-               textFieldControl(textField, oldValue, newValue);
-            }
-        });
+        textField.textProperty().addListener((ov, oldValue, newValue) -> textFieldControl(textField, newValue));
 
-        textField1.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                textFieldControl(textField1, oldValue, newValue);
-            }
-        });
+        textField1.textProperty().addListener((ov, oldValue, newValue) -> textFieldControl(textField1, newValue));
 
-        textField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+        textField.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) ->
+                focusText(textField, Integer.parseInt(s), Integer.parseInt(textField.getText()), newPropertyValue));
 
-                focusText(textField, Integer.parseInt(s), Integer.parseInt(textField.getText()), newPropertyValue);
-
-            }
-        });
-        textField1.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
-
-                focusText1(textField1, Integer.parseInt(textField.getText()), newPropertyValue);
-
-            }
-        });
+        textField1.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) ->
+                focusText1(textField1, Integer.parseInt(textField.getText()), newPropertyValue));
 
     }
 
 
-
-    private String textFieldControl(TextField textField, String oldValue, String newValue) {
+    private void textFieldControl(TextField textField, String newValue) {
         try {
             if (!newValue.matches("\\d*\\.?\\d+")) {
                 textField.setText(newValue.replaceAll("[^\\d\\.?\\d+]", ""));
@@ -156,10 +121,9 @@ public class InsertTicketTypeView {
                 String s = textField.getText().substring(0, 7);
                 textField.setText(s);
             }
-            return textField.getText();
-        } catch (NullPointerException e) {
+            textField.getText();
+        } catch (NullPointerException ignored) {
         }
-        return oldValue;
     }
 
     private void focusText(TextField textField, int oldVal, Integer newVal, Boolean newPropertyValue) {
@@ -167,7 +131,7 @@ public class InsertTicketTypeView {
             if (newVal > oldVal) {
                 textField.setText(String.valueOf(oldVal));
             }
-            if (newVal.equals("")){
+            if (newVal.equals("")) {
                 textField.setText("0");
             }
         } else {
@@ -196,7 +160,7 @@ public class InsertTicketTypeView {
             for (int i = 0; i < sectors.size(); i++) {
                 EventModel.Sectors sector = new EventModel().new Sectors();
                 sector.setName(sectors.get(i));
-                sector.setPrize(Integer.parseInt(prizeList.get(i).getText()));
+                sector.setPrice(Integer.parseInt(prizeList.get(i).getText()));
                 sector.setReduction(reductionCheckList.get(i).isSelected());
                 sector.setSeats(Integer.parseInt(seatsFieldsList.get(i).getText()));
                 sectorsList.add(sector);
@@ -217,14 +181,21 @@ public class InsertTicketTypeView {
                 }
             }
 
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
                     JOptionPane.ERROR_MESSAGE);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
-                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
 
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        EventModel eventModel = (EventModel) o;
+        insertTicketPlaybillImageView.setImage(eventModel.getBillboard());
+        if (form.getChildren().get(0) instanceof GridPane) {
+            form.getChildren().remove(0);
+        }
+        init(eventModel);
+    }
 }

@@ -8,19 +8,20 @@ import model.LocationModel;
 import view.LoadingPopupView;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 /**
  * Classe controller che si occupa dell'inserimento di un nuovo evento
+ *
+ * @author ingsw20
  */
 public class InsertController {
     /**
      * {@link EventModel} contenente i dati del nuovo evento da inserire
      */
-    private EventModel newEvent = new EventModel();
+    private EventModel newEvent;
     /**
      * instanza di {@link ViewSourceController}
      */
@@ -42,11 +43,10 @@ public class InsertController {
      */
     private List<Image> imagesList = new ArrayList<>();
 
-
     /**
      * costruttore dell'insertController
      *
-     * @param viewSourceController
+     * @param viewSourceController variabile per l'inizializzazione di {@link #viewSourceController}
      */
     InsertController(ViewSourceController viewSourceController) {
         this.viewSourceController = viewSourceController;
@@ -57,7 +57,8 @@ public class InsertController {
      * di schermate. chiama {@link ViewSourceController#turnBack()}
      */
     public void back() {
-        viewSourceController.turnBack();
+        viewSourceController.toInsertView(newEvent, this);
+        //viewSourceController.turnBack();
     }
 
     /**
@@ -71,10 +72,11 @@ public class InsertController {
     /**
      * metodo chiamato dal listener del bottone conferma della prima schermata di isnerimento
      *
-     * @param strings
-     * @param insertPlaybillImageView
+     * @param strings                 lista contenente i dati con il quale popolare il model
+     * @param insertPlaybillImageView immagine di copertina da settare nel model
      */
-    public void insertNext(List<String> strings, Image insertPlaybillImageView) {
+    public void insertNext(EventModel eventModel, List<String> strings, Image insertPlaybillImageView) {
+        newEvent = eventModel;
         try {
             newEvent.setEventName(strings.get(0));//Valorizza il nome dell'evento
             newEvent.setEventDescription(strings.get(3));//Valorizza la descrizione evento
@@ -91,24 +93,24 @@ public class InsertController {
             //In caso manchino elementi dell'evento parte un'alert che avverte l'utente
             JOptionPane.showMessageDialog(null, "Compilare tutti i campi prima di procedere", "Form Error",
                     JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-
     }
 
     /**
      * metodo chiamato dal listener del bottone conferma della seconda schermata di isnerimento
      *
-     * @param sectorsList
+     * @param sectorsList lista con i settori della location
      */
     public void ticketTypeNext(List<EventModel.Sectors> sectorsList) {
         newEvent.setSectorList(sectorsList);//Valorizza la lista dei settori
         //Inserisce il primo dei prezzi per settore in una variabile di supporto
-        double price = newEvent.getSectorList().get(0).getPrize();
+        double price = newEvent.getSectorList().get(0).getPrice();
         for (int i = 1; i < newEvent.getSectorList().size(); i++) {
             //e poi controlla che quello inserito sia il prezzo minore,
             // nel caso non lo sia sostituisce il valore in price
-            if (newEvent.getSectorList().get(i).getPrize() < price) {
-                price = newEvent.getSectorList().get(i).getPrize();
+            if (newEvent.getSectorList().get(i).getPrice() < price) {
+                price = newEvent.getSectorList().get(i).getPrice();
             }
         }
         //setta il minore dei prezzi per settore come prezzo dell'evento
@@ -127,9 +129,9 @@ public class InsertController {
     /**
      * metodo che serve per ottenere i nomi dei settori collegati alla location selezionata
      *
-     * @param name
-     * @param address
-     * @return
+     * @param name    nome della location
+     * @param address inidirizzo della location
+     * @return nomi dei settori collegati alla location selezionata
      */
     public List<String> getSectorName(String name, String address) {
         for (LocationModel location : locationListModel.getLocationList()) {
@@ -137,7 +139,6 @@ public class InsertController {
             if ((location.getLocationAddress().equals(address)) && (location.getLocationName().equals(name))) {
                 return location.getSectorList();
             }
-
         }
         return null;
     }
@@ -145,18 +146,16 @@ public class InsertController {
     /**
      * metodo che serve per ottenere il numero di posti dei settori collegati alla location selezionata
      *
-     * @param name
-     * @param address
-     * @return
+     * @param name    nome della location
+     * @param address indirizzo della location
+     * @return numero di posti dei settori collegati alla location selezionata
      */
     public List<String> getSteatsList(String name, String address) {
         for (LocationModel location : locationListModel.getLocationList()) {
-
             //se la location corrente ha nome e indirizzo uguale a quelli passati al metodo, restituisce la lista dei posti per settore
             if ((location.getLocationAddress().equals(address)) && (location.getLocationName().equals(name))) {
                 return location.getSeatsList();
             }
-
         }
         return null;
     }
@@ -164,8 +163,8 @@ public class InsertController {
     /**
      * Metodo che serve per ottenere il numero massimo di posti per la location
      *
-     * @param location
-     * @return
+     * @param location nome della location
+     * @return numero massimo di posti per la location
      */
     public String getMaxVisitors(String location) {
         int i = 0;
@@ -182,7 +181,7 @@ public class InsertController {
     /**
      * Metodo che serve per ottenere la lista dei nomi delle location con i relativi indirizzi
      *
-     * @return
+     * @return lista dei nomi delle location con i relativi indirizzi
      */
     public List<String> getLocations() {
         List<String> locations = new ArrayList<>();//crea una lista di stringhe
@@ -197,7 +196,7 @@ public class InsertController {
      * Metodo per il settaggio dell'imageList necessaria per la creazione degli slideshow
      * e per l'upload
      *
-     * @param imagesList
+     * @param imagesList imagelist aggiornata
      */
     public void setImagesList(List<Image> imagesList) {
         this.imagesList.clear();//pulisce la lista
@@ -205,8 +204,8 @@ public class InsertController {
     }
 
     /**
+     * metodo che avvia l'inserimento nel database
      * @param image
-     * @throws IOException
      */
     public void insert(List<Image> image) {
         StorageController sg = new StorageController();//instanzia lo storageController
@@ -225,5 +224,13 @@ public class InsertController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * metodo invocato dalle view per aggiornarsi
+     * @param eventModel model dal quale prelevare i dati
+     */
+    public void update(EventModel eventModel) {
+        eventModel.notifyMyObservers();
     }
 }

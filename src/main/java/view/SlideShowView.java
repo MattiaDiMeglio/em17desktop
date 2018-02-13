@@ -1,9 +1,6 @@
 package view;
 
 import controller.SlideShowController;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -14,13 +11,13 @@ import javafx.scene.layout.HBox;
 import model.EventListModel;
 import model.EventModel;
 
-
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * View che si occupa dello slideshow di immagini
  * implementa observer come secondo architettura MVC
+ *
+ * @author ingsw20
  */
 public class SlideShowView implements Observer {
 
@@ -148,11 +145,11 @@ public class SlideShowView implements Observer {
     /**
      * costruttore usato per la insertView
      *
-     * @param hBox                  hbox cetrale
-     * @param left                  bottone left
-     * @param right                 bottone right
-     * @param slideShowController   controllore dello slideshow
-     * @param immagini              lista di immagini
+     * @param hBox                hbox cetrale
+     * @param left                bottone left
+     * @param right               bottone right
+     * @param slideShowController controllore dello slideshow
+     * @param immagini            lista di immagini
      */
     public SlideShowView(HBox hBox, Button left, Button right, SlideShowController slideShowController, List<Image> immagini) {
         int i = 0; //
@@ -173,6 +170,7 @@ public class SlideShowView implements Observer {
         });
 
         if (hBox != null) {
+            hBox.getChildren().clear();
             //setta l'allineamento e lo spacing
             hBox.setAlignment(Pos.CENTER);
             hBox.setSpacing(20);
@@ -205,8 +203,9 @@ public class SlideShowView implements Observer {
         }
     }
 
-
-    //metodo chiamato dal listener del bottone right
+    /**
+     * metodo chiamato dal listener del bottone right
+     */
     private void right() {
         //in caso si possa ancora fare slide a destra
         if (activeList.get(3) < (buttonList.size() - 1)) {
@@ -229,7 +228,9 @@ public class SlideShowView implements Observer {
 
     }
 
-    //metodo chiamato dal listener del bottone left
+    /**
+     * metodo chiamato dal listener del bottone left
+     */
     private void left() {
         //in caso si possa ancora fare slide a sinistra
         if (activeList.get(0) > 0) {
@@ -257,8 +258,8 @@ public class SlideShowView implements Observer {
     /**
      * update dell'observer
      *
-     * @param o     observable
-     * @param arg   argomenti mandati con il notify
+     * @param o   observable
+     * @param arg argomenti mandati con il notify
      */
     @Override
     public void update(Observable o, Object arg) {
@@ -295,6 +296,7 @@ public class SlideShowView implements Observer {
 
     /**
      * metodo che si occupa dell'alert pre-cancellazione
+     *
      * @return
      */
     private boolean deleteConfirm() {

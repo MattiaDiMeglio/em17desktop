@@ -1,7 +1,6 @@
 package controller;
 
 
-import com.google.api.client.util.ArrayMap;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -388,7 +387,7 @@ public class DBController {
                                 String nome =newEvent.getSectorList().get(i).getName();
                                 DatabaseReference inSector = sectors.child(nome).getRef();
                                 inSector.child("posti").setValueAsync(newEvent.getSectorList().get(i).getSeats());
-                                inSector.child("prezzo").setValueAsync(newEvent.getSectorList().get(i).getPrize());
+                                inSector.child("prezzo").setValueAsync(newEvent.getSectorList().get(i).getPrice());
                                 inSector.child("riduzione").setValueAsync(newEvent.getSectorList().get(i).isReduction());
                             }
                             DatabaseReference gallery = insert.child("galleria").getRef();

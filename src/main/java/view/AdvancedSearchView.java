@@ -16,12 +16,15 @@ import java.util.Optional;
  * questa classe veien invocata ogni volta che viene premuto il tasto per la ricerca avanzata.
  * Crea un popup con le informazioni per filtrare la ricerca secondo le esigenze dell'utente.
  * La classe è composta esclusivamente dal costruttore.
+ *
+ * @author ingsw20
  */
 class AdvancedSearchView {
 
     /**
      * Il costruttore si occupa della creazione del popup e dell'invio delle preferenze settate al
      * SearchController che farà i controlli per i risultati
+     *
      * @param searchController controller per la ricerca
      */
     AdvancedSearchView(SearchController searchController) {
@@ -65,7 +68,7 @@ class AdvancedSearchView {
             if (startDatePicker.getValue() != null && newValue.isBefore(startDatePicker.getValue())) {
                 error.setVisible(true);
                 okButton.setDisable(true);
-            }else {
+            } else {
                 okButton.setDisable(false);
                 error.setVisible(false);
             }
@@ -75,7 +78,7 @@ class AdvancedSearchView {
             if (endDatePicker.getValue() != null && newValue.isAfter(endDatePicker.getValue())) {
                 error.setVisible(true);
                 okButton.setDisable(true);
-            }else {
+            } else {
                 okButton.setDisable(false);
                 error.setVisible(false);
             }

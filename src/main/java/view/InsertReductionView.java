@@ -6,7 +6,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -14,20 +13,21 @@ import javafx.scene.layout.VBox;
 import model.EventModel;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
- * Classe view che si occupa della schermata di riduzioni pre i biglieti
+ * Classe view che si occupa della schermata di riduzioni pre i biglietti
+ *
+ * @author ingsw20
  */
-public class InsertReductionView {
+public class InsertReductionView implements Observer {
     private VBox insertReductionVbox; //Vbox dove verranno inseriti gli elementi per le riduzioni
     private InsertController insertController;
     //Creo le tre textField per i tipi di riduzione
     private TextField bambiniReduction = new TextField("0");
     private TextField anzianiReduction = new TextField("0");
     private TextField studentiReduction = new TextField("0");
+    private ImageView insertReductionPlaybillImageView;
 
 
     /**
@@ -46,8 +46,9 @@ public class InsertReductionView {
 
         this.insertReductionVbox = insertReductionVbox; //valorizzazione della Vbox principale
         this.insertController = insertController; //valorizzazione del controller
-        //Si inserisce l'immagine di locandina presa dal nuovo evento
-        insertReductionPlaybillImageView.setImage(newEvent.getBillboard());
+        this.insertReductionPlaybillImageView = insertReductionPlaybillImageView;
+        newEvent.addObserver(this);
+        insertController.update(newEvent); // avvio update della schermata
 
         //listener del bottone conferma
         ticketReductionNextButton.setOnAction(event -> {
@@ -58,17 +59,16 @@ public class InsertReductionView {
         ticketReductionBackButton.setOnAction(event -> {
             insertController.back();
         });
-
-        //inizializzazione della schermata
-        init();
     }
 
     /**
      * Metodo che inizializza la schermata
+     *
+     * @param eventModel
      */
-    private void init() {
-       // int i = 2;
-       // int j = 0;
+    private void init(EventModel eventModel) {
+        // int i = 2;
+        // int j = 0;
         //gridpane in cui si inseriranno gli altri elementi
         GridPane gridPane = new GridPane();
 
@@ -213,4 +213,15 @@ public class InsertReductionView {
 
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        EventModel eventModel = (EventModel) o;
+        //Si inserisce l'immagine di locandina presa dal nuovo evento
+        insertReductionPlaybillImageView.setImage(eventModel.getBillboard());
+        if (insertReductionVbox.getChildren().get(0) instanceof GridPane) {
+            insertReductionVbox.getChildren().remove(0);
+        }
+        //inizializzazione della schermata
+        init(eventModel);
+    }
 }
