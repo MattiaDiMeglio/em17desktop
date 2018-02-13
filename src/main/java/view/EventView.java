@@ -2,7 +2,6 @@ package view;
 
 import controller.EventController;
 import controller.SlideShowController;
-import controller.ViewSourceController;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
@@ -48,12 +47,10 @@ public class EventView implements Observer {
      * @param eventSlide                Hbox che conterrà le immagini dello slideshow
      * @param eventSlideShowLeftButton  bottone sinistro dello slideshow
      * @param eventSlideShowRightButton bottone destro dello slideshow
-     * @param viewSourceController      viewsourcecontroller, necessario per la creazione dello slideshow
      */
     public EventView(EventController eventController, Button eventoDeleteButton, ImageView eventPlaybillImageView,
                      TabPane eventoTabPane, int index, List<Text> texts, Label eventoTitleLabel,
-                     TextArea eventTextArea, HBox eventSlide, Button eventSlideShowLeftButton, Button eventSlideShowRightButton,
-                     ViewSourceController viewSourceController) {
+                     TextArea eventTextArea, HBox eventSlide, Button eventSlideShowLeftButton, Button eventSlideShowRightButton) {
 
         SlideShowController slideShowController = new SlideShowController();//creo slideshowcontroller
         eventModel = eventListModel.getListaEventi().get(index); //ottendo l'evento a cui la schermata riferisce
@@ -70,7 +67,7 @@ public class EventView implements Observer {
         texts.get(4).setText(eventModel.getMaxVisitors().toString()); //setto il massimo dei visitatori
         texts.get(5).setText(eventModel.getTicketSold().toString()); //setto il numero di biglietti venduti
         //creo lo slideshow
-        slideShowController.createSlide(eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, viewSourceController, eventModel);
+        slideShowController.createSlide(eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, eventModel);
         //creo il listener del bottone per la cancellazione
         eventoDeleteButton.setOnAction(event -> {
             if (eventModel.getTicketSold() == 0) {

@@ -531,8 +531,7 @@ public class ViewSourceController extends Application {
 
 
         new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
-                eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton, this);
-
+                eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton);
         changeView(eventBox);
 
     }

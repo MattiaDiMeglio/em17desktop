@@ -9,29 +9,66 @@ import view.SlideShowView;
 import java.util.List;
 
 /**
- * Controller per gli slideshow
+ * controller per la creazione degli slideshow
+ *
+ * @author ingSW20
  */
 public class SlideShowController {
-    private InsertController insertController; //instanza dell'insertController
-    private ViewSourceController viewSourceController; //instanza del viewSourceController
+    /**
+     * variabile per l'utilizzo di {@link InsertController}
+     *
+     * @see #setImageList(List)
+     */
+    private InsertController insertController;
+    /**
+     * Variabile per l'utilizzo di {@link ViewSourceController}
+     *
+     * @see #handler(int)
+     */
+    private ViewSourceController viewSourceController;
 
     /**
-     * Metodo per la costruzione dello slideshow, chiamato da dashboard
+     * metodo per la creazione dello slideshow all'interno della {@link view.DashBoardView DashBoardView}
      *
-     * @param hBox                          hbox dove si inseriranno le immagini
-     * @param dashBoardSlideShowLeftButton  bottone sinistro della dashboard
-     * @param dashBoardSlideShowRightButton bottone destro della dashboard
-     * @param viewSourceController          viewSourceController
+     * @param hBox                 HBox contenente le immagini
+     * @param leftButton           bottone per scorrere la lista di immagini verso sinistra
+     * @param rightButton          bottone per scorrere la lista di immagini verso destra
+     * @param viewSourceController variabile per valorizzare {@link #viewSourceController}
      */
-    public void createSlide(HBox hBox, Button dashBoardSlideShowLeftButton,
-                            Button dashBoardSlideShowRightButton, ViewSourceController viewSourceController){
-
-        new SlideShowView(hBox, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton, this);
-
+    public void createSlide(HBox hBox, Button leftButton,
+                            Button rightButton, ViewSourceController viewSourceController) {
+        new SlideShowView(hBox, leftButton, rightButton, this);
         this.viewSourceController = viewSourceController;
     }
 
     /**
+     * metodo per la creazione dello slideshow all'interno di {@link view.EventView EventView}
+     *
+     * @param hBox        HBox contenente le immagini
+     * @param leftButton  bottone per scorrere la lista di immagini verso sinistra
+     * @param rightButton bottone per scorrere la lista di immagini verso destra
+     * @param eventModel  model contenente le informazioni dell'evento da visualizzare
+     */
+    public void createSlide(HBox hBox, Button leftButton,
+                            Button rightButton, EventModel eventModel) {
+        new SlideShowView(hBox, leftButton, rightButton, this, eventModel);
+    }
+
+    /**
+     * @param hbox             HBox contenente le immagini
+     * @param insertController variabile per la valorizzazione di {@link #insertController}
+     * @param leftButton       bottone per scorrere la lista di immagini verso sinistra
+     * @param rightButton      bottone per scorrere la lista di immagini verso destra
+     * @param immagini         lista con le immagini da impostare nello slideshow
+     */
+    public void createSlide(InsertController insertController, Button leftButton, HBox hbox, Button rightButton, List<Image> immagini) {
+        this.insertController = insertController;
+        new SlideShowView(hbox, leftButton, rightButton, this, immagini);
+    }
+
+    /**
+     * metodo per passare alla view per la visualizzazione di evento specifico
+     *
      * @param hBox                      hbox dove si isneriranno le immagini
      * @param eventSlideShowLeftButton  bottone sinistro
      * @param eventSlideShowRightButton bottone destro
@@ -46,16 +83,10 @@ public class SlideShowController {
         this.viewSourceController = viewSourceController;
     }
 
-    public void createSlide(InsertController insertController, Button left, HBox hbox, Button right, List<Image> immagini) {
-
-        this.insertController = insertController;
-
-        new SlideShowView( hbox, left, right, this, immagini);
-    }
 
 
     /**
-     * metodo per l'handler nella dhasboard, che permette di indirizzzare all'evento selezionato
+     * metodo per l'handler nella dahasboard, che permette di indirizzare all'evento selezionato
      * @param index indice dell'evento
      */
     public void handler(int index) {
@@ -63,12 +94,13 @@ public class SlideShowController {
     }
 
     /**
-     * metodo per la modifica della lista immagini
-     * @param imageList lista immagini
+     * Il metodo setta all'interno di {@link InsertController} la imagelist
+     * che verrà caricata sul server
+     *
+     * @param imageList lista di immagini che verrà caricata sul server
      */
+
     public void setImageList(List<Image> imageList){
         insertController.setImagesList(imageList);
     }
-
-
 }
