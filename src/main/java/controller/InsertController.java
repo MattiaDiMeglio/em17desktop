@@ -208,7 +208,7 @@ public class InsertController {
      * @param image
      * @throws IOException
      */
-    public void insert(List<Image> image) throws IOException {
+    public void insert(List<Image> image) {
         StorageController sg = new StorageController();//instanzia lo storageController
         CountDownLatch latch = new CountDownLatch(1);//crea un latch per il thread di upload
 
@@ -222,7 +222,7 @@ public class InsertController {
             new LoadingPopupView(latch); //si crea il popup di caricamento
             dbController.insert(newEvent); //finito il thread di upload si inserisce l'evento nel db
             viewSourceController.toDash();//cambio schermata
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

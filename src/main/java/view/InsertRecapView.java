@@ -313,11 +313,7 @@ public class InsertRecapView {
             alert.setContentText("Confermare?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                try {
-                    insertController.insert(imageList);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                insertController.insert(imageList);
             }
 
         });
