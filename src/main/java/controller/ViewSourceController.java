@@ -16,6 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.EventModel;
+import org.controlsfx.control.NotificationPane;
+import org.controlsfx.control.Notifications;
 import view.*;
 
 import java.io.IOException;
@@ -345,6 +347,10 @@ public class ViewSourceController extends Application {
      * tramite la pressione del tasto indietro
      */
     private Node prevView;
+    /**
+     * stage per la visualizzazione del programma
+     */
+    private static Stage stage;
 
     /**
      * Main dell'applicazione, richiama il metono launch che fa partire la schermata di javafx
@@ -401,6 +407,7 @@ public class ViewSourceController extends Application {
             Platform.exit();
 
         });
+        stage = primaryStage;
     }
 
     /**
@@ -449,6 +456,35 @@ public class ViewSourceController extends Application {
         new LoginView(userName, password, loginButton, recoveryLabelButton, this);
         changeView(loginBox);
 
+    }
+
+    public static void showNotificationPane() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Scene scene = stage.getScene();
+                Parent pane = scene.getRoot();
+                if (!(pane instanceof NotificationPane)){
+                    NotificationPane notificationPane = new NotificationPane(pane);
+                    notificationPane.getStyleClass().add(NotificationPane.STYLE_CLASS_DARK);
+                    notificationPane.setShowFromTop(false);
+                    notificationPane.setText("database aggiornato");
+                    scene = new Scene(notificationPane, scene.getWidth(), scene.getHeight());
+                    stage.setScene(scene);
+                    notificationPane.show();
+            new Thread(()->{
+                try {
+                    Thread.sleep(2000);
+                    notificationPane.hide();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+                } else {
+                    ((NotificationPane)pane).show();
+                }
+            }
+        });
 
     }
 
@@ -471,7 +507,7 @@ public class ViewSourceController extends Application {
         changeView(dashBoardBox);
 
         DBController dbController = DBController.getInstance();
-        dbController.dashBoard();
+        //dbController.dashBoard();
 
     }
 

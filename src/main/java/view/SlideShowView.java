@@ -26,10 +26,6 @@ public class SlideShowView implements Observer {
      */
     private List<Button> buttonList;
     /**
-     * instanza di eventListModel
-     */
-    private EventListModel eventListModel = EventListModel.getInstance();
-    /**
      * istanza di eventModel
      */
     private EventModel eventModel;
@@ -56,32 +52,22 @@ public class SlideShowView implements Observer {
      */
     public SlideShowView(HBox hBox, Button dashBoardSlideShowLeftButton,
                          Button dashBoardSlideShowRightButton, SlideShowController slideShowController) {
+
+        //instanza di eventListModel
+        EventListModel eventListModel = EventListModel.getInstance();
         eventListModel.addObserver(this); //setto come observer della lista di eventi
         this.slideShowController = slideShowController; //valorizzo l'instanza locale di slideshowcontroller
         this.hBox = hBox; //vsetto l'hbox
         buttonList = new ArrayList<>(); //Instanzio le liste di bottoni
         activeList = new ArrayList<>();
         //listener per il bottone destro
-        dashBoardSlideShowRightButton.setOnAction(event -> {
-            right();
-        });
+        dashBoardSlideShowRightButton.setOnAction(event -> right());
         //listener per il bottone sinistro
-        dashBoardSlideShowLeftButton.setOnAction(event -> {
-            left();
-        });
+        dashBoardSlideShowLeftButton.setOnAction(event -> left());
         //creazione dei bottoni nella lista
         if (hBox != null) {
             hBox.setAlignment(Pos.CENTER);//setto l'allineamento adell'Hbox a center
             hBox.setSpacing(20); //setto lo spacing
-            //creo otto bottoni diversi, numero scelto arbitrariamente
-            for (int i = 0; i < 8; i++) {
-                Button button = new Button(); //instanzio il nuovo bottone
-                buttonList.add(button); //lo aggiungo alla lista dei bottoni
-                if (i < 4) {
-                    hBox.getChildren().add(button); //se l'indice è minore di 4 verrà reso visibile
-                    activeList.add(i); //e aggiunto alla lista dei bottoni attivi
-                }
-            }
         }
     }
 
@@ -96,7 +82,7 @@ public class SlideShowView implements Observer {
      */
     public SlideShowView(HBox hBox, Button eventSlideShowLeftButton,
                          Button eventSlideShowRightButton, SlideShowController slideShowController, EventModel eventModel) {
-        int i = 0;
+        int i;
         this.eventModel = eventModel; //valorizzazione del model
         this.slideShowController = slideShowController; //si valorizza il controller
         this.hBox = hBox; //si valorizza l'Hbox
@@ -105,14 +91,10 @@ public class SlideShowView implements Observer {
         eventModel.addObserver(this); //si setta la view come observer
 
         //listener per il bottone right dello slideshow
-        eventSlideShowRightButton.setOnAction(event -> {
-            right();
-        });
+        eventSlideShowRightButton.setOnAction(event -> right());
 
         //listener per il bottone left dello slideshow
-        eventSlideShowLeftButton.setOnAction(event -> {
-            left();
-        });
+        eventSlideShowLeftButton.setOnAction(event -> left());
 
 
         if (hBox != null) {
@@ -152,7 +134,7 @@ public class SlideShowView implements Observer {
      * @param immagini            lista di immagini
      */
     public SlideShowView(HBox hBox, Button left, Button right, SlideShowController slideShowController, List<Image> immagini) {
-        int i = 0; //
+        int i; //
         buttonList = new ArrayList<>(); //si crea la lista di bottoni
         activeList = new ArrayList<>(); //si crea la lista dei bottoni attivi
 
@@ -160,14 +142,10 @@ public class SlideShowView implements Observer {
         this.hBox = hBox; //valorizza l'Hbox
 
         //listener per il bottone right
-        right.setOnAction(event -> {
-            right();
-        });
+        right.setOnAction(event -> right());
 
         //listener per il bottone left
-        left.setOnAction(event -> {
-            left();
-        });
+        left.setOnAction(event -> left());
 
         if (hBox != null) {
             hBox.getChildren().clear();
@@ -250,10 +228,7 @@ public class SlideShowView implements Observer {
             hBox.getChildren().add(2, buttonList.get(activeList.get(2)));
             hBox.getChildren().add(3, buttonList.get(activeList.get(3)));
         }
-
-
     }
-
 
     /**
      * update dell'observer
@@ -263,21 +238,10 @@ public class SlideShowView implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        hBox.getChildren().removeAll(); //pulisce l'hobox
+        hBox.getChildren().removeAll(); //pulisce l'hobox //todo sembra essere inutile questo comando
         //se l'update viene da EventListModel
         if (o instanceof EventListModel) {
-            int eventIndex = (int) arg;
-            //creazione dello slideshow con le copertine degli eventi
-            if (eventIndex < buttonList.size()) {
-                Image image = eventListModel.getListaEventi().get(eventIndex).getBillboard();
-                ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(300.0);
-                imageView.setFitHeight(280.0);
-                buttonList.get(eventIndex).setGraphic(imageView);
-                buttonList.get(eventIndex).setOnAction(event -> {
-                    slideShowController.handler(eventIndex);
-                });
-            }
+            initButtonList((EventListModel) o);
         } else {
             //creazione dello slide con le immagini dell'evento
             int i = 0;
@@ -288,16 +252,14 @@ public class SlideShowView implements Observer {
                 imageView.setFitHeight(280.0);
                 buttonList.get(i).setGraphic(imageView);
                 i++;
-
             }
-
         }
     }
 
     /**
      * metodo che si occupa dell'alert pre-cancellazione
      *
-     * @return
+     * @return booleano che identifica la risposta data dall'utente
      */
     private boolean deleteConfirm() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -309,4 +271,46 @@ public class SlideShowView implements Observer {
         return result.get() == ButtonType.OK;
     }
 
+    /**
+     * il metodo si occupa del popolamento dello slideshow
+     *
+     * @param listModel lista di EventModel
+     */
+    private void initButtonList(EventListModel listModel) {
+        hBox.getChildren().clear();
+        buttonList.clear();
+        activeList.clear();
+
+        //creo otto bottoni diversi, numero scelto arbitrariamente
+        for (int i = 0; i < 8; i++) {
+            Button button = new Button(); //instanzio il nuovo bottone
+            buttonList.add(button); //lo aggiungo alla lista dei bottoni
+            if (i < 4) {
+                hBox.getChildren().add(button); //se l'indice è minore di 4 verrà reso visibile
+                activeList.add(i); //e aggiunto alla lista dei bottoni attivi
+            }
+        }
+
+        if (listModel.getListaEventi().size() > buttonList.size()) {
+            for (int i = 0; i < buttonList.size(); i++) {
+                Image image = listModel.getListaEventi().get(i).getBillboard();
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(300.0);
+                imageView.setFitHeight(280.0);
+                buttonList.get(i).setGraphic(imageView);
+                int finalI = i;
+                buttonList.get(i).setOnAction(event -> slideShowController.handler(finalI));
+            }
+        } else {
+            for (int i = 0; i < listModel.getListaEventi().size(); i++) {
+                Image image = listModel.getListaEventi().get(i).getBillboard();
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(300.0);
+                imageView.setFitHeight(280.0);
+                buttonList.get(i).setGraphic(imageView);
+                int finalI = i;
+                buttonList.get(i).setOnAction(event -> slideShowController.handler(finalI));
+            }
+        }
+    }
 }

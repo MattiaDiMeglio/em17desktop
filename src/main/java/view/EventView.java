@@ -2,6 +2,7 @@ package view;
 
 import controller.EventController;
 import controller.SlideShowController;
+import javafx.event.EventHandler;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
@@ -9,6 +10,7 @@ import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -29,9 +31,7 @@ import java.util.Optional;
  * Implementa Observer, come definito dall'architettura MVC implementata per il progetto
  */
 public class EventView implements Observer {
-    EventListModel eventListModel = EventListModel.getInstance();
-    EventModel eventModel;
-    Boolean ret;
+    private EventModel eventModel;
 
     /**
      * Costruttore della view, che va a popolarla passando per l'eventModel corrispondente all'index passatogli
@@ -53,6 +53,7 @@ public class EventView implements Observer {
                      TextArea eventTextArea, HBox eventSlide, Button eventSlideShowLeftButton, Button eventSlideShowRightButton) {
 
         SlideShowController slideShowController = new SlideShowController();//creo slideshowcontroller
+        EventListModel eventListModel = EventListModel.getInstance();
         eventModel = eventListModel.getListaEventi().get(index); //ottendo l'evento a cui la schermata riferisce
         eventModel.addObserver(this); //setto la view come observer dell'eventmodel
         initializeCharts(eventoTabPane, index); //inizializzazione dei charts
@@ -61,9 +62,9 @@ public class EventView implements Observer {
         eventoTitleLabel.setText(eventModel.getEventName()); //setto il titolo nella label
         eventTextArea.setText(eventModel.getEventDescription()); //setto la descrizione della textarea
         texts.get(0).setText(eventModel.getLocationName()); //setto il nome location nel primo elemento della lista di text
-        texts.get(1).setText(eventModel.getStartingDate().toString()); //setto la data inizio nella text
-        texts.get(2).setText(eventModel.getEndingDate().toString()); //setto la data di fine
-        texts.get(3).setText("prezzo"); //setto il prezzo
+        texts.get(1).setText(eventModel.getStartingDate()); //setto la data inizio nella text
+        texts.get(2).setText(eventModel.getEndingDate()); //setto la data di fine
+        texts.get(3).setText(String.valueOf(eventModel.getPrice())); //setto il prezzo
         texts.get(4).setText(eventModel.getMaxVisitors().toString()); //setto il massimo dei visitatori
         texts.get(5).setText(eventModel.getTicketSold().toString()); //setto il numero di biglietti venduti
         //creo lo slideshow
@@ -91,8 +92,8 @@ public class EventView implements Observer {
     /**
      * Metodo per l'inizializzazione dei charts
      *
-     * @param tabPane //tabpane contenente i charts
-     * @param index   //indice dell'evento a cui la view riferisce
+     * @param tabPane tabpane contenente i charts
+     * @param index   indice dell'evento a cui la view riferisce
      */
     private void initializeCharts(TabPane tabPane, int index) {
         //ottengo la Vbox in cui è contenuto il linecharts (il contenuto della prima tab
