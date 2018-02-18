@@ -2,14 +2,16 @@ package view;
 
 import controller.InsertController;
 import controller.SlideShowController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.EventModel;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.File;
@@ -17,9 +19,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class InsertView {
-    InsertController insertController;
+public class InsertView implements Observer {
+    private InsertController insertController;
 
     private TextField insertNameLabel;
     private TextField insertLocationLabel;
@@ -37,11 +41,12 @@ public class InsertView {
     private SlideShowController slideShowController = new SlideShowController();
     private List<Image> immagini = new ArrayList<>();
     private List<String> texts = new ArrayList<>();
+    private EventModel eventModel;
 
 
     public InsertView(InsertController insertController, List<Button> buttonList, List<TextField> texts,
                       TextArea insertTextArea, HBox insertSlideshow, DatePicker insertInizioDataPicker,
-                      DatePicker insertFineDataPicker, ImageView insertPlaybillImageView){
+                      DatePicker insertFineDataPicker, ImageView insertPlaybillImageView, EventModel eventModel) {
 
 
         this.insertController = insertController;
@@ -58,80 +63,77 @@ public class InsertView {
         this.insertFineDataPicker = insertFineDataPicker;
         this.insertPlaybillImageView = insertPlaybillImageView;
 
-
         insertPlaybillImageView.setImage(new Image("/image/Picture_80px.png"));
         insertInizioDataPicker.setValue(LocalDate.now());
         insertFineDataPicker.setValue(LocalDate.now());
         List<String> locations = insertController.getLocations();
         TextFields.bindAutoCompletion(insertLocationLabel, locations);
-
         initListeners();
 
+        eventModel.addObserver(this);
+        this.eventModel = eventModel;
+        insertController.update(eventModel);
+    }
 
+    public InsertView(InsertController insertController, List<Button> buttonList, List<TextField> texts,
+                      TextArea insertTextArea, HBox insertSlideshow, DatePicker insertInizioDataPicker,
+                      DatePicker insertFineDataPicker, ImageView insertPlaybillImageView) {
+        this.insertController = insertController;
+        this.insertNameLabel = texts.get(0);
+        this.insertLocationLabel = texts.get(1);
+        this.insertMaxGuestsLabel = texts.get(2);
+        this.insertCancelButton = buttonList.get(0);
+        this.insertConfirmButton = buttonList.get(1);
+        this.insertPlayBillLabel = buttonList.get(2);
+        this.insertUploadButton = buttonList.get(3);
+        this.insertTextArea = insertTextArea;
+        this.insertSlideshow = insertSlideshow;
+        this.insertInizioDataPicker = insertInizioDataPicker;
+        this.insertFineDataPicker = insertFineDataPicker;
+        this.insertPlaybillImageView = insertPlaybillImageView;
+
+        /*insertPlaybillImageView.setImage(new Image("/image/Picture_80px.png"));
+        insertInizioDataPicker.setValue(LocalDate.now());
+        insertFineDataPicker.setValue(LocalDate.now());*/
+        List<String> locations = insertController.getLocations();
+        TextFields.bindAutoCompletion(insertLocationLabel, locations);
+        initListeners();
+
+        eventModel = new EventModel();
+        eventModel.addObserver(this);
+        insertController.update(eventModel);
     }
 
     private void initListeners() {
 
-        insertPlaybillImageView.setOnMouseClicked(event -> {
-            playbill();
-        });
+        insertPlaybillImageView.setOnMouseClicked(event -> playbill());
 
-        insertPlayBillLabel.setOnAction(event -> {
-            playbill();
-        });
+        insertPlayBillLabel.setOnAction(event -> playbill());
 
-        insertUploadButton.setOnAction(event -> {
-            slideshow();
-        });
+        insertUploadButton.setOnAction(event -> slideshow());
 
-        insertMaxGuestsLabel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                maxVisitorControl(newValue);
-            }
-        });
+        insertMaxGuestsLabel.textProperty().addListener((ov, oldValue, newValue) -> maxVisitorControl(newValue));
 
-        insertLocationLabel.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                focusLocation(newPropertyValue);
-            }
-        });
+        insertLocationLabel.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> focusLocation(newPropertyValue));
 
-        insertMaxGuestsLabel.focusedProperty().addListener(new ChangeListener<Boolean>()
-        {
-
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
-                focusGuests(newPropertyValue);
-
-            }
-        });
+        insertMaxGuestsLabel.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) -> focusGuests(newPropertyValue));
 
         insertFineDataPicker.valueProperty().addListener((ov, oldValue, newValue) -> {
-            if (newValue.isBefore(insertInizioDataPicker.getValue())){
+            if (insertInizioDataPicker.getValue() != null && newValue.isBefore(insertInizioDataPicker.getValue())) {
                 insertFineDataPicker.setValue(insertInizioDataPicker.getValue());
             }
         });
 
         insertInizioDataPicker.valueProperty().addListener((ov, oldValue, newValue) -> {
-            if (newValue.isAfter(insertFineDataPicker.getValue())){
+            if (insertFineDataPicker.getValue() != null && newValue.isAfter(insertFineDataPicker.getValue())) {
                 insertFineDataPicker.setValue(newValue);
             }
         });
 
-        insertCancelButton.setOnAction(event -> {
-            back();
-        });
+        insertCancelButton.setOnAction(event -> back());
 
 
-        insertConfirmButton.setOnAction(event -> {
-
-            next();
-        });
+        insertConfirmButton.setOnAction(event -> next());
     }
 
     private void back() {
@@ -149,11 +151,11 @@ public class InsertView {
         texts.add(dateFormatter.format(insertInizioDataPicker.getValue()));
         texts.add(dateFormatter.format(insertFineDataPicker.getValue()));
 
-        insertController.insertNext(texts, insertPlaybillImageView.getImage());
+        insertController.insertNext(eventModel, texts, insertPlaybillImageView.getImage());
 
     }
 
-    private void playbill(){
+    private void playbill() {
         Stage stage = new Stage();
 
         FileChooser fileChooser = new FileChooser();
@@ -187,19 +189,17 @@ public class InsertView {
                 immaginiUri.add(new Image(file.toURI().toString()));
                 System.out.println(file.toURI().toString());
             }
-            Button left = (Button)insertSlideshow.getChildren().get(0);
-            HBox slide = (HBox)insertSlideshow.getChildren().get(1);
-            Button right= (Button) insertSlideshow.getChildren().get(2);
+            Button left = (Button) insertSlideshow.getChildren().get(0);
+            HBox slide = (HBox) insertSlideshow.getChildren().get(1);
+            Button right = (Button) insertSlideshow.getChildren().get(2);
 
             slideShowController.createSlide(insertController, left, slide, right, immaginiUri);
         }
-        for(Image image: immaginiUri){
-            immagini.add(image);
-        }
+        immagini.addAll(immaginiUri);
         insertController.setImagesList(immagini);
     }
 
-    private void maxVisitorControl(String newValue){
+    private void maxVisitorControl(String newValue) {
         try {
             if (!newValue.matches("\\d*")) {
                 insertMaxGuestsLabel.setText(oldVal[0].toString());
@@ -208,31 +208,57 @@ public class InsertView {
                 String s = insertMaxGuestsLabel.getText().substring(0, 7);
                 insertMaxGuestsLabel.setText(s);
             }
-        } catch (NullPointerException ignored){
+        } catch (NullPointerException ignored) {
         }
     }
 
-    private void focusLocation (Boolean newPropertyValue){
+    private void focusLocation(Boolean newPropertyValue) {
         try {
             if (!newPropertyValue) {
                 String[] parts = insertLocationLabel.getText().split("\\-");
                 insertMaxGuestsLabel.setText(insertController.getMaxVisitors(parts[0]));
                 oldVal[0] = Integer.parseInt(insertController.getMaxVisitors(parts[0]));
             }
-        } catch (NumberFormatException ignored){
+        } catch (NumberFormatException ignored) {
         }
 
     }
 
     private void focusGuests(Boolean newPropertyValue) {
-        if (!newPropertyValue)
-        {
+        if (!newPropertyValue) {
             Integer newVal = Integer.parseInt(insertMaxGuestsLabel.getText());
-            if (newVal > oldVal[0]){
-                insertMaxGuestsLabel.setText( String.valueOf(oldVal[0]) );
+            if (newVal > oldVal[0]) {
+                insertMaxGuestsLabel.setText(String.valueOf(oldVal[0]));
             }
         }
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        EventModel eventModel = (EventModel) o;
+        String pattern = "dd/MM/yyy";
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
 
+        insertNameLabel.setText(eventModel.getEventName());
+        if (!eventModel.getLocationName().equals("")) {
+            insertLocationLabel.setText(eventModel.getLocationName() + "-" + eventModel.getLocationAddress());
+        }
+        insertMaxGuestsLabel.setText(String.valueOf(eventModel.getMaxVisitors()));
+        insertTextArea.setText(eventModel.getEventDescription());
+        if (!eventModel.getStartingDate().equals("")) {
+            insertInizioDataPicker.setValue(LocalDate.parse(eventModel.getStartingDate(), dateFormatter));
+        } else {
+            insertInizioDataPicker.setValue(LocalDate.now());
+        }
+        if (!eventModel.getEndingDate().equals("")) {
+            insertFineDataPicker.setValue(LocalDate.parse(eventModel.getEndingDate(), dateFormatter));
+        } else {
+            insertFineDataPicker.setValue(LocalDate.now());
+        }
+        if (eventModel.getBillboard() == null) {
+            insertPlaybillImageView.setImage(new Image("/image/Picture_80px.png"));
+        } else {
+            insertPlaybillImageView.setImage(eventModel.getBillboard());
+        }
+    }
 }
