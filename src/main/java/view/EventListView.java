@@ -312,6 +312,9 @@ public class EventListView {
                 modify.setTextFill(Paint.valueOf("blue"));
                 modify.underlineProperty().setValue(true);
                 modify.setText("Modifica");
+
+                //Crea il pulsante Cancella
+
                 Label delete = new Label();
                 delete.setTranslateY(50);
                 delete.setTextFill(Paint.valueOf("blue"));
@@ -332,6 +335,16 @@ public class EventListView {
                         if (result.get() == ButtonType.OK){
                             eventController.delete(eventModel.getEventKey());
                         }
+                    } else {
+
+                        //Popup di avviso che mostra perché è impossibile eliminare l'evento
+
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Informazione");
+                        alert.setHeaderText("L'evento non può essere eliminato");
+                        alert.setContentText("L'evento " + eventModel.getEventName() + " non può essere eliminato perché ha già venduto qualche biglietto");
+
+                        alert.showAndWait();
                     }
                 });
 
