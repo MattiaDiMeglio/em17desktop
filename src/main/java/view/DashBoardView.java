@@ -38,6 +38,11 @@ public class DashBoardView implements Observer {
     private SearchController searchController;
     private List<EventModel> foundedEventInSearch;
 
+    /**
+     * lista per i suggerimenti della ricerca
+     */
+    private List<String> eventsName;
+
     public DashBoardView(HBox dashSlide, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton,
                          TabPane dashBoardTabPane, Button dashBoardInsertButton,
                          ViewSourceController viewSourceController, ToolBar searchToolBar) {
@@ -62,7 +67,7 @@ public class DashBoardView implements Observer {
         searchController = new SearchController();
         TextField textField = (TextField) toolBar.getItems().get(0);
         textField.setOnMouseClicked(event -> {
-            List<String> eventsName = searchController.getEventsName();
+            eventsName = searchController.getEventsName();
             TextFields.bindAutoCompletion(textField, eventsName);
         });
 

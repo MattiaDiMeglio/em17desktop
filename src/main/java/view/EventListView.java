@@ -20,16 +20,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import model.EventListModel;
 import model.EventModel;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import view.chartsViews.BarChartView;
 import view.chartsViews.LineChartView;
 import view.chartsViews.PieChartView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Classe View per la schermata Event List.
@@ -37,7 +36,7 @@ import java.util.Map;
  *
  * @author ingSW20
  */
-public class EventListView {
+public class EventListView implements Observer {
 
     /**
      * Label mostrata in caso di risultati non trovati
@@ -90,6 +89,18 @@ public class EventListView {
     private ObservableList<EventTable> data;
 
     /**
+     * textfield per la ricerca
+     */
+    private TextField searchTextField;
+
+    private AutoCompletionBinding completionBinding;
+
+    /**
+     * lista per i suggerimenti della ricerca
+     */
+    private List<String> eventsName = new ArrayList<>();
+
+    /**
      * costruttore per inizializzare la classe
      *
      * @param eventListTabPane           TabPane contenente i grafici
@@ -106,6 +117,13 @@ public class EventListView {
         checkBoxList = new ArrayList<>();
         selectedItems = new HashMap<>();
         data = FXCollections.observableArrayList();
+        Button backButton = (Button) searchToolBarEventListView.getItems().get(0);
+        backButton.setOnAction(event -> {
+            completionBinding.dispose();
+            viewSourceController.turnBack();
+            backButton.onActionProperty().unbind();
+        });
+        EventListModel.getInstance().addObserver(this);
 
         initalizeSearch(searchToolBarEventListView); // inizializzo la barra di ricerca
         initializeCharts(eventListTabPane); // inizializzo i grafici
@@ -125,8 +143,18 @@ public class EventListView {
      */
     private void initalizeTableView(TabPane tabPane) {
 
-        TableView<EventTable> table = new TableView<>();
-        table.setEditable(true);
+        TableView<EventTable> table;
+        if (tabPane.getTabs().size() == 4) {
+            table = (TableView<EventTable>) tabPane.getTabs().get(3).getContent();
+            table.getColumns().clear();
+        }else {
+            table = new TableView<>();
+            table.setEditable(true);
+            Tab tableView = new Tab();
+            tableView.setText("Dati");
+            tableView.setContent(table);
+            tabPane.getTabs().add(tableView);
+        }
 
         TableColumn<EventTable, String> eventName = new TableColumn<>("Nome evento");
         eventName.setCellValueFactory(new PropertyValueFactory<EventTable, String>("eventName"));
@@ -152,12 +180,6 @@ public class EventListView {
         maxVisitors.prefWidthProperty().bind(table.widthProperty().divide(10));
         locationName.prefWidthProperty().bind(table.widthProperty().divide(7));
         date.prefWidthProperty().bind(table.widthProperty().divide(7));
-
-        Tab tableView = new Tab();
-        tableView.setText("Dati");
-        tableView.setContent(table);
-
-        tabPane.getTabs().add(tableView);
     }
 
     /**
@@ -171,13 +193,13 @@ public class EventListView {
         notFoundLabel.fontProperty().setValue(new Font(20));
         searchController = new SearchController(this);
 
-        TextField textField = (TextField) toolBar.getItems().get(2);
-        List<String> eventsName = searchController.getEventsName();
-        TextFields.bindAutoCompletion(textField, eventsName);
+        searchTextField = (TextField) toolBar.getItems().get(2);
+        eventsName.addAll(searchController.getEventsName());
+        completionBinding = TextFields.bindAutoCompletion(searchTextField, eventsName);
 
         Button button = (Button) toolBar.getItems().get(3);
         button.setOnAction(event -> {
-            search(textField.getText());
+            search(searchTextField.getText());
         });
 
         Button advancedSearchButton = (Button) toolBar.getItems().get(4);
@@ -207,6 +229,7 @@ public class EventListView {
 
     /**
      * effettua una ricerca con la stringa passata come parametro
+     *
      * @param string stringa da cercare
      */
     private void search(String string) {
@@ -223,6 +246,7 @@ public class EventListView {
 
     /**
      * lista con i risultati trivati dalla ricerca avanzata
+     *
      * @param foundedEventInSearch lita con i risultati
      */
     public void advancedSearch(List<EventModel> foundedEventInSearch) {
@@ -364,6 +388,16 @@ public class EventListView {
             checkBoxList.add((CheckBox) tmp.getChildren().get(0));
             foundedElementsVBox.getChildren().add((Node) entry.getValue());
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        completionBinding.dispose();
+
+        eventsName.clear();
+        eventsName.addAll(searchController.getEventsName());
+        completionBinding = TextFields.bindAutoCompletion(searchTextField, eventsName);
+        search(searchTextField.getText());
     }
 
     /**

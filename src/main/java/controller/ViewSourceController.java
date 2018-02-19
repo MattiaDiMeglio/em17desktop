@@ -428,11 +428,6 @@ public class ViewSourceController extends Application {
 
         //metodo per passare alla loginview
         toLoginView();
-
-        //todo si può togliere sta roba da qua?
-        //listener per il bottone "torna alla dashboard" della schermata evento
-        eventoBackButton.setOnAction(event -> turnBack());
-        eventListViewBackButton.setOnAction(event -> changeView(dashBoardBox));
     }
 
     /**
@@ -528,7 +523,8 @@ public class ViewSourceController extends Application {
         EventController eventController = new EventController();
 
         new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
-                eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton, eventSlideShowRightButton);
+                eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton,
+                eventSlideShowRightButton, eventoBackButton, this);
         changeView(eventBox);
 
     }
@@ -610,7 +606,7 @@ public class ViewSourceController extends Application {
     /**
      * Metodo per tornare alla schermata precedente
      */
-    void turnBack() {
+    public void turnBack() {
         changeView(prevView);
     }
 

@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * controller per la ricerca
+ *
  * @author ingSW20
  */
 public class SearchController {
@@ -32,6 +33,7 @@ public class SearchController {
 
     /**
      * il contruttore inizializza i paramtri {@link #eventList}, {@link ##locationList} e {@link #eventListView}
+     *
      * @param eventListView view
      */
     public SearchController(EventListView eventListView) {
@@ -50,6 +52,7 @@ public class SearchController {
 
     /**
      * effettua la ricerca della stringa passata come parametro e restituisce una lista di risultati
+     *
      * @param text testo da cercare
      * @return lista di risultati trovati
      */
@@ -65,6 +68,7 @@ public class SearchController {
 
     /**
      * crea una lista con tutti i nomi degli eventi presenti nel database
+     *
      * @return lista con i nomi degli eventi
      */
     public List<String> getEventsName() {
@@ -75,9 +79,9 @@ public class SearchController {
         return eventsName;
     }
 
-
     /**
      * crea una lista con tutti i nomi delle location presenti nel database
+     *
      * @return lista con i nomi delle location
      */
     public List<String> getLocationNames() {
@@ -90,11 +94,12 @@ public class SearchController {
 
     /**
      * metodo per la ricerca avanzata
+     *
      * @param prezzoMinString prezzo minimo
      * @param prezzoMaxString prezzo massimo
-     * @param startDate data di inizio evento
-     * @param endDate data di fine evento
-     * @param locationName nome della location
+     * @param startDate       data di inizio evento
+     * @param endDate         data di fine evento
+     * @param locationName    nome della location
      */
     public void advancedSearch(String prezzoMinString, String prezzoMaxString, LocalDate startDate, LocalDate endDate, String locationName) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");

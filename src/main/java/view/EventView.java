@@ -2,6 +2,8 @@ package view;
 
 import controller.EventController;
 import controller.SlideShowController;
+import controller.ViewSourceController;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
@@ -35,7 +37,6 @@ public class EventView implements Observer {
 
     /**
      * Costruttore della view, che va a popolarla passando per l'eventModel corrispondente all'index passatogli
-     *
      * @param eventController           controller corrispondente
      * @param eventoDeleteButton        bottone per la cancellazione dell'evento corrente
      * @param eventPlaybillImageView    imageview della locandina dell'evento
@@ -47,10 +48,13 @@ public class EventView implements Observer {
      * @param eventSlide                Hbox che conterrà le immagini dello slideshow
      * @param eventSlideShowLeftButton  bottone sinistro dello slideshow
      * @param eventSlideShowRightButton bottone destro dello slideshow
+     * @param eventoBackButton          bottone per tornare alla schermata precedente
+     * @param viewSourceController      istanza di viewSourceController
      */
     public EventView(EventController eventController, Button eventoDeleteButton, ImageView eventPlaybillImageView,
                      TabPane eventoTabPane, int index, List<Text> texts, Label eventoTitleLabel,
-                     TextArea eventTextArea, HBox eventSlide, Button eventSlideShowLeftButton, Button eventSlideShowRightButton) {
+                     TextArea eventTextArea, HBox eventSlide, Button eventSlideShowLeftButton,
+                     Button eventSlideShowRightButton, Button eventoBackButton, ViewSourceController viewSourceController) {
 
         SlideShowController slideShowController = new SlideShowController();//creo slideshowcontroller
         EventListModel eventListModel = EventListModel.getInstance();
@@ -87,6 +91,7 @@ public class EventView implements Observer {
                 }
             }
         });
+        eventoBackButton.setOnAction(event -> viewSourceController.turnBack());
     }
 
     /**

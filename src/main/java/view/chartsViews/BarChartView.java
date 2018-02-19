@@ -44,8 +44,9 @@ public class BarChartView implements Observer, ChartInterface {
 
     /**
      * Costruttore per l'inizializzazione del grafico relativo ad un singolo evento, inoltre registra la view presso il model.
+     *
      * @param barChart tipo di grafico
-     * @param index indice da utilizzare per identificare l'evento desiderato
+     * @param index    indice da utilizzare per identificare l'evento desiderato
      */
     public BarChartView(BarChart barChart, int index) {
         this.barChart = barChart;
@@ -71,13 +72,15 @@ public class BarChartView implements Observer, ChartInterface {
         comboBox.valueProperty().addListener((ChangeListener<Integer>) (observable, oldValue, newValue) -> {
             CountDownLatch latch = new CountDownLatch(1);
             ChartsController.getInstance().populateCharts(String.valueOf(newValue), latch);
-            new LoadingPopupView(latch);            barChart.setTitle("Biglietti venduti per Location " + String.valueOf(newValue));
+            new LoadingPopupView(latch);
+            barChart.setTitle("Biglietti venduti per Location " + String.valueOf(newValue));
         });
         BarChartModel.getInstance().addObserver(this);
     }
 
     /**
      * costruttore per il grafico contenente i dati di più eventi
+     *
      * @param barChart tipo di grafico da gestire
      */
     public BarChartView(BarChart barChart) {
@@ -91,7 +94,8 @@ public class BarChartView implements Observer, ChartInterface {
 
     /**
      * metodo necessario secondo il design pattern MVC, utile per l'aggiornamento del grafico in tempo reale
-     * @param o Model dal quale è stato invocato il metodo
+     *
+     * @param o   Model dal quale è stato invocato il metodo
      * @param arg null
      */
     @Override
@@ -100,7 +104,7 @@ public class BarChartView implements Observer, ChartInterface {
             EventModel eventModel = (EventModel) o;
             updateChart(eventModel);
 
-        } else if (o instanceof BarChartModel){
+        } else if (o instanceof BarChartModel) {
             BarChartModel barChartModel = (BarChartModel) o;
             updateChart(barChartModel);
         } else {
@@ -130,6 +134,7 @@ public class BarChartView implements Observer, ChartInterface {
 
     /**
      * il metodo si occupa di impostare un colore casuale per ogni entry del grafico
+     *
      * @param data dati da colorare
      */
     private void setRandomColor(XYChart.Data<String, Number> data) {
@@ -144,9 +149,10 @@ public class BarChartView implements Observer, ChartInterface {
 
     /**
      * aggiornamento del grafico utilizzando il model passato per parametro
+     *
      * @param eventModel model per il prelievo dei dati
      */
-    private void updateChart(EventModel eventModel){
+    private void updateChart(EventModel eventModel) {
         HashMap<String, Integer> settori = eventModel.getSoldPerSectorList();
         List<String> nomeSettori = eventModel.getSectorNameList();
 
@@ -171,9 +177,10 @@ public class BarChartView implements Observer, ChartInterface {
 
     /**
      * aggiornamento del grafico utilizzando il model passato per parametro
+     *
      * @param barChartModel model per il prelievo dei dati
      */
-    private void updateChart(BarChartModel barChartModel){
+    private void updateChart(BarChartModel barChartModel) {
         HashMap<Integer, String> locationIdMap = barChartModel.getLocationIdMap();
         List<String> locationNames = barChartModel.getLocationNames();
         List<Integer> soldPerLocation = barChartModel.getSoldPerLocation();
@@ -186,7 +193,7 @@ public class BarChartView implements Observer, ChartInterface {
         datas.clear();
 
         for (int i = 0; i < locationIdMap.size(); i++) {
-            datas.add(new XYChart.Data<>(locationNames.get(i), soldPerLocation.get(i).intValue()));
+            datas.add(new XYChart.Data<>(locationNames.get(i), soldPerLocation.get(i)));
         }
         for (XYChart.Data<String, Number> data : datas) {
             setRandomColor(data);
@@ -198,6 +205,7 @@ public class BarChartView implements Observer, ChartInterface {
 
     /**
      * aggiornamento del grafico utilizzando il model passato per parametro
+     *
      * @param mergedModel model per il prelievo dei dati
      */
     private void updateChart(MergedModel mergedModel) {
@@ -209,20 +217,23 @@ public class BarChartView implements Observer, ChartInterface {
             barChart.getData().clear();
         }
         series.getData().clear();
-        datas.clear();
+        try {
+            datas.clear();
+        } catch (NullPointerException ignored) {
+        }
 
         int repetitions = 1;
         for (int i = 0; i < eventNames.size(); i++) {
             boolean b = false;
-            for (int j = 0; j<datas.size();j++){
-                if (datas.get(j).getXValue().equals(eventNames.get(i))){
+            for (int j = 0; j < datas.size(); j++) {
+                if (datas.get(j).getXValue().equals(eventNames.get(i))) {
                     datas.add(new XYChart.Data<>(eventNames.get(i) + " (" + repetitions + ")", soldPerEvent.get(i)));
                     repetitions++;
                     b = true;
                     break;
                 }
             }
-            if (!b){
+            if (!b) {
                 datas.add(new XYChart.Data<>(eventNames.get(i), soldPerEvent.get(i)));
             }
 
