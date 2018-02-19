@@ -3,6 +3,7 @@ package view;
 import controller.SearchController;
 import controller.ViewSourceController;
 import controller.chartsController.MergedController;
+import controller.EventController;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -26,10 +27,7 @@ import view.chartsViews.BarChartView;
 import view.chartsViews.LineChartView;
 import view.chartsViews.PieChartView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Classe View per la schermata Event List.
@@ -88,6 +86,8 @@ public class EventListView {
      * ObservableList per il popolamento della tabella
      */
     private ObservableList<EventTable> data;
+
+    private EventController eventController = new EventController();
 
     /**
      * costruttore per inizializzare la classe
@@ -317,6 +317,23 @@ public class EventListView {
                 delete.setTextFill(Paint.valueOf("blue"));
                 delete.underlineProperty().setValue(true);
                 delete.setText("Cancella");
+                delete.setOnMouseClicked(event -> {
+                    if (eventModel.getTicketSold() == 0) {
+
+                        //Popup di avviso per confermare l'eliminazione
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Attenzione");
+                        alert.setHeaderText("Eliminazione");
+                        alert.setContentText("Si sta tentando di ELIMINARE l'evento " + eventModel.getEventName() + ", confermare?");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.get() == ButtonType.OK){
+                            eventController.delete(eventModel.getEventKey());
+                        }
+                    }
+                });
 
                 modifyAndDelete.getChildren().addAll(modify, delete);
                 vBoxEvent.getChildren().addAll(eventName, locationName, date, modifyAndDelete);
