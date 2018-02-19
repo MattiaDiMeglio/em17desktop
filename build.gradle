@@ -26,6 +26,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.controlsfx/controlsfx
     compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.14'
+    
+    compile 'com.google.cloud:google-cloud-storage:1.14.0'
+
 
     //compile 'org.controlsfx:controlsfx:9.0.0'
 }

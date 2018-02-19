@@ -89,6 +89,16 @@ public class EventView implements Observer {
                 if (result.get() == ButtonType.OK){
                     eventController.delete(eventModel.getEventKey());
                 }
+            } else {
+
+                //Popup di avviso che mostra perché è impossibile eliminare l'evento
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Informazione");
+                alert.setHeaderText("L'evento non può essere eliminato");
+                alert.setContentText("L'evento " + eventModel.getEventName() + " non può essere eliminato perché ha già venduto qualche biglietto");
+
+                alert.showAndWait();
             }
         });
         eventoBackButton.setOnAction(event -> viewSourceController.turnBack());

@@ -3,6 +3,7 @@ package view;
 import controller.SearchController;
 import controller.ViewSourceController;
 import controller.chartsController.MergedController;
+import controller.EventController;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -87,6 +88,8 @@ public class EventListView implements Observer {
      * ObservableList per il popolamento della tabella
      */
     private ObservableList<EventTable> data;
+
+    private EventController eventController = new EventController();
 
     /**
      * textfield per la ricerca
@@ -336,11 +339,41 @@ public class EventListView implements Observer {
                 modify.setTextFill(Paint.valueOf("blue"));
                 modify.underlineProperty().setValue(true);
                 modify.setText("Modifica");
+
+                //Crea il pulsante Cancella
+
                 Label delete = new Label();
                 delete.setTranslateY(50);
                 delete.setTextFill(Paint.valueOf("blue"));
                 delete.underlineProperty().setValue(true);
                 delete.setText("Cancella");
+                delete.setOnMouseClicked(event -> {
+                    if (eventModel.getTicketSold() == 0) {
+
+                        //Popup di avviso per confermare l'eliminazione
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Attenzione");
+                        alert.setHeaderText("Eliminazione");
+                        alert.setContentText("Si sta tentando di ELIMINARE l'evento " + eventModel.getEventName() + ", confermare?");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.get() == ButtonType.OK){
+                            eventController.delete(eventModel.getEventKey());
+                        }
+                    } else {
+
+                        //Popup di avviso che mostra perché è impossibile eliminare l'evento
+
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Informazione");
+                        alert.setHeaderText("L'evento non può essere eliminato");
+                        alert.setContentText("L'evento " + eventModel.getEventName() + " non può essere eliminato perché ha già venduto qualche biglietto");
+
+                        alert.showAndWait();
+                    }
+                });
 
                 modifyAndDelete.getChildren().addAll(modify, delete);
                 vBoxEvent.getChildren().addAll(eventName, locationName, date, modifyAndDelete);

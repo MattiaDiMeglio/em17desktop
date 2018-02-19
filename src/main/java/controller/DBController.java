@@ -302,7 +302,7 @@ public class DBController {
      */
     public void delete(String key) {
 
-        database.addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child("luogo").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
