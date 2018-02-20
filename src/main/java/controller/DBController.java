@@ -314,6 +314,10 @@ public class DBController {
                         while (eventi.iterator().hasNext()) {
                             DataSnapshot eventiSnap = eventi.iterator().next();
                             if (key.equals(eventiSnap.getKey())) {
+
+                                StorageController storageController = new StorageController();
+
+                                storageController.deleteFolder(eventiSnap);
                                 eventiSnap.getRef().removeValue();
                             }
                         }
