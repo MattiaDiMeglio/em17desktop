@@ -57,7 +57,7 @@ public class InsertReductionView implements Observer {
 
         //listener del bottone indietro
         ticketReductionBackButton.setOnAction(event -> {
-            insertController.back();
+            insertController.toTicketType();
         });
     }
 
@@ -182,7 +182,6 @@ public class InsertReductionView implements Observer {
                 textField.setText(oldValue);
             }
         } catch (NullPointerException ignored) {
-
         }
     }
 
@@ -202,7 +201,7 @@ public class InsertReductionView implements Observer {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 //avanza di schermata in caso venga premuto ok
-                insertController.ticketReductionNext();
+                insertController.toInsertRecap();
             }
         } catch (NullPointerException | NumberFormatException e) {
             //in caso non tutti gli elementi siano valorizzati mostra un'errore

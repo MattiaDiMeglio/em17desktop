@@ -105,6 +105,7 @@ public class EventModel extends Observable {
         public void setSeats(int seats) {
             this.seats = seats;
         }
+
     }
 
     /**

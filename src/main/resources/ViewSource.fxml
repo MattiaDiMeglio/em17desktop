@@ -596,7 +596,7 @@
     <BorderPane  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <!-- center della schermata, -->
         <center>
-            <VBox fx:id="InsertTicketVbox" VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <VBox fx:id="insertTicketVbox" VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                 <padding>
                     <Insets top="10.0d"  left="10.0" right="10.0" bottom="10.0" />
                 </padding>

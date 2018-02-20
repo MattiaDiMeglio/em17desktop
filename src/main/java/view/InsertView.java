@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.EventModel;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.File;
@@ -42,13 +43,12 @@ public class InsertView implements Observer {
     private List<Image> immagini = new ArrayList<>();
     private List<String> texts = new ArrayList<>();
     private EventModel eventModel;
+    private AutoCompletionBinding binding;
 
 
     public InsertView(InsertController insertController, List<Button> buttonList, List<TextField> texts,
                       TextArea insertTextArea, HBox insertSlideshow, DatePicker insertInizioDataPicker,
                       DatePicker insertFineDataPicker, ImageView insertPlaybillImageView, EventModel eventModel) {
-
-
         this.insertController = insertController;
         this.insertNameLabel = texts.get(0);
         this.insertLocationLabel = texts.get(1);
@@ -67,7 +67,7 @@ public class InsertView implements Observer {
         insertInizioDataPicker.setValue(LocalDate.now());
         insertFineDataPicker.setValue(LocalDate.now());
         List<String> locations = insertController.getLocations();
-        TextFields.bindAutoCompletion(insertLocationLabel, locations);
+        binding = TextFields.bindAutoCompletion(insertLocationLabel, locations);
         initListeners();
 
         eventModel.addObserver(this);
@@ -96,7 +96,7 @@ public class InsertView implements Observer {
         insertInizioDataPicker.setValue(LocalDate.now());
         insertFineDataPicker.setValue(LocalDate.now());*/
         List<String> locations = insertController.getLocations();
-        TextFields.bindAutoCompletion(insertLocationLabel, locations);
+        binding = TextFields.bindAutoCompletion(insertLocationLabel, locations);
         initListeners();
 
         eventModel = new EventModel();
@@ -141,18 +141,21 @@ public class InsertView implements Observer {
     }
 
     private void next() {
-        String pattern = "dd/MM/yyy";
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-        texts.clear();
-        texts.add(insertNameLabel.getText());
-        texts.add(insertLocationLabel.getText());
-        texts.add(insertMaxGuestsLabel.getText());
-        texts.add(insertTextArea.getText());
-        texts.add(dateFormatter.format(insertInizioDataPicker.getValue()));
-        texts.add(dateFormatter.format(insertFineDataPicker.getValue()));
-
-        insertController.insertNext(eventModel, texts, insertPlaybillImageView.getImage());
-
+        try {
+            String pattern = "dd/MM/yyy";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+            texts.clear();
+            texts.add(insertNameLabel.getText());
+            texts.add(insertLocationLabel.getText());
+            texts.add(insertMaxGuestsLabel.getText());
+            texts.add(insertTextArea.getText());
+            texts.add(dateFormatter.format(insertInizioDataPicker.getValue()));
+            texts.add(dateFormatter.format(insertFineDataPicker.getValue()));
+            binding.dispose();
+            insertController.toTicketType(eventModel, texts, insertPlaybillImageView.getImage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void playbill() {
@@ -216,8 +219,8 @@ public class InsertView implements Observer {
         try {
             if (!newPropertyValue) {
                 String[] parts = insertLocationLabel.getText().split("\\-");
-                insertMaxGuestsLabel.setText(insertController.getMaxVisitors(parts[0]));
                 oldVal[0] = Integer.parseInt(insertController.getMaxVisitors(parts[0]));
+                insertMaxGuestsLabel.setText(insertController.getMaxVisitors(parts[0]));
             }
         } catch (NumberFormatException ignored) {
         }
@@ -260,5 +263,11 @@ public class InsertView implements Observer {
         } else {
             insertPlaybillImageView.setImage(eventModel.getBillboard());
         }
+
+        Button left = (Button) insertSlideshow.getChildren().get(0);
+        HBox slide = (HBox) insertSlideshow.getChildren().get(1);
+        slide.getChildren().clear();
+        Button right = (Button) insertSlideshow.getChildren().get(2);
+        slideShowController.createSlide(insertController, left, slide, right, eventModel.getSlideshow());
     }
 }

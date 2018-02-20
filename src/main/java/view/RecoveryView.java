@@ -41,7 +41,7 @@ public class RecoveryView implements Observer {
 
         recoveryButton.setDefaultButton(true); //si setta il bottone di default
 
-        recoveryBackButton.setOnAction(event -> viewSourceController.toLoginView()); //si setta il listener per il bottone recovery back
+        recoveryBackButton.setOnAction(event -> viewSourceController.toLoginView()); //si setta il listener per il bottone recovery toInsertView
 
         recoveryButton.setOnAction(event -> DataControl()); //si setta il listener per il bottone recovery email
 

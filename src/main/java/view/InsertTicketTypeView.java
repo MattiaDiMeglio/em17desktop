@@ -18,9 +18,10 @@ public class InsertTicketTypeView implements Observer {
 
     private InsertController insertController;
     private VBox form;
-    private List<String> sectors = new ArrayList<>();
+   // private List<String> sectors = new ArrayList<>();
+    private List<EventModel.Sectors> sectorsList;
     private List<TextField> seatsFieldsList = new ArrayList<>();
-    private List<TextField> prizeList = new ArrayList<>();
+    private List<TextField> priceList = new ArrayList<>();
     private List<CheckBox> reductionCheckList = new ArrayList<>();
     private ImageView insertTicketPlaybillImageView;
 
@@ -31,26 +32,22 @@ public class InsertTicketTypeView implements Observer {
         this.insertTicketPlaybillImageView = insertTicketPlaybillImageView;
         newEvent.addObserver(this);
         insertController.update(newEvent);
-        //this.newEvent = newEvent;
-       /* insertTicketPlaybillImageView.setImage(newEvent.getBillboard());
-        if (form.getChildren().get(0) instanceof GridPane) {
-            form.getChildren().remove(0);
-        }*/
-
 
         ticketTypeNextButton.setOnAction(event -> {
             next();
         });
 
         ticketTypeBackButton.setOnAction(event -> {
-            insertController.back();
+            newEvent.deleteObserver(this);
+            insertController.toInsertView();
         });
     }
 
     private void init(EventModel eventModel) {
         int i = 2;
         int j = 0;
-        sectors = insertController.getSectorName(eventModel.getLocationName(), eventModel.getLocationAddress());
+       // sectors = insertController.getSectorName(eventModel.getLocationName(), eventModel.getLocationAddress());
+        sectorsList = eventModel.getSectorList();
         List<String> seats = insertController.getSteatsList(eventModel.getLocationName(), eventModel.getLocationAddress());
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
@@ -65,10 +62,9 @@ public class InsertTicketTypeView implements Observer {
         GridPane.setColumnSpan(separator, 7);
         gridPane.getChildren().add(separator);
 
-
-        for (String string : sectors) {
+        for (EventModel.Sectors sectors : sectorsList) {
             Label label = new Label();
-            label.setText(sectors.get(j));
+            label.setText(sectors.getName());
             gridPane.add(label, 0, i);
             TextField textField = new TextField();
             textField.setText(seats.get(j));
@@ -77,8 +73,9 @@ public class InsertTicketTypeView implements Observer {
             gridPane.add(textField, 1, i);
             TextField textField1 = new TextField();
             textField1.setMaxSize(80.0, textField1.getHeight());
-            textField1.setText("0");
-            prizeList.add(textField1);
+            textField1.setText(String.valueOf(sectors.getPrice()));
+
+            priceList.add(textField1);
             Label label1 = new Label("\u20ac");
             HBox hBox = new HBox();
             hBox.getChildren().add(textField1);
@@ -93,9 +90,7 @@ public class InsertTicketTypeView implements Observer {
             j++;
             i++;
         }
-
         form.getChildren().add(0, gridPane);
-
     }
 
     private void initListeners(TextField textField, String s, TextField textField1) {
@@ -156,28 +151,30 @@ public class InsertTicketTypeView implements Observer {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Attenzione!");
             alert.setHeaderText("I seguenti settori non avranno riduzioni:");
-            List<EventModel.Sectors> sectorsList = new ArrayList<>();
-            for (int i = 0; i < sectors.size(); i++) {
-                EventModel.Sectors sector = new EventModel().new Sectors();
+            //List<EventModel.Sectors> sectorsList = new ArrayList<>();
+            for (int i = 0; i < sectorsList.size(); i++) {
+               /* EventModel.Sectors sector = new EventModel().new Sectors();
                 sector.setName(sectors.get(i));
-                sector.setPrice(Integer.parseInt(prizeList.get(i).getText()));
+                sector.setPrice(Integer.parseInt(priceList.get(i).getText()));
                 sector.setReduction(reductionCheckList.get(i).isSelected());
                 sector.setSeats(Integer.parseInt(seatsFieldsList.get(i).getText()));
-                sectorsList.add(sector);
-                if (!sector.isReduction()) {
-                    alert.setContentText(alert.getContentText() + "-" + sector.getName() + "\n");
+                sectorsList.add(sector);*/
+                if (!reductionCheckList.get(i).isSelected()) {
+                    alert.setContentText(alert.getContentText() + "-" + sectorsList.get(i).getName() + "\n");
                 }
             }
             if (!alert.getContentText().isEmpty()) {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    insertController.ticketTypeNext(sectorsList);
+                    //insertController.toInsertReduction(sectorsList);
+                    insertController.toInsertReduction(priceList, reductionCheckList, seatsFieldsList);
                 }
             } else {
                 alert.setHeaderText("Tutti i settori avranno riduzioni");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    insertController.ticketTypeNext(sectorsList);
+                    //insertController.toInsertReduction(sectorsList);
+                    insertController.toInsertReduction(priceList, reductionCheckList, seatsFieldsList);
                 }
             }
 

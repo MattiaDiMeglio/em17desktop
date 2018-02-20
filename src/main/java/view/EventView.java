@@ -37,6 +37,7 @@ public class EventView implements Observer {
 
     /**
      * Costruttore della view, che va a popolarla passando per l'eventModel corrispondente all'index passatogli
+     *
      * @param eventController           controller corrispondente
      * @param eventoDeleteButton        bottone per la cancellazione dell'evento corrente
      * @param eventPlaybillImageView    imageview della locandina dell'evento
@@ -50,11 +51,12 @@ public class EventView implements Observer {
      * @param eventSlideShowRightButton bottone destro dello slideshow
      * @param eventoBackButton          bottone per tornare alla schermata precedente
      * @param viewSourceController      istanza di viewSourceController
+     * @param eventModifyButton         bottone per la modifica dell'evento
      */
     public EventView(EventController eventController, Button eventoDeleteButton, ImageView eventPlaybillImageView,
                      TabPane eventoTabPane, int index, List<Text> texts, Label eventoTitleLabel,
                      TextArea eventTextArea, HBox eventSlide, Button eventSlideShowLeftButton,
-                     Button eventSlideShowRightButton, Button eventoBackButton, ViewSourceController viewSourceController) {
+                     Button eventSlideShowRightButton, Button eventoBackButton, ViewSourceController viewSourceController, Button eventModifyButton) {
 
         SlideShowController slideShowController = new SlideShowController();//creo slideshowcontroller
         EventListModel eventListModel = EventListModel.getInstance();
@@ -86,7 +88,7 @@ public class EventView implements Observer {
 
                 Optional<ButtonType> result = alert.showAndWait();
 
-                if (result.get() == ButtonType.OK){
+                if (result.get() == ButtonType.OK) {
                     eventController.delete(eventModel.getEventKey());
                 }
             } else {
@@ -101,8 +103,9 @@ public class EventView implements Observer {
                 alert.showAndWait();
             }
         });
-        eventoBackButton.setOnAction(event -> viewSourceController.turnBack());
-    }
+        eventModifyButton.setOnAction(event -> viewSourceController.toModifyEvent(eventModel));
+        eventoBackButton.setOnAction(event ->viewSourceController.turnBack());
+}
 
     /**
      * Metodo per l'inizializzazione dei charts

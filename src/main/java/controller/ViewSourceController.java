@@ -17,7 +17,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.EventModel;
 import org.controlsfx.control.NotificationPane;
-import org.controlsfx.control.Notifications;
 import view.*;
 
 import java.io.IOException;
@@ -117,12 +116,7 @@ public class ViewSourceController extends Application {
     @FXML
     private ToolBar searchToolBarEventListView;
     /**
-     * bottone per tornare indietro dalla schermata eventListView
-     */
-    @FXML
-    private Button eventListViewBackButton;
-    /**
-     * bottone back della schermata di visualizzazione evento
+     * bottone toInsertView della schermata di visualizzazione evento
      */
     @FXML
     private Button eventoBackButton;
@@ -260,7 +254,7 @@ public class ViewSourceController extends Application {
      * Vbox in cui si inseriranno i textField per i dati dei settori, nella schermata ticketType
      */
     @FXML
-    private VBox InsertTicketVbox;
+    private VBox insertTicketVbox;
     /**
      * bottone indietro per la schermata ticketType
      */
@@ -351,6 +345,12 @@ public class ViewSourceController extends Application {
      * stage per la visualizzazione del programma
      */
     private static Stage stage;
+    /**
+     * bottone per la modifica di un evento
+     */
+    @FXML
+    private Button eventModifyButton;
+
 
     /**
      * Main dell'applicazione, richiama il metono launch che fa partire la schermata di javafx
@@ -454,33 +454,29 @@ public class ViewSourceController extends Application {
     }
 
     public static void showNotificationPane() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Scene scene = stage.getScene();
-                Parent pane = scene.getRoot();
-                if (!(pane instanceof NotificationPane)){
-                    NotificationPane notificationPane = new NotificationPane(pane);
-                    notificationPane.getStyleClass().add(NotificationPane.STYLE_CLASS_DARK);
-                    notificationPane.setShowFromTop(false);
-                    notificationPane.setText("database aggiornato");
-                    scene = new Scene(notificationPane, scene.getWidth(), scene.getHeight());
-                    stage.setScene(scene);
-                    notificationPane.show();
-            new Thread(()->{
-                try {
-                    Thread.sleep(2000);
-                    notificationPane.hide();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
-                } else {
-                    ((NotificationPane)pane).show();
-                }
+        Platform.runLater(() -> {
+            Scene scene = stage.getScene();
+            Parent pane = scene.getRoot();
+            if (!(pane instanceof NotificationPane)) {
+                NotificationPane notificationPane = new NotificationPane(pane);
+                notificationPane.getStyleClass().add(NotificationPane.STYLE_CLASS_DARK);
+                notificationPane.setShowFromTop(false);
+                notificationPane.setText("database aggiornato");
+                scene = new Scene(notificationPane, scene.getWidth(), scene.getHeight());
+                stage.setScene(scene);
+                notificationPane.show();
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(2000);
+                        notificationPane.hide();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            } else {
+                ((NotificationPane) pane).show();
             }
         });
-
     }
 
     /**
@@ -524,7 +520,7 @@ public class ViewSourceController extends Application {
 
         new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
                 eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide, eventSlideShowLeftButton,
-                eventSlideShowRightButton, eventoBackButton, this);
+                eventSlideShowRightButton, eventoBackButton, this, eventModifyButton);
         changeView(eventBox);
 
     }
@@ -573,7 +569,7 @@ public class ViewSourceController extends Application {
      * @param newEvent         model dell'evento
      */
     public void toInsetTicketTypeView(InsertController insertController, EventModel newEvent) {
-        new InsertTicketTypeView(insertController, newEvent, InsertTicketVbox, ticketTypeBackButton,
+        new InsertTicketTypeView(insertController, newEvent, insertTicketVbox, ticketTypeBackButton,
                 ticketTypeNextButton, insertTicketPlaybillImageView);
 
         changeView(insertTicketTypeBox);
@@ -650,5 +646,13 @@ public class ViewSourceController extends Application {
                 insertFineDataPicker, insertPlaybillImageView, eventModel);
 
         changeView(insertBox);
+    }
+
+    /**
+     * metodo per la modifica di un evento
+     * @param eventModel evento da modificare
+     */
+    public void toModifyEvent(EventModel eventModel) {
+        toInsertView(eventModel, new InsertController(this));
     }
 }

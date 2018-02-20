@@ -354,7 +354,7 @@ public class InsertRecapView implements Observer {
         });
 
         back.setOnAction(event -> {
-            insertController.back();
+            insertController.toInsertReduction();
         });
     }
 
