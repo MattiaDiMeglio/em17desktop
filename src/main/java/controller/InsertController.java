@@ -238,7 +238,7 @@ public class InsertController {
 
         try {
             //crea la lista con i link delle immagini caricate
-            List<Image> imageList = sg.upload(image, newEvent.getBillboard(), latch);
+            List<Image> imageList = sg.upload(newEvent, image, newEvent.getBillboard(), latch);
             //la prima immagine della lista è la copertina
             newEvent.setBillboard(imageList.get(0));
             imageList.remove(0);//si rimuove la copertina dalla lista di immagini

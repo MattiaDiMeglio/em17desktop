@@ -6,6 +6,7 @@ import com.google.cloud.storage.*;
 import com.google.firebase.cloud.StorageClient;
 import com.google.firebase.database.DataSnapshot;
 import javafx.scene.image.Image;
+import model.EventModel;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -30,20 +31,22 @@ public class StorageController {
     /**
      * Costruttore vuoto
      */
-    public StorageController() {
+    StorageController() {
     }
 
     /**
      * Metodo che si occupa dell'upload delle immagini
      * e restituisce una lista di immagini con i link ottenuti dall'upload
      *
+     *
+     * @param newEvent
      * @param imageList
      * @param playbill
      * @param latch
      * @return
      * @throws InterruptedException
      */
-    public List<Image> upload(List<Image> imageList, Image playbill, CountDownLatch latch) throws InterruptedException {
+    public List<Image> upload(EventModel newEvent, List<Image> imageList, Image playbill, CountDownLatch latch) throws InterruptedException {
 
         List<Image> imagesUploaded = new ArrayList<>(); //lista di immagini caricate
         CountDownLatch latch1 = new CountDownLatch(1);
@@ -56,7 +59,7 @@ public class StorageController {
                 for (Image image : imageList) {
                     //per ogni immagine nella lista
                     String[] name = image.impl_getUrl().split("/"); //si spliutta il percorso sul pc, per ottenere il nome del file
-                    String blobName = name[name.length - 1]; //si setta il nome del blob col nome del file (ultima parte dello slpit
+                    String blobName = newEvent.getEventName() + "/" + name[name.length - 1]; //si setta il nome del blob col nome del file (ultima parte dello slpit
                     String[] type = image.impl_getUrl().split("\\.");//si splitta nuovamente il percorso, dai punti, per ottenere il tipo del file
                     BlobId blobId = BlobId.of(bucket.getName(), blobName);//si setta l'id del blob
                     //si da il percorso del file all'input stream. Substring per eliminare "file:" dal percorso dell'Image
@@ -78,7 +81,7 @@ public class StorageController {
                             }
 
                         } catch (Exception ex) {
-
+                            ex.printStackTrace();
                         } finally {
                             //si chiude il writer
                             writer.close();
@@ -126,7 +129,7 @@ public class StorageController {
         try {
             bucket = StorageClient.getInstance().bucket();
 
-            BlobId blobId = BlobId.of(bucket.getName(), eventiSnap.getKey().toString() + "/");
+            BlobId blobId = BlobId.of(bucket.getName(), eventiSnap.getKey() + "/");
 
             Blob blob = bucket.get(blobId.getName());
 
@@ -137,11 +140,10 @@ public class StorageController {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return;
     }
 
     //Eliminazione del file specifico
-    public void deleteFile(String key){
+    private void deleteFile(String key){
 
         bucket.get(key).delete();
     }
