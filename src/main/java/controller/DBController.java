@@ -137,40 +137,6 @@ public class DBController {
         databaseListener(); //inizializza i listener per il cambio del database
     }
 
-    /**
-     * @param key
-     * @return
-     */
-    public void delete(String key) {
-
-        database.child("luogo").addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                try {
-                    Iterable<DataSnapshot> location = snapshot.getChildren();
-                    while (location.iterator().hasNext()) {
-                        DataSnapshot locationSnap = location.iterator().next();
-                        Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
-                        while (eventi.iterator().hasNext()) {
-                            DataSnapshot eventiSnap = eventi.iterator().next();
-                            if (key.equals(eventiSnap.getKey())) {
-                                eventiSnap.getRef().removeValue();
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                System.out.println(error.getMessage());
-            }
-        });
-    }
-
     private void databaseListener() {
         database.addChildEventListener(childEventListener);
     }
@@ -232,7 +198,7 @@ public class DBController {
     }
 
     private void updateChild(EventModel eventModel, String oldLocation){
-        
+
     }
 
     private void updateLocalDatabase(DataSnapshot snapshot) {
@@ -452,5 +418,46 @@ public class DBController {
                 }
             }));
         }*/
+    }
+
+
+
+    /**
+     * 
+     * @param key
+     * @return
+     */
+    public void delete(String key) {
+
+        database.child("luogo").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                try {
+                    Iterable<DataSnapshot> location = snapshot.getChildren();
+                    while (location.iterator().hasNext()) {
+                        DataSnapshot locationSnap = location.iterator().next();
+                        Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
+                        while (eventi.iterator().hasNext()) {
+                            DataSnapshot eventiSnap = eventi.iterator().next();
+                            if (key.equals(eventiSnap.getKey())) {
+
+                                StorageController storageController = new StorageController();
+
+                                storageController.deleteFolder(eventiSnap);
+                                eventiSnap.getRef().removeValue();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.out.println(error.getMessage());
+            }
+        });
     }
 }

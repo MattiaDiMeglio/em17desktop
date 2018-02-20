@@ -2,11 +2,9 @@ package controller;
 
 
 import com.google.cloud.WriteChannel;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.*;
 import com.google.firebase.cloud.StorageClient;
+import com.google.firebase.database.DataSnapshot;
 import javafx.scene.image.Image;
 
 import java.io.*;
@@ -102,5 +100,49 @@ public class StorageController {
         }, "uploadThread"));
         latch1.await();
         return imagesUploaded;
+    }
+
+    //Eliminazione della cartella contenente tutte le immagini dell'evento
+    public void deleteFolder(DataSnapshot eventiSnap){
+
+        StorageController storageController = new StorageController();
+
+        //Parte di stringa da eliminare dall'indirizzo
+        String link = "https://storage.googleapis.com/ingws-20.appspot.com/";
+
+        //Eliminazione dell'immagine di copertina
+        storageController.deleteFile(
+                eventiSnap.child("copertina").getValue().toString()
+                        .replace(link, ""));
+
+        //Eliminazione delle immagini nella galleria
+        for (Integer i = 0; i < eventiSnap.child("galleria").getChildrenCount() ; i++){
+            storageController.deleteFile(
+                    eventiSnap.child("galleria").child(i.toString()).getValue().toString()
+                            .replace(link, ""));
+            }
+
+        //Eliminazione della cartella ormai vuota
+        try {
+            bucket = StorageClient.getInstance().bucket();
+
+            BlobId blobId = BlobId.of(bucket.getName(), eventiSnap.getKey().toString() + "/");
+
+            Blob blob = bucket.get(blobId.getName());
+
+            blob.delete();
+
+
+            System.out.println("fatto");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return;
+    }
+
+    //Eliminazione del file specifico
+    public void deleteFile(String key){
+
+        bucket.get(key).delete();
     }
 }
