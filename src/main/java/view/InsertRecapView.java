@@ -260,7 +260,7 @@ public class InsertRecapView implements Observer {
         Button left = (Button) recapSlideshow.getChildren().get(0);
         HBox slide = (HBox) recapSlideshow.getChildren().get(1);
         Button right = (Button) recapSlideshow.getChildren().get(2);
-        initSlide(left, right, slide);
+        initSlide(left, right, slide, eventModel);
 
         Button back = (Button) recapButton.getChildren().get(0);
         Button next = (Button) recapButton.getChildren().get(2);
@@ -365,8 +365,9 @@ public class InsertRecapView implements Observer {
      * @param right freccia destra
      * @param slide hbox contenente le foto
      */
-    private void initSlide(Button left, Button right, HBox slide) {
-        slideShowController.createSlide(insertController, left, slide, right, imageList);
+    private void initSlide(Button left, Button right, HBox slide, EventModel eventModel) {
+        slide.getChildren().clear();
+        slideShowController.createSlide(insertController, left, slide, right, eventModel.getSlideshow());
     }
 
     /**

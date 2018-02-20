@@ -198,6 +198,11 @@ public class EventModel extends Observable {
     private Double price = 0.0;
 
     /**
+     * id della location
+     */
+    private String locationID = "";
+
+    /**
      * setter per {@link #price}
      *
      * @param price {@link #price}
@@ -667,5 +672,21 @@ public class EventModel extends Observable {
     public void notifyMyObservers() {
         setChanged();
         notifyObservers();
+    }
+
+    /**
+     * setter per l'id della location
+     * @param id id della location
+     */
+    public void setLocationID(String id){
+        locationID = id;
+    }
+
+    /**
+     * getter per l'id della location
+     * @return id della location
+     */
+    public String getLocationID() {
+        return locationID;
     }
 }

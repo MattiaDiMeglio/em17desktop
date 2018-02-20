@@ -8,7 +8,11 @@ import com.google.firebase.database.DataSnapshot;
 import javafx.scene.image.Image;
 import model.EventModel;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +66,17 @@ public class StorageController {
                     String blobName = newEvent.getEventName() + "/" + name[name.length - 1]; //si setta il nome del blob col nome del file (ultima parte dello slpit
                     String[] type = image.impl_getUrl().split("\\.");//si splitta nuovamente il percorso, dai punti, per ottenere il tipo del file
                     BlobId blobId = BlobId.of(bucket.getName(), blobName);//si setta l'id del blob
+
                     //si da il percorso del file all'input stream. Substring per eliminare "file:" dal percorso dell'Image
-                    InputStream inputStream = new FileInputStream(new File(image.impl_getUrl().substring(5)).getAbsolutePath().replaceAll("%20", " "));
+                    //InputStream inputStream = new FileInputStream(new File(image.impl_getUrl().substring(5)).getAbsolutePath().replaceAll("%20", " "));
+                    InputStream inputStream = null;
+                    try {
+                        inputStream = new FileInputStream(new File(image.impl_getUrl().substring(5)).getAbsolutePath().replaceAll("%20", " "));
+                    }catch (Exception e){
+                        //e.printStackTrace();
+                        inputStream = new URL(image.impl_getUrl()).openStream();
+                    }
+
                     //si costruiscono le info del blob col nome del bucket, del
                     BlobInfo blobInfo = BlobInfo.newBuilder(bucket.getName(), blobName).setContentType("image/" + type[type.length - 1]).build();
 

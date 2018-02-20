@@ -44,6 +44,7 @@ public class InsertController {
      * Lista delle immagini che verranno caricate nello storage del server
      */
     private List<Image> imagesList = new ArrayList<>();
+    private String oldLocationID;
 
     /**
      * costruttore dell'insertController
@@ -84,11 +85,12 @@ public class InsertController {
             newEvent.setBillboard(insertPlaybillImageView);//Setta l'immagine di copertina momentanea(verrà sostituita dopo l'upload
             newEvent.setStartingDate(strings.get(4));//Valirizza la data d'inizio
             newEvent.setEndingDate(strings.get(5));//Valorizza la data di fine
-            String[] parts = strings.get(1).split("\\-");//si splitta il valore inserito dall'autocompletamento come location
+            String[] parts = strings.get(1).split("-");//si splitta il valore inserito dall'autocompletamento come location
             if (!(parts[0].equals(newEvent.getLocationName()) && parts[1].equals(newEvent.getLocationAddress())) ||
                     newEvent.getSectorList().isEmpty()) {
                 newEvent.setLocationName(parts[0]);//la prima parte dello split va a valorizzare il nome location
                 newEvent.setLocationAddress(parts[1]);//La seconda parte valorizza l'indirizzo della location
+                oldLocationID = newEvent.getLocationID();
                 newEvent.setSectorList(createSector(parts[0], parts[1]));
             }
             newEvent.setMaxVisitors(Integer.parseInt(strings.get(2)));//Valorizza il massimo dei visitatori
@@ -160,6 +162,16 @@ public class InsertController {
                     sectorsList.add(sectors);
                 }
                 return sectorsList;
+            }
+        }
+        return null;
+    }
+
+    private String getLocationID(String name, String address) {
+        for (LocationModel location : locationListModel.getLocationList()) {
+            //se la location corrente ha nome e indirizzo uguale a quelli passati al metodo, restituisce la lista dei settori
+            if ((location.getLocationAddress().equals(address)) && (location.getLocationName().equals(name))) {
+                return location.getLocationID();
             }
         }
         return null;
@@ -244,7 +256,17 @@ public class InsertController {
             imageList.remove(0);//si rimuove la copertina dalla lista di immagini
             newEvent.setSlideshow(imageList);//si setta la lista rimanente come lista di immagini
             new LoadingPopupView(latch); //si crea il popup di caricamento
-            dbController.insert(newEvent); //finito il thread di upload si inserisce l'evento nel db
+            if(newEvent.getLocationID().equals("")){
+                dbController.insert(newEvent); //finito il thread di upload si inserisce l'evento nel db
+            }else {
+                newEvent.setLocationID(getLocationID(newEvent.getLocationName(), newEvent.getLocationAddress()));
+                if (newEvent.getLocationID().equals(oldLocationID)){
+                    dbController.updateChild(newEvent);
+                }else {
+                    dbController.updateChild(newEvent, oldLocationID);
+                }
+
+            }
             viewSourceController.toDash();//cambio schermata
         } catch (InterruptedException e) {
             e.printStackTrace();

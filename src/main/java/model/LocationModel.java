@@ -9,6 +9,7 @@ public class LocationModel extends Observable {
     private String locationAddress;
     private List<String> sectorList = new ArrayList<>();
     private List<String> seatsList = new ArrayList<>();
+    private String locationID;
 
     public String getLocationName() {
         return locationName;
@@ -40,5 +41,13 @@ public class LocationModel extends Observable {
 
     public void setSeatsList(List<String> seatsList) {
         this.seatsList = seatsList;
+    }
+
+    public void setLocationID(String locationID) {
+        this.locationID = locationID;
+    }
+
+    public String getLocationID() {
+        return locationID;
     }
 }
