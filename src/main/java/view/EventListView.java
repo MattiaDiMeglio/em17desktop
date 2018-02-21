@@ -89,6 +89,9 @@ public class EventListView implements Observer {
      */
     private ObservableList<EventTable> data;
 
+    /**
+     * istanza di {@link EventController}
+     */
     private EventController eventController = new EventController();
 
     /**
@@ -150,7 +153,7 @@ public class EventListView implements Observer {
         if (tabPane.getTabs().size() == 4) {
             table = (TableView<EventTable>) tabPane.getTabs().get(3).getContent();
             table.getColumns().clear();
-        }else {
+        } else {
             table = new TableView<>();
             table.setEditable(true);
             Tab tableView = new Tab();
@@ -160,19 +163,19 @@ public class EventListView implements Observer {
         }
 
         TableColumn<EventTable, String> eventName = new TableColumn<>("Nome evento");
-        eventName.setCellValueFactory(new PropertyValueFactory<EventTable, String>("eventName"));
+        eventName.setCellValueFactory(new PropertyValueFactory<>("eventName"));
         TableColumn<EventTable, Integer> ticketsSold = new TableColumn<>("Biglietti venduti");
-        ticketsSold.setCellValueFactory(new PropertyValueFactory<EventTable, Integer>("ticketsSold"));
+        ticketsSold.setCellValueFactory(new PropertyValueFactory<>("ticketsSold"));
         TableColumn<EventTable, Integer> revenues = new TableColumn<>("Ricavi in \u20ac");
-        revenues.setCellValueFactory(new PropertyValueFactory<EventTable, Integer>("revenues"));
+        revenues.setCellValueFactory(new PropertyValueFactory<>("revenues"));
         TableColumn<EventTable, Integer> maxVisitors = new TableColumn<>("Max spettatori");
-        maxVisitors.setCellValueFactory(new PropertyValueFactory<EventTable, Integer>("maxVisitors"));
+        maxVisitors.setCellValueFactory(new PropertyValueFactory<>("maxVisitors"));
         TableColumn<EventTable, String> locationName = new TableColumn<>("Nome location");
-        locationName.setCellValueFactory(new PropertyValueFactory<EventTable, String>("locationName"));
+        locationName.setCellValueFactory(new PropertyValueFactory<>("locationName"));
         TableColumn<EventTable, String> date = new TableColumn<>("Data");
-        date.setCellValueFactory(new PropertyValueFactory<EventTable, String>("date"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
         TableColumn<EventTable, String> isActive = new TableColumn<>("In corso");
-        isActive.setCellValueFactory(new PropertyValueFactory<EventTable, String>("isActive"));
+        isActive.setCellValueFactory(new PropertyValueFactory<>("isActive"));
 
         table.setItems(data);
         table.getColumns().addAll(eventName, ticketsSold, revenues, maxVisitors, locationName, date, isActive);
@@ -201,14 +204,10 @@ public class EventListView implements Observer {
         completionBinding = TextFields.bindAutoCompletion(searchTextField, eventsName);
 
         Button button = (Button) toolBar.getItems().get(3);
-        button.setOnAction(event -> {
-            search(searchTextField.getText());
-        });
+        button.setOnAction(event -> search(searchTextField.getText()));
 
         Button advancedSearchButton = (Button) toolBar.getItems().get(4);
-        advancedSearchButton.setOnAction(event -> {
-            new AdvancedSearchView(searchController);
-        });
+        advancedSearchButton.setOnAction(event -> new AdvancedSearchView(searchController));
 
         //bottone settato a defalt, per essere premuto con invio
         button.setDefaultButton(true);
@@ -311,9 +310,7 @@ public class EventListView implements Observer {
                 imageView.setFitWidth(180);
                 imageView.setPickOnBounds(true);
                 button.setGraphic(imageView);
-                button.setOnAction(event -> {
-                    viewSourceController.toEventView(eventModel.getIndex());
-                });
+                button.setOnAction(event -> viewSourceController.toEventView(eventModel.getIndex()));
 
                 VBox vBoxEvent = new VBox();
                 Label eventName = new Label();
@@ -322,9 +319,7 @@ public class EventListView implements Observer {
                 eventName.underlineProperty().setValue(true);
                 eventName.fontProperty().setValue(new Font(20));
                 eventName.setText(eventModel.getEventName());
-                eventName.setOnMouseClicked(event -> {
-                    viewSourceController.toEventView(eventModel.getIndex());
-                });
+                eventName.setOnMouseClicked(event -> viewSourceController.toEventView(eventModel.getIndex()));
                 Label locationName = new Label();
                 locationName.translateYProperty().setValue(40);
                 locationName.setText(eventModel.getLocationName());
@@ -359,7 +354,7 @@ public class EventListView implements Observer {
 
                         Optional<ButtonType> result = alert.showAndWait();
 
-                        if (result.get() == ButtonType.OK){
+                        if (result.get() == ButtonType.OK) {
                             eventController.delete(eventModel.getEventKey());
                         }
                     } else {
@@ -423,6 +418,12 @@ public class EventListView implements Observer {
         }
     }
 
+    /**
+     * metodo per l'aggiornamento della view
+     *
+     * @param o   model al quale fare riferimento
+     * @param arg null
+     */
     @Override
     public void update(Observable o, Object arg) {
         completionBinding.dispose();
@@ -437,14 +438,47 @@ public class EventListView implements Observer {
      * sottoclasse per il popolamento della tabella
      */
     public class EventTable {
+        /**
+         * nome dell'evento
+         */
         private SimpleStringProperty eventName;
+        /**
+         * biglietti venduti
+         */
         private SimpleIntegerProperty ticketsSold;
+        /**
+         * guadagni
+         */
         private SimpleIntegerProperty revenues;
+        /**
+         * massimo numero di visitatori
+         */
         private SimpleIntegerProperty maxVisitors;
+        /**
+         * nome della location
+         */
         private SimpleStringProperty locationName;
+        /**
+         * data
+         */
         private SimpleStringProperty date;
+        /**
+         * se l'evento è attivo o meno
+         */
         private SimpleStringProperty isActive;
 
+        /**
+         * costruttore per il popolamento della tabella
+         *
+         * @param eventName    nome dell'evento
+         * @param ticketsSold  biglietti venduti
+         * @param revenues     guadagni
+         * @param maxVisitors  massimo numero di visitatori
+         * @param locationName nome della location
+         * @param startDate    data di inizio evento
+         * @param endDate      data di fine evento
+         * @param isActive     se l'evento è attivo o meno
+         */
         EventTable(String eventName, Integer ticketsSold, Integer[] revenues, Integer maxVisitors, String locationName, String startDate, String endDate, Boolean isActive) {
             this.eventName = new SimpleStringProperty(eventName);
             this.ticketsSold = new SimpleIntegerProperty(ticketsSold);
@@ -467,46 +501,65 @@ public class EventListView implements Observer {
             }
         }
 
+        /**
+         * getter per {@link #eventName}
+         *
+         * @return {@link #eventName}
+         */
         public String getEventName() {
             return eventName.get();
         }
 
-
-        public void setEventName(String eventName) {
-            this.eventName.set(eventName);
-        }
-
+        /**
+         * getter per {@link #ticketsSold}
+         *
+         * @return {@link #ticketsSold}
+         */
         public Integer getTicketsSold() {
             return ticketsSold.get();
         }
 
-
-        public void setTicketsSold(Integer ticketsSold) {
-            this.ticketsSold.set(ticketsSold);
-        }
-
+        /**
+         * getter per {@link #revenues}
+         *
+         * @return {@link #revenues}
+         */
         public Integer getRevenues() {
             return revenues.get();
         }
 
-        public void setRevenues(Integer revenues) {
-            this.revenues.set(revenues);
-        }
-
-
+        /**
+         * getter per {@link #maxVisitors}
+         *
+         * @return {@link #maxVisitors}
+         */
         public Integer getMaxVisitors() {
             return maxVisitors.get();
         }
 
-
+        /**
+         * getter per {@link #locationName}
+         *
+         * @return {@link #locationName}
+         */
         public String getLocationName() {
             return locationName.get();
         }
 
+        /**
+         * getter per {@link #date}
+         *
+         * @return {@link #date}
+         */
         public String getDate() {
             return date.get();
         }
 
+        /**
+         * getter per {@link #isActive}
+         *
+         * @return {@link #isActive}
+         */
         public String getIsActive() {
             return isActive.get();
         }

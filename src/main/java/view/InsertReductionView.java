@@ -24,21 +24,33 @@ public class InsertReductionView implements Observer {
     private VBox insertReductionVbox; //Vbox dove verranno inseriti gli elementi per le riduzioni
     private InsertController insertController;
     //Creo le tre textField per i tipi di riduzione
+    /**
+     * textfield per la riduzione per bambini
+     */
     private TextField bambiniReduction = new TextField("0");
+    /**
+     * textfield per la riduzione per anziani
+     */
     private TextField anzianiReduction = new TextField("0");
+    /**
+     * textfield per la riduzione per studenti
+     */
     private TextField studentiReduction = new TextField("0");
+    /**
+     * imageview per la locandina
+     */
     private ImageView insertReductionPlaybillImageView;
 
 
     /**
      * Costruttore della classe
      *
-     * @param insertController
-     * @param newEvent
-     * @param insertReductionVbox
-     * @param ticketReductionBackButton
-     * @param ticketReductionNextButton
-     * @param insertReductionPlaybillImageView
+     * @param insertController                 istanza di {@link InsertController}
+     * @param newEvent                         model dell'evento
+     * @param insertReductionVbox              vbox principale
+     * @param ticketReductionBackButton        tasto per tornare indietro
+     * @param ticketReductionNextButton        tasto per andare avanti
+     * @param insertReductionPlaybillImageView imageview per la locandina
      */
     public InsertReductionView(InsertController insertController, EventModel newEvent,
                                VBox insertReductionVbox, Button ticketReductionBackButton,
@@ -64,11 +76,9 @@ public class InsertReductionView implements Observer {
     /**
      * Metodo che inizializza la schermata
      *
-     * @param eventModel
+     * @param eventModel model per l'inizializzazione della view
      */
     private void init(EventModel eventModel) {
-        // int i = 2;
-        // int j = 0;
         //gridpane in cui si inseriranno gli altri elementi
         GridPane gridPane = new GridPane();
 
@@ -91,6 +101,7 @@ public class InsertReductionView implements Observer {
         Label bambini = new Label("Bambini");
         gridPane.add(bambini, 0, 2);
         bambiniReduction.setMaxSize(80.0, bambiniReduction.getHeight());
+        bambiniReduction.setText(String.valueOf(eventModel.getChildrenReduction()));
         HBox hBox1 = new HBox();
         hBox1.getChildren().add(bambiniReduction);
         hBox1.getChildren().add(new Label("%"));
@@ -100,6 +111,7 @@ public class InsertReductionView implements Observer {
         Label anziani = new Label("Anziani");
         gridPane.add(anziani, 0, 3);
         anzianiReduction.setMaxSize(80.0, anzianiReduction.getHeight());
+        anzianiReduction.setText(String.valueOf(eventModel.getEldersReduction()));
         HBox hBox2 = new HBox();
         hBox2.getChildren().add(anzianiReduction);
         hBox2.getChildren().add(new Label("%"));
@@ -109,6 +121,7 @@ public class InsertReductionView implements Observer {
         Label studenti = new Label("Studenti");
         gridPane.add(studenti, 0, 4);
         studentiReduction.setMaxSize(80.0, studentiReduction.getHeight());
+        studentiReduction.setText(String.valueOf(eventModel.getStudentReduction()));
         HBox hBox3 = new HBox();
         hBox3.getChildren().add(studentiReduction);
         hBox3.getChildren().add(new Label("%"));
@@ -124,45 +137,31 @@ public class InsertReductionView implements Observer {
     /**
      * Metodo che si occupa dell'inizializzazione dei listner per le textField bambini, anziani e studenti
      *
-     * @param bambini
-     * @param anziani
-     * @param studenti
+     * @param bambini  textfield contenente la riduzione per i bambini
+     * @param anziani  textfield contenente la riduzione per gli anziani
+     * @param studenti textfield contenente la riduzione per gli studenti
      */
     private void initListeners(TextField bambini, TextField anziani, TextField studenti) {
         //Listener per il cambio del valore nella textfield
-        bambini.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                textFieldControl(bambini, oldValue, newValue);
-            }
-        });
+        bambini.textProperty().addListener((ov, oldValue, newValue) -> textFieldControl(bambini, oldValue, newValue));
 
         //Listener per il cambio del valore nella textfield
-        anziani.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                textFieldControl(anziani, oldValue, newValue);
-            }
-        });
+        anziani.textProperty().addListener((ov, oldValue, newValue) -> textFieldControl(anziani, oldValue, newValue));
 
         //Listener per il cambio del valore nella textfield
-        studenti.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                textFieldControl(studenti, oldValue, newValue);
-            }
-        });
+        studenti.textProperty().addListener((ov, oldValue, newValue) -> textFieldControl(studenti, oldValue, newValue));
     }
 
 
     /**
      * Metodo che si occupa dei controlli sulla textfield
      *
-     * @param textField
-     * @param oldValue
-     * @param newValue
+     * @param textField textfield da controllare
+     * @param oldValue  valore precedente
+     * @param newValue  nuovo valore
      */
     private void textFieldControl(TextField textField, String oldValue, String newValue) {
+        //todo il parser deve prendere un tipo double, non intero
         try {
             //controlla che gli elementi inseriti siano solo numerici e "."
             if (!newValue.matches("\\d*\\.?\\d+")) {
@@ -198,10 +197,15 @@ public class InsertReductionView implements Observer {
             alert.setContentText(alert.getContentText() + "Anziani: " + anzianiReduction.getText() + "% \n");
             alert.setContentText(alert.getContentText() + "Studenti: " + studentiReduction.getText() + "% \n");
 
+            List<Double> reductions = new ArrayList<>();
+            reductions.add(Double.valueOf(bambiniReduction.getText()));
+            reductions.add(Double.valueOf(anzianiReduction.getText()));
+            reductions.add(Double.valueOf(studentiReduction.getText()));
+
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 //avanza di schermata in caso venga premuto ok
-                insertController.toInsertRecap();
+                insertController.toInsertRecap(reductions);
             }
         } catch (NullPointerException | NumberFormatException e) {
             //in caso non tutti gli elementi siano valorizzati mostra un'errore
@@ -212,6 +216,12 @@ public class InsertReductionView implements Observer {
 
     }
 
+    /**
+     * metodo per l'aggiornamento della view
+     *
+     * @param o   model chiamante
+     * @param arg null
+     */
     @Override
     public void update(Observable o, Object arg) {
         EventModel eventModel = (EventModel) o;

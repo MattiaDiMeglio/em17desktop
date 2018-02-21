@@ -7,13 +7,11 @@ import model.EventListModel;
 import model.EventModel;
 import model.LocationListModel;
 import model.LocationModel;
-import view.LoadingPopupView;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Phaser;
 
 /**
  * Classe controller che si occupa dell'inserimento di un nuovo evento
@@ -45,6 +43,9 @@ public class InsertController {
      * Lista delle immagini che verranno caricate nello storage del server
      */
     private List<Image> imagesList = new ArrayList<>();
+    /**
+     * id della vecchia location in caso di modifica evento
+     */
     private String oldLocationID;
 
     /**
@@ -108,14 +109,19 @@ public class InsertController {
 
     /**
      * metodo chiamato dal listener del bottone conferma della terza schermata di isnerimento
+     * @param reductions
      */
-    public void toInsertRecap() {
+    public void toInsertRecap(List<Double> reductions) {
+        newEvent.setChildrenReduction(reductions.get(0));
+        newEvent.setEldersReduction(reductions.get(1));
+        newEvent.setStudentReduction(reductions.get(2));
         viewSourceController.toInsertRecapView(this, imagesList, newEvent);//cambio schermata
     }
 
     /**
      * il metodo crea la lista dei settori
-     * @param name nome della location
+     *
+     * @param name    nome della location
      * @param address indirizzo della location
      * @return lista di settori
      */
@@ -125,7 +131,6 @@ public class InsertController {
             if ((location.getLocationAddress().equals(address)) && (location.getLocationName().equals(name))) {
                 List<EventModel.Sectors> sectorsList = new ArrayList<>();
                 List<String> seats = getSteatsList(newEvent.getLocationName(), newEvent.getLocationAddress());
-                int i = 0;
                 for (String s : location.getSectorList()) {
                     EventModel.Sectors sectors = new EventModel().new Sectors();
                     sectors.setName(s);
@@ -140,7 +145,8 @@ public class InsertController {
 
     /**
      * il metodo procura l'id della location scelta
-     * @param name nome location
+     *
+     * @param name    nome location
      * @param address indirizzo location
      * @return id della location
      */
@@ -217,7 +223,7 @@ public class InsertController {
     /**
      * metodo che avvia l'inserimento nel database
      *
-     * @param image
+     * @param image lista con le immagini da inserire
      */
     public void insert(List<Image> image) {
         StorageController sg = new StorageController();//instanzia lo storageController
@@ -225,14 +231,14 @@ public class InsertController {
         CountDownLatch latchInsert = new CountDownLatch(1);// latch per l'inserimento dell'evento nel database
 
         try {
-            if(newEvent.getLocationID().equals("")){
+            if (newEvent.getLocationID().equals("")) {
                 dbController.insert(newEvent, latchUpload, latchInsert); //finito il thread di upload si inserisce l'evento nel db
-            }else {
+            } else {
                 newEvent.setLocationID(getLocationID(newEvent.getLocationName(), newEvent.getLocationAddress()));
                 latchUpload.countDown();
-                if (newEvent.getLocationID().equals(oldLocationID)){
+                if (newEvent.getLocationID().equals(oldLocationID)) {
                     dbController.updateChild(newEvent, latchInsert);
-                }else {
+                } else {
                     dbController.updateChild(newEvent, oldLocationID, latchInsert);
                 }
             }
@@ -245,7 +251,7 @@ public class InsertController {
             //new LoadingPopupView(latch); //si crea il popup di caricamento
             viewSourceController.toDash();//cambio schermata
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // todo mettere un alert per riavviare l'inserimento
         }
     }
 
@@ -258,18 +264,31 @@ public class InsertController {
         eventModel.notifyMyObservers();
     }
 
+    /**
+     * metodo per quando si torna alla schermata di ticketType
+     */
     public void toTicketType() {
         viewSourceController.toInsetTicketTypeView(this, newEvent);
     }
 
+    /**
+     * metodo per quando si torna alla schermata di insertReduction
+     */
     public void toInsertReduction() {
         viewSourceController.toInsertReductionView(this, newEvent);
     }
 
+    /**
+     * metodo per andare alla schermata di ticketType
+     *
+     * @param priceList          lista con i TextField contenente i prezzi
+     * @param reductionCheckList lista con i checkbox per la verifica
+     * @param seatsFieldsList    lista di TextField contenente il numero di posti per settore
+     */
     public void toInsertReduction(List<TextField> priceList, List<CheckBox> reductionCheckList, List<TextField> seatsFieldsList) {
         double price = Double.parseDouble(priceList.get(0).getText());
         for (int i = 0; i < newEvent.getSectorList().size(); i++) {
-            newEvent.getSectorList().get(i).setPrice(Integer.parseInt(priceList.get(i).getText()));
+            newEvent.getSectorList().get(i).setPrice(Double.valueOf(priceList.get(i).getText()));
             newEvent.getSectorList().get(i).setReduction(reductionCheckList.get(i).isSelected());
             newEvent.getSectorList().get(i).setSeats(Integer.parseInt(seatsFieldsList.get(i).getText()));
 

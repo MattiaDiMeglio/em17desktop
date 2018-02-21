@@ -69,6 +69,7 @@ public class SlideShowController {
 
     /**
      * metodo per l'handler nella dahasboard, che permette di indirizzare all'evento selezionato
+     *
      * @param index indice dell'evento
      */
     public void handler(int index) {
@@ -81,8 +82,7 @@ public class SlideShowController {
      *
      * @param imageList lista di immagini che verrà caricata sul server
      */
-
-    public void setImageList(List<Image> imageList){
+    public void setImageList(List<Image> imageList) {
         insertController.setImagesList(imageList);
     }
 }

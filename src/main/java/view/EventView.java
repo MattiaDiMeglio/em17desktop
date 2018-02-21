@@ -3,6 +3,7 @@ package view;
 import controller.EventController;
 import controller.SlideShowController;
 import controller.ViewSourceController;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.chart.BarChart;
@@ -29,11 +30,18 @@ import java.util.Optional;
 
 /**
  * Classe View per la schermata Evento
- * <p>
  * Implementa Observer, come definito dall'architettura MVC implementata per il progetto
  */
 public class EventView implements Observer {
-    private EventModel eventModel;
+    /**
+     * id dell'evento
+     */
+    private String eventKey;
+
+    /**
+     * istanza di {@link ViewSourceController}
+     */
+    private ViewSourceController viewSourceController;
 
     /**
      * Costruttore della view, che va a popolarla passando per l'eventModel corrispondente all'index passatogli
@@ -60,8 +68,10 @@ public class EventView implements Observer {
 
         SlideShowController slideShowController = new SlideShowController();//creo slideshowcontroller
         EventListModel eventListModel = EventListModel.getInstance();
-        eventModel = eventListModel.getListaEventi().get(index); //ottendo l'evento a cui la schermata riferisce
-        eventModel.addObserver(this); //setto la view come observer dell'eventmodel
+        eventListModel.addObserver(this);
+        this.viewSourceController = viewSourceController;
+        EventModel eventModel = eventListModel.getListaEventi().get(index); //ottendo l'evento a cui la schermata riferisce
+        eventKey = eventModel.getEventKey();
         initializeCharts(eventoTabPane, index); //inizializzazione dei charts
         Image image = eventModel.getBillboard(); //valirizzo l'image con l'immagine della locandina
         eventPlaybillImageView.setImage(image); //creo l'imageView con l'image di cui sopra
@@ -80,7 +90,6 @@ public class EventView implements Observer {
             if (eventModel.getTicketSold() == 0) {
 
                 //Popup di avviso per confermare l'eliminazione
-
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Attenzione");
                 alert.setHeaderText("Eliminazione");
@@ -90,22 +99,27 @@ public class EventView implements Observer {
 
                 if (result.get() == ButtonType.OK) {
                     eventController.delete(eventModel.getEventKey());
+                    eventListModel.deleteObserver(this);
                 }
             } else {
 
                 //Popup di avviso che mostra perché è impossibile eliminare l'evento
-
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Informazione");
                 alert.setHeaderText("L'evento non può essere eliminato");
                 alert.setContentText("L'evento " + eventModel.getEventName() + " non può essere eliminato perché ha già venduto qualche biglietto");
-
                 alert.showAndWait();
             }
         });
-        eventModifyButton.setOnAction(event -> viewSourceController.toModifyEvent(eventModel));
-        eventoBackButton.setOnAction(event ->viewSourceController.turnBack());
-}
+        eventModifyButton.setOnAction(event -> {
+            eventListModel.deleteObserver(this);
+            viewSourceController.toModifyEvent(eventModel);
+        });
+        eventoBackButton.setOnAction(event -> {
+            eventListModel.deleteObserver(this);
+            viewSourceController.turnBack();
+        });
+    }
 
     /**
      * Metodo per l'inizializzazione dei charts
@@ -141,8 +155,43 @@ public class EventView implements Observer {
         new LineChartView(stackedAreaChart, index);
     }
 
+    /**
+     * metodo per aggiornare la view nwl momento in cui viene modificato il database
+     *
+     * @param o   model chiamante
+     * @param arg null
+     */
     @Override
     public void update(Observable o, Object arg) {
+        EventListModel eventListModel = (EventListModel) o;
+        List<EventModel> eventModels = eventListModel.getListaEventi();
+        int i = 0;
+        boolean founded = false;
+        for (i =0; i< eventModels.size(); i++){
+            if (eventModels.get(i).getEventKey().equals(eventKey)) {
+                founded = true;
+                break;
+            }
+        }
+       /* do {
+            if (eventModels.get(i).getEventKey().equals(eventKey)) {
+                founded = true;
+            } else {
+                i++;
+            }
+        } while (i < eventModels.size()-1 || !eventModels.get(i).getEventKey().equals(eventKey));*/
+        if (founded) {
 
+            viewSourceController.turnBack();
+            viewSourceController.toEventView(i);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Informazione");
+            alert.setHeaderText("Errore nella visualizzazione dell'evento");
+            alert.setContentText("L'evento che si sta visualizzando potrebbe essere stato eliminato");
+            alert.showAndWait();
+            viewSourceController.turnBack();
+        }
+        eventListModel.deleteObserver(this);
     }
 }

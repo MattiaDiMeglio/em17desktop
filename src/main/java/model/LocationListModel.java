@@ -6,35 +6,58 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+/**
+ * classe che contiene la lista di tutte le location contenute nel database locale
+ *
+ * @author ingSW20
+ */
 public class LocationListModel extends Observable {
+    /**
+     * istanza della classe corrente
+     */
+    private static LocationListModel instance = new LocationListModel();
+    /**
+     * lista con le location trovate nel database
+     */
+    private List<LocationModel> locationList = new ArrayList<>();
 
-        private static LocationListModel instance = new LocationListModel();
-        private List<LocationModel> locationList = new ArrayList<>();
-
-        public static LocationListModel getInstance() {
-            return instance;
-        }
-
-        private LocationListModel (){
-        };
-
-
-        public List<LocationModel> getLocationList() {
-            return locationList;
-        }
-
-        public void setListaLocation(LocationModel location) {
-            this.locationList.add(location);
-            Platform.runLater(() -> {
-                setChanged();
-                notifyObservers(locationList.size());
-            });
-
-        }
-
-        public void deleteList (){
-            this.locationList.removeAll(locationList);
-        }
+    /**
+     * getter per l'istanza corrente
+     *
+     * @return istanza corrente
+     */
+    public static LocationListModel getInstance() {
+        return instance;
     }
+
+    /**
+     * costruttore vuoto
+     */
+    private LocationListModel() {
+    }
+
+    /**
+     * getter per {@link #locationList}
+     *
+     * @return {@link #locationList}
+     */
+    public List<LocationModel> getLocationList() {
+        return locationList;
+    }
+
+    /**
+     * setter per {@link #locationList}
+     *
+     * @param location location da aggiungere a {@link #locationList}
+     */
+    public void setListaLocation(LocationModel location) {
+        this.locationList.add(location);
+        Platform.runLater(() -> {
+            setChanged();
+            notifyObservers(locationList.size());
+        });
+
+    }
+}
 
 

@@ -15,7 +15,7 @@ import javax.swing.*;
 import java.util.*;
 
 public class InsertTicketTypeView implements Observer {
-
+//todo continuare da qua la doc
     private InsertController insertController;
     private VBox form;
    // private List<String> sectors = new ArrayList<>();

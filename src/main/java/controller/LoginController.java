@@ -1,18 +1,15 @@
 package controller;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 
 /**
@@ -29,11 +26,6 @@ public class LoginController {
      * Parte dell'url con l'operazione base per l'autenticazione
      */
     private static final String OPERATION_AUTH = "verifyPassword";
-    //private static final String OPERATION_REFRESH_TOKEN = "token";
-    /**
-     * parte dell'url con l'operazione di recupero account info
-     */
-    private static final String OPERATION_ACCOUNT_INFO = "getAccountInfo";
     /**
      * parte dell'url con l'operazione di recovery password
      */
@@ -42,15 +34,12 @@ public class LoginController {
     /**
      * thread per il login
      */
-    private ExecutorService loginThread= Executors.newSingleThreadExecutor();
+    private ExecutorService loginThread = Executors.newSingleThreadExecutor();
 
     /**
      * thread per il password recovery
      */
-    private ExecutorService recoveryThread= Executors.newSingleThreadExecutor();
-
-
-
+    private ExecutorService recoveryThread = Executors.newSingleThreadExecutor();
 
     /**
      * key unica per il database
@@ -65,16 +54,17 @@ public class LoginController {
     /**
      * costruttore protetto, che valorizza la chiave univoca
      */
-    protected LoginController() {
+    private LoginController() {
         firebaseKey = "AIzaSyB57Dfpr-VzZLPvDxSvWjH7mLgvOmAFOcA";
     }
 
     /**
      * metodo get per l'instanza della classe
+     *
      * @return instance
      */
     public static LoginController getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new LoginController();
         }
         return instance;
@@ -83,10 +73,10 @@ public class LoginController {
     /**
      * Metodo per l'autenticazione
      *
-     * @param username
-     * @param password
-     * @return
-     * @throws Exception
+     * @param username username scelto dall'utente
+     * @param password password scelta dall'utente
+     * @return token per la verifica del Login
+     * @throws Exception comu8nica al metodo chiamante il problema riscontrato
      */
     public String auth(String username, String password) throws Exception {
 
@@ -100,19 +90,19 @@ public class LoginController {
                 Thread.currentThread().setName("loginThread");
 
                 try {
-                    URL url = new URL(BASE_URL+OPERATION_AUTH+"?key="+firebaseKey); //instanzia e valorizza l'url
+                    URL url = new URL(BASE_URL + OPERATION_AUTH + "?key=" + firebaseKey); //instanzia e valorizza l'url
                     urlRequest[0] = (HttpURLConnection) url.openConnection();//instanzia la urlRequest
                     urlRequest[0].setDoOutput(true);
                     urlRequest[0].setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                     OutputStream os = urlRequest[0].getOutputStream(); //instanzia un outpit stream
                     OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
-                    osw.write("{\"email\":\""+username+"\",\"password\":\""+password+"\",\"returnSecureToken\":true}"); //scrive la richiesta
+                    osw.write("{\"email\":\"" + username + "\",\"password\":\"" + password + "\",\"returnSecureToken\":true}"); //scrive la richiesta
                     osw.flush();
                     osw.close();
                     os.close();
                     urlRequest[0].connect(); //apre la connessione per mandare la request
                     JsonParser jp = new JsonParser(); //from gson
-                    JsonElement root = null; //Converte  l'input stream a json element
+                    JsonElement root; //Converte  l'input stream a json element
                     root = jp.parse(new InputStreamReader((InputStream) urlRequest[0].getContent()));
                     JsonObject rootobj = root.getAsJsonObject(); //trasforma la root in object
                     token[0] = rootobj.get("idToken").getAsString(); //ottiene il token univoco dell'account
@@ -127,7 +117,7 @@ public class LoginController {
 
                 }
 
-            },"loginThread"));
+            }, "loginThread"));
 
 
         } catch (Exception e) {
@@ -143,56 +133,12 @@ public class LoginController {
     }
 
     /**
-     * Metodo per ottenere info dell'account con cui si è loggati, partendo dal token univoco
-     *
-     * @param token
-     * @return
-     * @throws Exception
-     */
-    public String getAccountInfo(String token) throws Exception {
-
-        HttpURLConnection urlRequest = null;
-        String email = null;
-
-        try {
-            URL url = new URL(BASE_URL+OPERATION_ACCOUNT_INFO+"?key="+firebaseKey); //instanzia e valorizza l'url
-            urlRequest = (HttpURLConnection) url.openConnection();//instanzia la urlRequest
-            urlRequest.setDoOutput(true);
-            urlRequest.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            OutputStream os = urlRequest.getOutputStream();//instanzia un outpit stream
-            OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
-            osw.write("{\"idToken\":\""+token+"\"}");//scrive la richiesta
-            osw.flush();
-            osw.close();
-            os.close();
-
-            urlRequest.connect();//apre la connessione per mandare la request
-
-            JsonParser jp = new JsonParser(); //from gson
-            JsonElement root = jp.parse(new InputStreamReader((InputStream) urlRequest.getContent()));//Converte  l'input stream a json element
-            JsonObject rootobj = root.getAsJsonObject(); //trasforma la root in object
-
-            email = rootobj.get("users").getAsJsonArray().get(0).getAsJsonObject().get("email").getAsString();//ottiene la mail dal json
-
-        } catch (Exception e) {
-            urlRequest.disconnect();
-            return "null";
-        } finally {
-            urlRequest.disconnect();
-        }
-
-        return email;
-
-    }
-
-    /**
      * metodo per il recovery della password
      *
-     * @param email
-     * @return
-     * @throws Exception
+     * @param email email per il recupero password
+     * @return risposta http per il recupero password
      */
-    public String passRecovery(String email) throws Exception{
+    public String passRecovery(String email) {
         HttpURLConnection[] urlRequest = {null};
         String kind[] = {null};
         CountDownLatch latch = new CountDownLatch(1);
@@ -213,7 +159,7 @@ public class LoginController {
                     os.close();
                     urlRequest[0].connect(); //apre la connessione per mandare la request
                     JsonParser jp = new JsonParser(); //from gson
-                    JsonElement root = null; //Converte  l'input stream a json element
+                    JsonElement root; //Converte  l'input stream a json element
                     root = jp.parse(new InputStreamReader((InputStream) urlRequest[0].getContent()));
                     JsonObject rootobj = root.getAsJsonObject(); //trasforma la root in object
 
@@ -232,11 +178,19 @@ public class LoginController {
             latch.countDown();
         }
 
-        latch.await();
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            kind[0] = e.toString();
+        }
         return kind[0];
     }
 
-    public void shutdown (){
+    /**
+     * metodo per la terminazione dei thread all'uscita del programma
+     */
+    public void shutdown() {
         loginThread.shutdown();
         recoveryThread.shutdown();
     }

@@ -82,6 +82,13 @@ public class ChartsController {
         this.database = database;
     }
 
+    /**
+     * metodo che aggiorna i chart
+     *
+     * @param year     anno
+     * @param latch    latch per la sincronizzazione
+     * @param snapshot instantanea del database
+     */
     public void updateChart(String year, CountDownLatch latch, DataSnapshot snapshot) {
         try {
             LineChartModel.getInstance().initializeArray();

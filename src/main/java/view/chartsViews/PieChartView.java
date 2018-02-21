@@ -2,7 +2,6 @@ package view.chartsViews;
 
 import controller.chartsController.ChartsController;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ComboBox;
 import model.EventListModel;
@@ -33,7 +32,7 @@ public class PieChartView implements Observer, ChartInterface {
      * inoltre registra la view presso il model.
      * In particolare, questo costruttore è utilizzato per la visualizzazione delle statistiche relativo ad un anno scelto.
      *
-     * @param pieChart tipo di grafico da gestire
+     * @param pieChart               tipo di grafico da gestire
      * @param dashboardYearComboBox2 combobox per scegliere l'anno
      */
     public PieChartView(PieChart pieChart, ComboBox dashboardYearComboBox2) {
@@ -41,13 +40,10 @@ public class PieChartView implements Observer, ChartInterface {
         this.pieChart = pieChart;
         initializeCharts();
 
-        dashboardYearComboBox2.valueProperty().addListener(new ChangeListener<Integer>() {
-            @Override
-            public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                CountDownLatch latch = new CountDownLatch(1);
-                ChartsController.getInstance().populateCharts(String.valueOf(newValue), latch);
-                new LoadingPopupView(latch);
-            }
+        dashboardYearComboBox2.valueProperty().addListener((ChangeListener<Integer>) (observable, oldValue, newValue) -> {
+            CountDownLatch latch = new CountDownLatch(1);
+            ChartsController.getInstance().populateCharts(String.valueOf(newValue), latch);
+            new LoadingPopupView(latch);
         });
         PieChartModel.getInstance().addObserver(this);
     }
@@ -56,7 +52,7 @@ public class PieChartView implements Observer, ChartInterface {
      * Costruttore per l'inizializzazione del LineChart relativo ad un singolo evento, inoltre registra la view presso il model.
      *
      * @param pieChart tipo di grafico
-     * @param index     indice da utilizzare per identificare l'evento desiderato
+     * @param index    indice da utilizzare per identificare l'evento desiderato
      */
     public PieChartView(PieChart pieChart, int index) {
         this.pieChart = pieChart;
@@ -89,12 +85,12 @@ public class PieChartView implements Observer, ChartInterface {
             PieChartModel classModel = (PieChartModel) o;
             Double ticketsPerc = (classModel.getTicketsSold() / classModel.getMaxTickets()) * 100;
             updateChart(ticketsPerc);
-        } else if (o instanceof  EventModel){
+        } else if (o instanceof EventModel) {
             System.out.println("event");
             EventModel eventModel = (EventModel) o;
             Double ticketsPerc = (Double.valueOf(eventModel.getTicketSold()) / Double.valueOf(eventModel.getMaxVisitors())) * 100;
             updateChart(ticketsPerc);
-        }else {
+        } else {
             MergedModel mergedModel = (MergedModel) o;
             Double ticketsPerc = (mergedModel.getTicketsSold() / mergedModel.getMaxVisitors()) * 100;
             updateChart(ticketsPerc);
@@ -103,7 +99,8 @@ public class PieChartView implements Observer, ChartInterface {
 
     /**
      * metodo per troncare un double ad un numero con cifre decimali scelto
-     * @param value valore da arrotondare
+     *
+     * @param value  valore da arrotondare
      * @param places numero di cifre decimali scelto
      * @return valore arrotondato
      */
@@ -135,9 +132,10 @@ public class PieChartView implements Observer, ChartInterface {
 
     /**
      * metodo per l'aggiornamento del grafico in base al valore passato per parametro
+     *
      * @param ticketsPerc percentuale da rappresentare
      */
-    private void updateChart(Double ticketsPerc){
+    private void updateChart(Double ticketsPerc) {
         pieChart.getData().get(0).setName(round(ticketsPerc, 2) + "%\nBiglietti Venduti");
         pieChart.getData().get(0).setPieValue(ticketsPerc);
         pieChart.getData().get(1).setName((100 - round(ticketsPerc, 2) + "%\nBiglietti non Venduti"));

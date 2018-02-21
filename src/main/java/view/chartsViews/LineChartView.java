@@ -146,7 +146,7 @@ public class LineChartView implements Observer, ChartInterface {
             EventModel eventModel = (EventModel) o;
             if (chart instanceof LineChart) {
                 vendite = eventModel.getTicketsSoldPerMonth();
-            }else {
+            } else {
                 vendite = eventModel.getRevenuePerMonth();
             }
         } else {
@@ -176,15 +176,13 @@ public class LineChartView implements Observer, ChartInterface {
     /**
      * effettua un reset della variabile {@link #series} per un nuovo popolamento del grafico
      *
-     * @param chart
+     * @param chart grafico da resettare
      */
     private void resetSeries(XYChart chart) {
         series = (XYChart.Series<String, Number>) chart.getData().get(0);
 
         datas = new ArrayList<>();
-        for (int i = 0; i < series.getData().size(); i++) {
-            datas.add(series.getData().get(i));
-        }
+        datas.addAll(series.getData());
     }
 
     /**
@@ -195,18 +193,18 @@ public class LineChartView implements Observer, ChartInterface {
         series.setName("Biglietti venduti");
         datas = new ArrayList<>();
 
-        datas.add(new XYChart.Data("Gen", 0));
-        datas.add(new XYChart.Data("Feb", 0));
-        datas.add(new XYChart.Data("Mar", 0));
-        datas.add(new XYChart.Data("Apr", 0));
-        datas.add(new XYChart.Data("Mag", 0));
-        datas.add(new XYChart.Data("Giu", 0));
-        datas.add(new XYChart.Data("Lug", 0));
-        datas.add(new XYChart.Data("Ago", 0));
-        datas.add(new XYChart.Data("Set", 0));
-        datas.add(new XYChart.Data("Ott", 0));
-        datas.add(new XYChart.Data("Nov", 0));
-        datas.add(new XYChart.Data("Dic", 0));
+        datas.add(new XYChart.Data<>("Gen", 0));
+        datas.add(new XYChart.Data<>("Feb", 0));
+        datas.add(new XYChart.Data<>("Mar", 0));
+        datas.add(new XYChart.Data<>("Apr", 0));
+        datas.add(new XYChart.Data<>("Mag", 0));
+        datas.add(new XYChart.Data<>("Giu", 0));
+        datas.add(new XYChart.Data<>("Lug", 0));
+        datas.add(new XYChart.Data<>("Ago", 0));
+        datas.add(new XYChart.Data<>("Set", 0));
+        datas.add(new XYChart.Data<>("Ott", 0));
+        datas.add(new XYChart.Data<>("Nov", 0));
+        datas.add(new XYChart.Data<>("Dic", 0));
 
         for (XYChart.Data<String, Number> data : datas) {
             series.getData().add(data);

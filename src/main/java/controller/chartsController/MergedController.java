@@ -101,7 +101,6 @@ public class MergedController {
         merge();
     }
 
-
     /**
      * Il metodo richiama un reset per i dati contenuti nel model
      */

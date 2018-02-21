@@ -10,32 +10,35 @@ import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import model.EventListModel;
 import model.EventModel;
 import org.controlsfx.control.textfield.TextFields;
 import view.chartsViews.BarChartView;
 import view.chartsViews.LineChartView;
 import view.chartsViews.PieChartView;
 
-
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 /**
- * Classe view per la schermata DashBoard, nonché main dell'applicativo.
- * Implementa Observer, come definito dall'architettura MVC implementata per il progetto
- * Estende Application per poter utilizzare JavaFX
+ * Classe view per la schermata DashBoard.
  *
  * @author ingSW20
- * @see java.util.Observable
- * @see java.util.Observer
- * @see javafx.application.Application
  */
-public class DashBoardView implements Observer {
+public class DashBoardView {
 
+    /**
+     * istanza di {@link ViewSourceController}
+     */
     private ViewSourceController viewSourceController;
+    /**
+     * istanza di {@link SearchController}
+     */
     private SearchController searchController;
+    /**
+     * lista degli eventi trovati nella ricerca
+     */
     private List<EventModel> foundedEventInSearch;
 
     /**
@@ -43,14 +46,23 @@ public class DashBoardView implements Observer {
      */
     private List<String> eventsName;
 
+    /**
+     * costruttore per la dashboard dell'applicativo
+     *
+     * @param dashSlide                     slide che contiene le locandine degli eventi
+     * @param dashBoardSlideShowLeftButton  bottone sinistro per lo scorrimento dello slide
+     * @param dashBoardSlideShowRightButton bottone destro per lo scorrimento dello slide
+     * @param dashBoardTabPane              TabPane contenente i grafici
+     * @param dashBoardInsertButton         tasto per l'inserimento di un nuovo evento
+     * @param viewSourceController          istanza di {@link ViewSourceController}
+     * @param searchToolBar                 ToolBar contenente la ricerca
+     */
     public DashBoardView(HBox dashSlide, Button dashBoardSlideShowLeftButton, Button dashBoardSlideShowRightButton,
                          TabPane dashBoardTabPane, Button dashBoardInsertButton,
                          ViewSourceController viewSourceController, ToolBar searchToolBar) {
         this.viewSourceController = viewSourceController;
         initalizeCharts(dashBoardTabPane);
         initalizeSearch(searchToolBar);
-        EventListModel eventListModel = EventListModel.getInstance();
-        eventListModel.addObserver(this);
 
         while (dashSlide.getChildren().size() > 0) {
             dashSlide.getChildren().remove(dashSlide.getChildren().size() - 1);
@@ -63,6 +75,11 @@ public class DashBoardView implements Observer {
         });
     }
 
+    /**
+     * metodo per l'inizializzazione della ricerca
+     *
+     * @param toolBar toolbar contenente gli elementi utili alla ricerca
+     */
     private void initalizeSearch(ToolBar toolBar) {
         searchController = new SearchController();
         TextField textField = (TextField) toolBar.getItems().get(0);
@@ -80,6 +97,11 @@ public class DashBoardView implements Observer {
         button.setDefaultButton(true);
     }
 
+    /**
+     * metodo per l'inizializzazione dei grafici
+     *
+     * @param tabPane TabPane contenente i grafici
+     */
     private void initalizeCharts(TabPane tabPane) {
         VBox dashBoardVboxLinechart = (VBox) tabPane.getTabs().get(0).getContent();
         ComboBox comboBox1 = (ComboBox) dashBoardVboxLinechart.getChildren().get(0);
@@ -124,19 +146,4 @@ public class DashBoardView implements Observer {
         new LineChartView(stackedAreaChart, comboBox4);
 
     }
-
-
-    /**
-     * metodo update ereditato da Observer
-     *
-     * @param o
-     * @param arg
-     * @see java.util.Observer
-     * @see java.util.Observable
-     */
-    public void update(Observable o, Object arg) {
-
-    }
-
-
 }

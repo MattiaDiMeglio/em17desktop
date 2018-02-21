@@ -301,6 +301,11 @@ public class ViewSourceController extends Application {
     @FXML
     private ImageView RecapPlaybillImageView;
     /**
+     * bottone per la modifica di un evento
+     */
+    @FXML
+    private Button eventModifyButton;
+    /**
      * Schermata Dasboard
      */
     private Node dashBoardBox;
@@ -345,17 +350,11 @@ public class ViewSourceController extends Application {
      * stage per la visualizzazione del programma
      */
     private static Stage stage;
-    /**
-     * bottone per la modifica di un evento
-     */
-    @FXML
-    private Button eventModifyButton;
-
 
     /**
      * Main dell'applicazione, richiama il metono launch che fa partire la schermata di javafx
      *
-     * @param args
+     * @param args argomenti del main
      */
     public static void main(String[] args) {
         launch(args);
@@ -434,7 +433,7 @@ public class ViewSourceController extends Application {
      * Metodo che si occupa di cambiare le schermate
      * prende in input il node da usare come nuova schermata
      *
-     * @param view
+     * @param view view alla quale si vuole passare
      */
     private void changeView(Node view) {
         if (!mainAnchorPane.getChildren().isEmpty()) {
@@ -453,6 +452,9 @@ public class ViewSourceController extends Application {
 
     }
 
+    /**
+     * mostra una barra che notifica l'aggiornamento locale del database
+     */
     public static void showNotificationPane() {
         Platform.runLater(() -> {
             Scene scene = stage.getScene();
@@ -496,10 +498,7 @@ public class ViewSourceController extends Application {
                 dashBoardTabPane, dashBoardInsertButton, this, searchToolBar);
 
         changeView(dashBoardBox);
-
-        DBController dbController = DBController.getInstance();
-        //dbController.dashBoard();
-
+        DBController.getInstance(); // inizializza il database
     }
 
     /**
@@ -650,6 +649,7 @@ public class ViewSourceController extends Application {
 
     /**
      * metodo per la modifica di un evento
+     *
      * @param eventModel evento da modificare
      */
     public void toModifyEvent(EventModel eventModel) {

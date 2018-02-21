@@ -105,7 +105,7 @@ public class MergedModel extends Observable {
     /**
      * getter per la variabile {@link #maxVisitors}
      *
-     * @return
+     * @return numero massimo di visitatori
      */
     public Double getMaxVisitors() {
         return maxVisitors;
@@ -139,7 +139,6 @@ public class MergedModel extends Observable {
         this.ticketsSold = ticketsSold;
         setChanged();
     }
-
 
     /**
      * getter per la variabile {@link #soldPerEvent}

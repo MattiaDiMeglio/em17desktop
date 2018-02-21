@@ -45,7 +45,6 @@ public class BarChartModel extends Observable {
     private BarChartModel() {
     }
 
-
     /**
      * setter per la variabile {@link #soldPerLocation}
      *

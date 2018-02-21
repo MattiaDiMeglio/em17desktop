@@ -24,8 +24,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 /**
@@ -91,7 +89,7 @@ public class DBController {
     /**
      * metodo che restituisce l'instanza
      *
-     * @return
+     * @return istanza corrente di DBController
      */
     public static DBController getInstance() {
         return instance;
@@ -137,10 +135,20 @@ public class DBController {
         databaseListener(); //inizializza i listener per il cambio del database
     }
 
+    /**
+     * attiva i listener per l'agiornamento in tempo reale
+     */
     private void databaseListener() {
         database.addChildEventListener(childEventListener);
     }
 
+    /**
+     * inserisce un evento nel database
+     *
+     * @param newEvent    evento da inserire
+     * @param latchUpload latch per la sincronizzazione per 'upload delle foto
+     * @param latchInsert latch per la sincronizzazione con l'inserimento nel database
+     */
     public void insert(EventModel newEvent, CountDownLatch latchUpload, CountDownLatch latchInsert) {
         database.removeEventListener(childEventListener);
         database.child("luogo").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -200,6 +208,13 @@ public class DBController {
 
     }
 
+    /**
+     * metodo per l'aggiornamento di un evento nel database quando si modifica anche la location
+     *
+     * @param eventModel  evento da modificare
+     * @param oldLocation id della location precedente
+     * @param latchInsert latch per la sincronizzazione con l'inserimento nel database
+     */
     void updateChild(EventModel eventModel, String oldLocation, CountDownLatch latchInsert) {
         DatabaseReference fromPath = database.child("luogo").child(oldLocation).child("Eventi").child(eventModel.getEventKey());
         DatabaseReference toPath = database.child("luogo").child(eventModel.getLocationID()).child("Eventi");
@@ -215,7 +230,7 @@ public class DBController {
                                 fromPath.setValue(null, (error, ref) -> {
                                     if (error == null) {
                                         updateChild(eventModel, latchInsert);
-                                    }else {
+                                    } else {
                                         databaseListener();
                                     }
                                 });
@@ -234,6 +249,12 @@ public class DBController {
 
     }
 
+    /**
+     * metodo per l'aggiornamento di un evento n el database
+     *
+     * @param eventModel  evento da modificare
+     * @param latchInsert latch per la sincronizzazione con l'inserimento nel database
+     */
     public void updateChild(EventModel eventModel, CountDownLatch latchInsert) {
         database.removeEventListener(childEventListener);
         database.child("luogo").child(eventModel.getLocationID()).child("Eventi").child(eventModel.getEventKey()).
@@ -271,7 +292,7 @@ public class DBController {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }finally {
+                        } finally {
                             databaseListener();
                         }
                     }
@@ -473,6 +494,7 @@ public class DBController {
                 latch.countDown();
             }
             latch.countDown();
+            eventListModel.notifyMyObservers();
             ChartsController.getInstance().updateChart("2018", latch, snapshot);
         }).start();
 
@@ -493,20 +515,6 @@ public class DBController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-       /* }
-        if(firstDatabaseUpdate || executorService.isShutdown()) {
-            System.out.println("sono nell'if");
-            executorService.execute(new Thread(() -> {
-                try {
-                    Thread.sleep(10000);
-                    flag = true;
-                    firstDatabaseUpdate = false;
-                    System.out.println("imposto true");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }));
-        }*/
     }
 
     /**

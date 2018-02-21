@@ -238,7 +238,6 @@ public class SlideShowView implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        hBox.getChildren().removeAll(); //pulisce l'hobox //todo sembra essere inutile questo comando
         //se l'update viene da EventListModel
         if (o instanceof EventListModel) {
             initButtonList((EventListModel) o);

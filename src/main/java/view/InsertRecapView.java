@@ -117,7 +117,6 @@ public class InsertRecapView implements Observer {
          */
         private final SimpleStringProperty reductions;
 
-
         /**
          * Costruttore della sottoclasse per il popolamento della prima tabella nella schermata
          *
@@ -383,11 +382,6 @@ public class InsertRecapView implements Observer {
     public void update(Observable o, Object arg) {
         EventModel eventModel = (EventModel) o;
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                init(eventModel);
-            }
-        });
+        Platform.runLater(() -> init(eventModel));
     }
 }

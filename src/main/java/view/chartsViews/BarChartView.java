@@ -126,9 +126,7 @@ public class BarChartView implements Observer, ChartInterface {
         } else {
             series = (XYChart.Series<String, Number>) barChart.getData().get(0);
             datas = new ArrayList<>();
-            for (int i = 0; i < series.getData().size(); i++) {
-                datas.add(series.getData().get(i));
-            }
+            datas.addAll(series.getData());
         }
     }
 
@@ -165,7 +163,7 @@ public class BarChartView implements Observer, ChartInterface {
         datas.clear();
 
         for (int i = 0; i < settori.size(); i++) {
-            datas.add(new XYChart.Data<String, Number>(nomeSettori.get(i), settori.get(nomeSettori.get(i))));
+            datas.add(new XYChart.Data<>(nomeSettori.get(i), settori.get(nomeSettori.get(i))));
         }
 
         for (XYChart.Data<String, Number> data : datas) {

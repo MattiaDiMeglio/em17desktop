@@ -28,7 +28,7 @@ public class EventModel extends Observable {
         /**
          * prezzo base per settore
          */
-        private int price = 0;
+        private Double price = 0.0;
         /**
          * flag per verificare se la riduzione è attiva o meno
          */
@@ -57,7 +57,7 @@ public class EventModel extends Observable {
          *
          * @return {@link #price}
          */
-        public int getPrice() {
+        public Double getPrice() {
             return price;
         }
 
@@ -66,7 +66,7 @@ public class EventModel extends Observable {
          *
          * @param price {@link #price}
          */
-        public void setPrice(int price) {
+        public void setPrice(Double price) {
             this.price = price;
         }
 
@@ -676,14 +676,16 @@ public class EventModel extends Observable {
 
     /**
      * setter per l'id della location
+     *
      * @param id id della location
      */
-    public void setLocationID(String id){
+    public void setLocationID(String id) {
         locationID = id;
     }
 
     /**
      * getter per l'id della location
+     *
      * @return id della location
      */
     public String getLocationID() {

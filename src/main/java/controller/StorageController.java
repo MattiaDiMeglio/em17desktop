@@ -22,13 +22,19 @@ import java.util.concurrent.Executors;
 
 /**
  * Controller che si occupa dell'upload delle immagini nello storage
+ *
+ * @author ingSW20
  */
 public class StorageController {
 
-    //crea il thread in cui verrà eseguito l'upload
+    /**
+     * crea il thread in cui verrà eseguito l'upload
+     */
     private ExecutorService uploadThread = Executors.newSingleThreadExecutor();
 
-    //creazione del bucket per l'upload
+    /**
+     * creazione del bucket per l'upload
+     */
     private Bucket bucket;
 
 
@@ -42,13 +48,14 @@ public class StorageController {
     /**
      * Metodo che si occupa dell'upload delle immagini
      * e restituisce una lista di immagini con i link ottenuti dall'upload
-     * @param newEvent
-     * @param imageList
-     * @param playbill
-     * @param latchUpload
-     * @param latchInsert
-     * @return
-     * @throws InterruptedException
+     *
+     * @param newEvent    metodo per valorizzare la cartella dove effettuare l'upload delle immagini
+     * @param imageList   lista delle immagini da caricare sul server
+     * @param playbill    copertina dell'evento
+     * @param latchUpload latch per la sincronizzazione dell'upload delle foto
+     * @param latchInsert latch per la sincronizzazione dell'inserimento dell'evento nel database
+     * @return lista di immagini
+     * @throws InterruptedException eccezione per la gestione di un interruzione
      */
     public List<Image> upload(EventModel newEvent, List<Image> imageList, Image playbill, CountDownLatch latchUpload, CountDownLatch latchInsert) throws InterruptedException {
 
@@ -72,10 +79,10 @@ public class StorageController {
 
                     //si da il percorso del file all'input stream. Substring per eliminare "file:" dal percorso dell'Image
                     //InputStream inputStream = new FileInputStream(new File(image.impl_getUrl().substring(5)).getAbsolutePath().replaceAll("%20", " "));
-                    InputStream inputStream = null;
+                    InputStream inputStream;
                     try {
                         inputStream = new FileInputStream(new File(image.impl_getUrl().substring(5)).getAbsolutePath().replaceAll("%20", " "));
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         //e.printStackTrace();
                         inputStream = new URL(image.impl_getUrl()).openStream();
                     }
@@ -103,7 +110,7 @@ public class StorageController {
                             writer.close();
                             //si aggiunge il link dell'immagine caricata
                             imagesUploaded.add(new Image("https://storage.googleapis.com/ingws-20.appspot.com/" + blobId
-                                .getName()));
+                                    .getName()));
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -124,7 +131,7 @@ public class StorageController {
     }
 
     //Eliminazione della cartella contenente tutte le immagini dell'evento
-    public void deleteFolder(DataSnapshot eventiSnap){
+    public void deleteFolder(DataSnapshot eventiSnap) {
 
         StorageController storageController = new StorageController();
 
@@ -137,11 +144,11 @@ public class StorageController {
                         .replace(link, ""));
 
         //Eliminazione delle immagini nella galleria
-        for (Integer i = 0; i < eventiSnap.child("galleria").getChildrenCount() ; i++){
+        for (Integer i = 0; i < eventiSnap.child("galleria").getChildrenCount(); i++) {
             storageController.deleteFile(
                     eventiSnap.child("galleria").child(i.toString()).getValue().toString()
                             .replace(link, ""));
-            }
+        }
 
         //Eliminazione della cartella ormai vuota
         try {
@@ -155,13 +162,13 @@ public class StorageController {
 
 
             System.out.println("fatto");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //Eliminazione del file specifico
-    private void deleteFile(String key){
+    private void deleteFile(String key) {
 
         bucket.get(key).delete();
     }

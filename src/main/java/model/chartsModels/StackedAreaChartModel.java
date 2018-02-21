@@ -31,7 +31,6 @@ public class StackedAreaChartModel extends Observable {
         return ourInstance;
     }
 
-
     /**
      * costruttore vuoto e privato
      */
@@ -52,6 +51,7 @@ public class StackedAreaChartModel extends Observable {
 
     /**
      * getter per la variabile {@link #earingsFromTicketsSold}
+     *
      * @return {@link #earingsFromTicketsSold}
      */
     public Integer[] getEaringsFromTicketsSold() {

@@ -1,35 +1,36 @@
 package model;
 
-
-import view.LoginView;
-import view.RecoveryView;
-
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Classe model per i dati di login, implementata come singleton
  *
+ * @author ingSW20
  * @see Observable
- *
  */
 public class LoginModel extends Observable {
-
     /**
      * instanza della classe
      */
     private static LoginModel instance = null;
+    /**
+     * username da utilizzare per l'accesso
+     */
     private String username;
+    /**
+     * password da utilizzare per l'accesso
+     */
     private String password;
 
     /**
      * Metodo per ottenere l'instanza della classe, se esiste
      * o chiamare il costruttore, indirettamente, in caso contrario
-     * @return
+     *
+     * @return istanza corrente
      */
-    public static LoginModel getInstance (){
+    public static LoginModel getInstance() {
         if (instance == null) {
-            instance=new LoginModel();
+            instance = new LoginModel();
         }
         return instance;
 
@@ -38,12 +39,13 @@ public class LoginModel extends Observable {
     /**
      * Costruttore della classe
      */
-    protected LoginModel(){
-    };
+    private LoginModel() {
+    }
 
     /**
-     * metodo set per la password
-     * @param password
+     * metodo set per {@link #password}
+     *
+     * @param password da utilizzare per l'accesso
      */
     public void setPassWord(String password) {
         this.password = password;
@@ -52,8 +54,9 @@ public class LoginModel extends Observable {
     }
 
     /**
-     * metodo set per l'username
-     * @param username
+     * metodo set per {@link #username}
+     *
+     * @param username da utilizzare per l'accesso
      */
     public void setUserName(String username) {
         this.username = username;
@@ -63,7 +66,8 @@ public class LoginModel extends Observable {
 
     /**
      * metodo get per la password
-     * @return
+     *
+     * @return password da utilizzare per l'accesso {@link #password}
      */
     public String getPassWord() {
         return password;
@@ -71,7 +75,8 @@ public class LoginModel extends Observable {
 
     /**
      * metodo get per l'username
-     * @return
+     *
+     * @return username da utilizzare per l'accesso {@link #username}
      */
     public String getUserName() {
         return username;
