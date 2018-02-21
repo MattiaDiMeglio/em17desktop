@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Phaser;
 
 /**
  * Classe controller che si occupa dell'inserimento di un nuovo evento
@@ -85,6 +86,7 @@ public class InsertController {
             newEvent.setBillboard(insertPlaybillImageView);//Setta l'immagine di copertina momentanea(verrà sostituita dopo l'upload
             newEvent.setStartingDate(strings.get(4));//Valirizza la data d'inizio
             newEvent.setEndingDate(strings.get(5));//Valorizza la data di fine
+            newEvent.setSlideshow(imagesList);
             String[] parts = strings.get(1).split("-");//si splitta il valore inserito dall'autocompletamento come location
             if (!(parts[0].equals(newEvent.getLocationName()) && parts[1].equals(newEvent.getLocationAddress())) ||
                     newEvent.getSectorList().isEmpty()) {
@@ -105,27 +107,6 @@ public class InsertController {
     }
 
     /**
-     * metodo chiamato dal listener del bottone conferma della seconda schermata di isnerimento
-     *
-     * @param sectorsList lista con i settori della location
-     */
-   /* public void toInsertReduction(List<EventModel.Sectors> sectorsList) {
-        newEvent.setSectorList(sectorsList);//Valorizza la lista dei settori
-        //Inserisce il primo dei prezzi per settore in una variabile di supporto
-        double price = newEvent.getSectorList().get(0).getPrice();
-        for (int i = 1; i < newEvent.getSectorList().size(); i++) {
-            //e poi controlla che quello inserito sia il prezzo minore,
-            // nel caso non lo sia sostituisce il valore in price
-            if (newEvent.getSectorList().get(i).getPrice() < price) {
-                price = newEvent.getSectorList().get(i).getPrice();
-            }
-        }
-        //setta il minore dei prezzi per settore come prezzo dell'evento
-        newEvent.setPrice(price);
-        viewSourceController.toInsertReductionView(this, newEvent);//cambio di schermata
-    }*/
-
-    /**
      * metodo chiamato dal listener del bottone conferma della terza schermata di isnerimento
      */
     public void toInsertRecap() {
@@ -133,21 +114,11 @@ public class InsertController {
     }
 
     /**
-     * metodo che serve per ottenere i nomi dei settori collegati alla location selezionata
-     *
-     * @param name    nome della location
-     * @param address inidirizzo della location
-     * @return nomi dei settori collegati alla location selezionata
+     * il metodo crea la lista dei settori
+     * @param name nome della location
+     * @param address indirizzo della location
+     * @return lista di settori
      */
-  /*  public List<String> getSectorName(String name, String address) {
-        for (LocationModel location : locationListModel.getLocationList()) {
-            //se la location corrente ha nome e indirizzo uguale a quelli passati al metodo, restituisce la lista dei settori
-            if ((location.getLocationAddress().equals(address)) && (location.getLocationName().equals(name))) {
-                return location.getSectorList();
-            }
-        }
-        return null;
-    }*/
     private List<EventModel.Sectors> createSector(String name, String address) {
         for (LocationModel location : locationListModel.getLocationList()) {
             //se la location corrente ha nome e indirizzo uguale a quelli passati al metodo, restituisce la lista dei settori
@@ -167,6 +138,12 @@ public class InsertController {
         return null;
     }
 
+    /**
+     * il metodo procura l'id della location scelta
+     * @param name nome location
+     * @param address indirizzo location
+     * @return id della location
+     */
     private String getLocationID(String name, String address) {
         for (LocationModel location : locationListModel.getLocationList()) {
             //se la location corrente ha nome e indirizzo uguale a quelli passati al metodo, restituisce la lista dei settori
@@ -193,7 +170,6 @@ public class InsertController {
         }
         return null;
     }
-
 
     /**
      * Metodo che serve per ottenere il numero massimo di posti per la location
@@ -236,7 +212,6 @@ public class InsertController {
     public void setImagesList(List<Image> imagesList) {
         this.imagesList.clear();//pulisce la lista
         this.imagesList.addAll(imagesList);//setta la nuova lista
-        newEvent.setSlideshow(imagesList);
     }
 
     /**
@@ -246,27 +221,28 @@ public class InsertController {
      */
     public void insert(List<Image> image) {
         StorageController sg = new StorageController();//instanzia lo storageController
-        CountDownLatch latch = new CountDownLatch(1);//crea un latch per il thread di upload
+        CountDownLatch latchUpload = new CountDownLatch(1);//crea un latch per il thread di upload
+        CountDownLatch latchInsert = new CountDownLatch(1);// latch per l'inserimento dell'evento nel database
 
         try {
+            if(newEvent.getLocationID().equals("")){
+                dbController.insert(newEvent, latchUpload, latchInsert); //finito il thread di upload si inserisce l'evento nel db
+            }else {
+                newEvent.setLocationID(getLocationID(newEvent.getLocationName(), newEvent.getLocationAddress()));
+                latchUpload.countDown();
+                if (newEvent.getLocationID().equals(oldLocationID)){
+                    dbController.updateChild(newEvent, latchInsert);
+                }else {
+                    dbController.updateChild(newEvent, oldLocationID, latchInsert);
+                }
+            }
             //crea la lista con i link delle immagini caricate
-            List<Image> imageList = sg.upload(newEvent, image, newEvent.getBillboard(), latch);
+            List<Image> imageList = sg.upload(newEvent, image, newEvent.getBillboard(), latchUpload, latchInsert);
             //la prima immagine della lista è la copertina
             newEvent.setBillboard(imageList.get(0));
             imageList.remove(0);//si rimuove la copertina dalla lista di immagini
             newEvent.setSlideshow(imageList);//si setta la lista rimanente come lista di immagini
-            new LoadingPopupView(latch); //si crea il popup di caricamento
-            if(newEvent.getLocationID().equals("")){
-                dbController.insert(newEvent); //finito il thread di upload si inserisce l'evento nel db
-            }else {
-                newEvent.setLocationID(getLocationID(newEvent.getLocationName(), newEvent.getLocationAddress()));
-                if (newEvent.getLocationID().equals(oldLocationID)){
-                    dbController.updateChild(newEvent);
-                }else {
-                    dbController.updateChild(newEvent, oldLocationID);
-                }
-
-            }
+            //new LoadingPopupView(latch); //si crea il popup di caricamento
             viewSourceController.toDash();//cambio schermata
         } catch (InterruptedException e) {
             e.printStackTrace();

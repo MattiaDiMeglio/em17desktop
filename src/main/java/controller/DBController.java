@@ -141,7 +141,7 @@ public class DBController {
         database.addChildEventListener(childEventListener);
     }
 
-    public void insert(EventModel newEvent) {
+    public void insert(EventModel newEvent, CountDownLatch latchUpload, CountDownLatch latchInsert) {
         database.removeEventListener(childEventListener);
         database.child("luogo").addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -155,8 +155,10 @@ public class DBController {
                                 && locationSnap.child("indirizzo").getValue().toString().equals(newEvent.getLocationAddress())) {
                             DatabaseReference insert = locationSnap.getRef().child("Eventi").push().getRef();
                             newEvent.setActive(true);
+                            newEvent.setEventKey(insert.getKey());
+                            latchUpload.countDown(); // notifico la creazione dell'id dell'evento per l'upload delle foto
+                            latchInsert.await(); // attendo il termine dell'upload delle foto
                             insert.child("attivo").setValueAsync(newEvent.isActive());
-                            //insert.child("copertina").setValueAsync(newEvent.getBillboard());
                             DatabaseReference data = insert.child("data").getRef();
                             data.child("inizio").setValueAsync(newEvent.getStartingDate());
                             data.child("fine").setValueAsync(newEvent.getStartingDate());
@@ -198,8 +200,7 @@ public class DBController {
 
     }
 
-    void updateChild(EventModel eventModel, String oldLocation) {
-        database.removeEventListener(childEventListener);
+    void updateChild(EventModel eventModel, String oldLocation, CountDownLatch latchInsert) {
         DatabaseReference fromPath = database.child("luogo").child(oldLocation).child("Eventi").child(eventModel.getEventKey());
         DatabaseReference toPath = database.child("luogo").child(eventModel.getLocationID()).child("Eventi");
         fromPath.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -213,14 +214,13 @@ public class DBController {
                                 // the original copy by assigning null as its value.
                                 fromPath.setValue(null, (error, ref) -> {
                                     if (error == null) {
-                                        updateChild(eventModel);
+                                        updateChild(eventModel, latchInsert);
                                     }else {
                                         databaseListener();
                                     }
                                 });
                             } else {
-                                System.out.println("onComplete: failure:" + databaseError.getMessage() + ": "
-                                        + databaseError.getDetails());
+                                System.out.println(databaseError.getMessage() + ": " + databaseError.getDetails());
                                 databaseListener();
                             }
                         });
@@ -228,14 +228,13 @@ public class DBController {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("onCancelled: " + databaseError.getMessage() + ": "
-                        + databaseError.getDetails());
+                System.out.println(databaseError.getMessage() + ": " + databaseError.getDetails());
             }
         });
 
     }
 
-    public void updateChild(EventModel eventModel) {
+    public void updateChild(EventModel eventModel, CountDownLatch latchInsert) {
         database.removeEventListener(childEventListener);
         database.child("luogo").child(eventModel.getLocationID()).child("Eventi").child(eventModel.getEventKey()).
                 addListenerForSingleValueEvent(new ValueEventListener() {
@@ -244,8 +243,8 @@ public class DBController {
                         try {
                             DatabaseReference insert = snapshot.getRef();
                             eventModel.setActive(true);
+                            latchInsert.await();
                             insert.child("attivo").setValueAsync(eventModel.isActive());
-                            //insert.child("copertina").setValueAsync(newEvent.getBillboard());
                             DatabaseReference data = insert.child("data").getRef();
                             data.child("inizio").setValueAsync(eventModel.getStartingDate());
                             data.child("fine").setValueAsync(eventModel.getStartingDate());

@@ -38,19 +38,19 @@ public class StorageController {
     StorageController() {
     }
 
+
     /**
      * Metodo che si occupa dell'upload delle immagini
      * e restituisce una lista di immagini con i link ottenuti dall'upload
-     *
-     *
      * @param newEvent
      * @param imageList
      * @param playbill
-     * @param latch
+     * @param latchUpload
+     * @param latchInsert
      * @return
      * @throws InterruptedException
-     **/
-    public List<Image> upload(EventModel newEvent, List<Image> imageList, Image playbill, CountDownLatch latch) throws InterruptedException {
+     */
+    public List<Image> upload(EventModel newEvent, List<Image> imageList, Image playbill, CountDownLatch latchUpload, CountDownLatch latchInsert) throws InterruptedException {
 
         List<Image> imagesUploaded = new ArrayList<>(); //lista di immagini caricate.
         CountDownLatch latch1 = new CountDownLatch(1);
@@ -63,6 +63,9 @@ public class StorageController {
                 for (Image image : imageList) {
                     //per ogni immagine nella lista
                     String[] name = image.impl_getUrl().split("/"); //si spliutta il percorso sul pc, per ottenere il nome del file
+                    System.out.println("aspetto la key");
+                    latchUpload.await();
+                    System.out.println("finito di aspettare e stampo la key: " + newEvent.getEventKey());
                     String blobName = newEvent.getEventKey() + "/" + name[name.length - 1]; //si setta il nome del blob col nome del file (ultima parte dello slpit
                     String[] type = image.impl_getUrl().split("\\.");//si splitta nuovamente il percorso, dai punti, per ottenere il tipo del file
                     BlobId blobId = BlobId.of(bucket.getName(), blobName);//si setta l'id del blob
@@ -106,11 +109,12 @@ public class StorageController {
                         e.printStackTrace();
                     }
                 }
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             } finally {
                 //si chiudono i latch
-                latch.countDown();
+                System.out.println("faccio il countdown per l'upload");
+                latchInsert.countDown();
                 latch1.countDown();
             }
 

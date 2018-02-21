@@ -34,6 +34,7 @@ public class InsertTicketTypeView implements Observer {
         insertController.update(newEvent);
 
         ticketTypeNextButton.setOnAction(event -> {
+            newEvent.deleteObserver(this);
             next();
         });
 

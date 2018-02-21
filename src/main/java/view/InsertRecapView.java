@@ -2,6 +2,7 @@ package view;
 
 import controller.InsertController;
 import controller.SlideShowController;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -366,8 +367,10 @@ public class InsertRecapView implements Observer {
      * @param slide hbox contenente le foto
      */
     private void initSlide(Button left, Button right, HBox slide, EventModel eventModel) {
-        slide.getChildren().clear();
-        slideShowController.createSlide(insertController, left, slide, right, eventModel.getSlideshow());
+        Platform.runLater(() -> {
+            slide.getChildren().clear();
+            slideShowController.createSlide(insertController, left, slide, right, eventModel.getSlideshow());
+        });
     }
 
     /**
@@ -379,6 +382,12 @@ public class InsertRecapView implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         EventModel eventModel = (EventModel) o;
-        init(eventModel);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                init(eventModel);
+            }
+        });
     }
 }
