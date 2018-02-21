@@ -49,10 +49,10 @@ public class StorageController {
      * @param latch
      * @return
      * @throws InterruptedException
-     */
+     **/
     public List<Image> upload(EventModel newEvent, List<Image> imageList, Image playbill, CountDownLatch latch) throws InterruptedException {
 
-        List<Image> imagesUploaded = new ArrayList<>(); //lista di immagini caricate
+        List<Image> imagesUploaded = new ArrayList<>(); //lista di immagini caricate.
         CountDownLatch latch1 = new CountDownLatch(1);
         imageList.add(0, playbill); //si inscerisce la copertina alla prima posizione della lista
         //inizio thread
@@ -63,7 +63,7 @@ public class StorageController {
                 for (Image image : imageList) {
                     //per ogni immagine nella lista
                     String[] name = image.impl_getUrl().split("/"); //si spliutta il percorso sul pc, per ottenere il nome del file
-                    String blobName = newEvent.getEventName() + "/" + name[name.length - 1]; //si setta il nome del blob col nome del file (ultima parte dello slpit
+                    String blobName = newEvent.getEventKey() + "/" + name[name.length - 1]; //si setta il nome del blob col nome del file (ultima parte dello slpit
                     String[] type = image.impl_getUrl().split("\\.");//si splitta nuovamente il percorso, dai punti, per ottenere il tipo del file
                     BlobId blobId = BlobId.of(bucket.getName(), blobName);//si setta l'id del blob
 
@@ -78,7 +78,7 @@ public class StorageController {
                     }
 
                     //si costruiscono le info del blob col nome del bucket, del
-                    BlobInfo blobInfo = BlobInfo.newBuilder(bucket.getName(), blobName).setContentType("image/" + type[type.length - 1]).build();
+                    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/" + type[type.length - 1]).build();
 
                     Storage storage = bucket.getStorage(); //ottengo lo storage
 
@@ -99,7 +99,8 @@ public class StorageController {
                             //si chiude il writer
                             writer.close();
                             //si aggiunge il link dell'immagine caricata
-                            imagesUploaded.add(new Image("https://storage.googleapis.com/ingws-20.appspot.com/" + blobName));
+                            imagesUploaded.add(new Image("https://storage.googleapis.com/ingws-20.appspot.com/" + blobId
+                                .getName()));
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
