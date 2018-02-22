@@ -262,7 +262,7 @@ public class DBController {
   }
 
   /**
-   * metodo per l'aggiornamento di un evento n el database
+   * metodo per l'aggiornamento di un evento n el database.
    *
    * @param eventModel evento da modificare
    * @param latchInsert latch per la sincronizzazione con l'inserimento nel database
@@ -271,57 +271,57 @@ public class DBController {
     database.removeEventListener(childEventListener);
     database.child("luogo").child(eventModel.getLocationID()).child("Eventi")
         .child(eventModel.getEventKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-          @Override
-          public void onDataChange(DataSnapshot snapshot) {
-            try {
-              DatabaseReference insert = snapshot.getRef();
-              eventModel.setActive(true);
-              latchInsert.await();
-              insert.child("attivo").setValueAsync(eventModel.isActive());
-              DatabaseReference data = insert.child("data").getRef();
-              data.child("inizio").setValueAsync(eventModel.getStartingDate());
-              data.child("fine").setValueAsync(eventModel.getStartingDate());
-              insert.child("nome").setValueAsync(eventModel.getEventName());
-              insert.child("descrizione").setValueAsync(eventModel.getEventDescription());
-              insert.child("prezzo").setValueAsync(eventModel.getPrice());
-              insert.child("copertina").setValueAsync(eventModel.getBillboard().impl_getUrl());
-              DatabaseReference reduction = insert.child("riduzioni").getRef();
-              reduction.child("Anziani").setValueAsync(eventModel.getEldersReduction());
-              reduction.child("Bambini").setValueAsync(eventModel.getChildrenReduction());
-              reduction.child("Studenti").setValueAsync(eventModel.getStudentReduction());
-              DatabaseReference sectors = insert.child("settori").getRef();
-              for (int i = 0; i < eventModel.getSectorList().size(); i++) {
-                sectors.child(eventModel.getSectorList().get(i).getName());
-                String nome = eventModel.getSectorList().get(i).getName();
-                DatabaseReference inSector = sectors.child(nome).getRef();
-                inSector.child("posti").setValueAsync(eventModel.getSectorList().get(i).getSeats());
-                inSector.child("prezzo")
-                    .setValueAsync(eventModel.getSectorList().get(i).getPrice());
-                inSector.child("riduzione")
-                    .setValueAsync(eventModel.getSectorList().get(i).isReduction());
-              }
-              DatabaseReference gallery = insert.child("galleria").getRef();
-              for (Integer i = 0; i < eventModel.getSlideshow().size(); i++) {
-                gallery.child(i.toString())
-                    .setValueAsync(eventModel.getSlideshow().get(i).impl_getUrl());
-              }
-            } catch (Exception e) {
-              e.printStackTrace();
-            } finally {
-              databaseListener();
-            }
+      @Override
+      public void onDataChange(DataSnapshot snapshot) {
+        try {
+          DatabaseReference insert = snapshot.getRef();
+          eventModel.setActive(true);
+          latchInsert.await();
+          insert.child("attivo").setValueAsync(eventModel.isActive());
+          DatabaseReference data = insert.child("data").getRef();
+          data.child("inizio").setValueAsync(eventModel.getStartingDate());
+          data.child("fine").setValueAsync(eventModel.getStartingDate());
+          insert.child("nome").setValueAsync(eventModel.getEventName());
+          insert.child("descrizione").setValueAsync(eventModel.getEventDescription());
+          insert.child("prezzo").setValueAsync(eventModel.getPrice());
+          insert.child("copertina").setValueAsync(eventModel.getBillboard().impl_getUrl());
+          DatabaseReference reduction = insert.child("riduzioni").getRef();
+          reduction.child("Anziani").setValueAsync(eventModel.getEldersReduction());
+          reduction.child("Bambini").setValueAsync(eventModel.getChildrenReduction());
+          reduction.child("Studenti").setValueAsync(eventModel.getStudentReduction());
+          DatabaseReference sectors = insert.child("settori").getRef();
+          for (int i = 0; i < eventModel.getSectorList().size(); i++) {
+            sectors.child(eventModel.getSectorList().get(i).getName());
+            String nome = eventModel.getSectorList().get(i).getName();
+            DatabaseReference inSector = sectors.child(nome).getRef();
+            inSector.child("posti").setValueAsync(eventModel.getSectorList().get(i).getSeats());
+            inSector.child("prezzo")
+                .setValueAsync(eventModel.getSectorList().get(i).getPrice());
+            inSector.child("riduzione")
+                .setValueAsync(eventModel.getSectorList().get(i).isReduction());
           }
+          DatabaseReference gallery = insert.child("galleria").getRef();
+          for (Integer i = 0; i < eventModel.getSlideshow().size(); i++) {
+            gallery.child(i.toString())
+                .setValueAsync(eventModel.getSlideshow().get(i).impl_getUrl());
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+        } finally {
+          databaseListener();
+        }
+      }
 
-          @Override
-          public void onCancelled(DatabaseError error) {
-            System.out.println(error.getMessage());
-          }
-        });
+      @Override
+      public void onCancelled(DatabaseError error) {
+        System.out.println(error.getMessage());
+      }
+    });
 
   }
 
   /**
-   * metodo per aggiornare il database locale
+   * metodo per aggiornare il database locale.
    *
    * @param snapshot istantanea del database sul server
    */
@@ -542,7 +542,6 @@ public class DBController {
 
   /**
    * @param key id dell'evento da cancellare
-   *
    */
   public void delete(String key) {
 

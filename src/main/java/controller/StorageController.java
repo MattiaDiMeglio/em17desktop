@@ -1,13 +1,9 @@
 package controller;
 
-
 import com.google.cloud.WriteChannel;
 import com.google.cloud.storage.*;
 import com.google.firebase.cloud.StorageClient;
 import com.google.firebase.database.DataSnapshot;
-import javafx.scene.image.Image;
-import model.EventModel;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,9 +15,12 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javafx.scene.image.Image;
+
+import model.EventModel;
 
 /**
- * Controller che si occupa dell'upload delle immagini nello storage
+ * Controller che si occupa dell'upload delle immagini nello storage.
  *
  * @author ingSW20
  */
