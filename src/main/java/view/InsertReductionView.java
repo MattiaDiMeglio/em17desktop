@@ -161,7 +161,6 @@ public class InsertReductionView implements Observer {
      * @param newValue  nuovo valore
      */
     private void textFieldControl(TextField textField, String oldValue, String newValue) {
-        //todo il parser deve prendere un tipo double, non intero
         try {
             //controlla che gli elementi inseriti siano solo numerici e "."
             if (!newValue.matches("\\d*\\.?\\d+")) {
