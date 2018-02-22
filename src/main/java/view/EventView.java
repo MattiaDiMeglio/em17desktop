@@ -31,6 +31,8 @@ import java.util.Optional;
 /**
  * Classe View per la schermata Evento
  * Implementa Observer, come definito dall'architettura MVC implementata per il progetto
+ *
+ * @author ingsw20
  */
 public class EventView implements Observer {
     /**
@@ -174,7 +176,7 @@ public class EventView implements Observer {
             } else {
                 i++;
             }
-        } while (i < eventModels.size()-1 && !found);
+        } while (i < eventModels.size() - 1 && !found);
 
         if (found) {
             viewSourceController.turnBack();

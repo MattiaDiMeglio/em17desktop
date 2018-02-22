@@ -63,14 +63,10 @@ public class InsertReductionView implements Observer {
         insertController.update(newEvent); // avvio update della schermata
 
         //listener del bottone conferma
-        ticketReductionNextButton.setOnAction(event -> {
-            next();
-        });
+        ticketReductionNextButton.setOnAction(event -> next());
 
         //listener del bottone indietro
-        ticketReductionBackButton.setOnAction(event -> {
-            insertController.toTicketType();
-        });
+        ticketReductionBackButton.setOnAction(event -> insertController.toTicketType());
     }
 
     /**

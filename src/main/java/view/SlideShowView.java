@@ -96,7 +96,6 @@ public class SlideShowView implements Observer {
         //listener per il bottone left dello slideshow
         eventSlideShowLeftButton.setOnAction(event -> left());
 
-
         if (hBox != null) {
             //elimina gli elementi nell'hbox
             while (hBox.getChildren().size() > 0) {
@@ -292,24 +291,27 @@ public class SlideShowView implements Observer {
 
         if (listModel.getListaEventi().size() > buttonList.size()) {
             for (int i = 0; i < buttonList.size(); i++) {
-                Image image = listModel.getListaEventi().get(i).getBillboard();
-                ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(300.0);
-                imageView.setFitHeight(280.0);
-                buttonList.get(i).setGraphic(imageView);
-                int finalI = i;
-                buttonList.get(i).setOnAction(event -> slideShowController.handler(finalI));
+                createButton(listModel, i);
             }
         } else {
             for (int i = 0; i < listModel.getListaEventi().size(); i++) {
-                Image image = listModel.getListaEventi().get(i).getBillboard();
-                ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(300.0);
-                imageView.setFitHeight(280.0);
-                buttonList.get(i).setGraphic(imageView);
-                int finalI = i;
-                buttonList.get(i).setOnAction(event -> slideShowController.handler(finalI));
+                createButton(listModel, i);
             }
         }
+    }
+
+    /**
+     * metodo per la creazione del bottone
+     *
+     * @param listModel model
+     * @param i         indice
+     */
+    private void createButton(EventListModel listModel, int i) {
+        Image image = listModel.getListaEventi().get(i).getBillboard();
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(300.0);
+        imageView.setFitHeight(280.0);
+        buttonList.get(i).setGraphic(imageView);
+        buttonList.get(i).setOnAction(event -> slideShowController.handler(i));
     }
 }

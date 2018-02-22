@@ -23,29 +23,104 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Classe utilizzata per completare il primo step della modifica o dell'inserimento di un evento.
+ *
+ * @author ingsw20
+ */
 public class InsertView implements Observer {
+    /**
+     * istanza di {@link InsertController}.
+     */
     private InsertController insertController;
 
+    /**
+     * textfield per il nome dell'evento.
+     */
     private TextField insertNameLabel;
+    /**
+     * textfield per il nome della location.
+     */
     private TextField insertLocationLabel;
+    /**
+     * textfield per la descrizione dell'evento.
+     */
     private TextArea insertTextArea;
+    /**
+     * hbox contenente le immagini dell'evento.
+     */
     private HBox insertSlideshow;
+    /**
+     * tasto per annullare l'inserimento.
+     */
     private Button insertCancelButton;
+    /**
+     * tasto per andare allo step successivo.
+     */
     private Button insertConfirmButton;
+    /**
+     * DatePicker per la data di inizio dell'evento.
+     */
     private DatePicker insertInizioDataPicker;
+    /**
+     * DatePicker per la data di fine dell'evento.
+     */
     private DatePicker insertFineDataPicker;
+    /**
+     * textfield per il numero massimo di spettatori.
+     */
     private TextField insertMaxGuestsLabel;
+    /**
+     * imageview con la copertina.
+     */
     private ImageView insertPlaybillImageView;
+    /**
+     * bottone per l'inserimento della locandina.
+     */
     private Button insertPlayBillLabel;
+    /**
+     * bottone per il caricamento delle foto.
+     */
     private Button insertUploadButton;
+    /**
+     * valore precedentemente memorizzato per le textfield.
+     */
     private final Integer[] oldVal = {0};
+    /**
+     * istanza di {@link SlideShowController}.
+     */
     private SlideShowController slideShowController = new SlideShowController();
+    /**
+     * lista con le immagini dell'evento.
+     */
     private List<Image> immagini = new ArrayList<>();
+    /**
+     * lista che rccoglierà tutte le informazioni per poi passarle al controller.
+     */
     private List<String> texts = new ArrayList<>();
+    /**
+     * model dell'evento.
+     */
     private EventModel eventModel;
+    /**
+     * variabile per l'autocompletamento del campo dedicato alla location.
+     */
     private AutoCompletionBinding binding;
 
-
+    /**
+     * costruttore per la modifica di evento.
+     * Viene anche chiamato nell'inserimento di un nuovo evento alla pressione del tasto indietro in {@link InsertTicketTypeView}.
+     *
+     * @param insertController        istanza di {@link InsertController}
+     * @param buttonList              lista con i bottoni della view
+     * @param texts                   lista con le textfield della view
+     * @param insertTextArea          TextArea per la descrizione dell'evento
+     * @param insertSlideshow         HBox per le immagini dell'evento
+     * @param insertInizioDataPicker  DatePicker per la data di inizio dell'evento
+     * @param insertFineDataPicker    DatePicker per la data di fine dell'evento
+     * @param insertPlaybillImageView ImageView per l'immagine di locandina
+     * @param eventModel              model dell'evento
+     */
     public InsertView(InsertController insertController, List<Button> buttonList, List<TextField> texts,
                       TextArea insertTextArea, HBox insertSlideshow, DatePicker insertInizioDataPicker,
                       DatePicker insertFineDataPicker, ImageView insertPlaybillImageView, EventModel eventModel) {
@@ -75,6 +150,19 @@ public class InsertView implements Observer {
         insertController.update(eventModel);
     }
 
+    /**
+     * costruttore per la modifica di evento.
+     * Viene anche chiamato nell'inserimento di un nuovo evento alla pressione del tasto indietro in {@link InsertTicketTypeView}.
+     *
+     * @param insertController        istanza di {@link InsertController}
+     * @param buttonList              lista con i bottoni della view
+     * @param texts                   lista con le textfield della view
+     * @param insertTextArea          TextArea per la descrizione dell'evento
+     * @param insertSlideshow         HBox per le immagini dell'evento
+     * @param insertInizioDataPicker  DatePicker per la data di inizio dell'evento
+     * @param insertFineDataPicker    DatePicker per la data di fine dell'evento
+     * @param insertPlaybillImageView ImageView per l'immagine di locandina
+     */
     public InsertView(InsertController insertController, List<Button> buttonList, List<TextField> texts,
                       TextArea insertTextArea, HBox insertSlideshow, DatePicker insertInizioDataPicker,
                       DatePicker insertFineDataPicker, ImageView insertPlaybillImageView) {
@@ -92,9 +180,7 @@ public class InsertView implements Observer {
         this.insertFineDataPicker = insertFineDataPicker;
         this.insertPlaybillImageView = insertPlaybillImageView;
 
-        /*insertPlaybillImageView.setImage(new Image("/image/Picture_80px.png"));
-        insertInizioDataPicker.setValue(LocalDate.now());
-        insertFineDataPicker.setValue(LocalDate.now());*/
+
         List<String> locations = insertController.getLocations();
         binding = TextFields.bindAutoCompletion(insertLocationLabel, locations);
         initListeners();
@@ -104,6 +190,9 @@ public class InsertView implements Observer {
         insertController.update(eventModel);
     }
 
+    /**
+     * metodo per l'inizializzazione dei listener.
+     */
     private void initListeners() {
 
         insertPlaybillImageView.setOnMouseClicked(event -> playbill());
@@ -136,10 +225,16 @@ public class InsertView implements Observer {
         insertConfirmButton.setOnAction(event -> next());
     }
 
+    /**
+     * metodo per tornare indietro.
+     */
     private void back() {
         insertController.toDash();
     }
 
+    /**
+     * metodo per andare allo step successivo.
+     */
     private void next() {
         try {
             String pattern = "dd/MM/yyy";
@@ -158,6 +253,9 @@ public class InsertView implements Observer {
         }
     }
 
+    /**
+     * metodo per il caricamento della locandina
+     */
     private void playbill() {
         Stage stage = new Stage();
 
@@ -174,6 +272,9 @@ public class InsertView implements Observer {
         }
     }
 
+    /**
+     * metodo per la selezione delle immagini
+     */
     private void slideshow() {
         Stage stage = new Stage();
         List<Image> immaginiUri = new ArrayList<>();
@@ -202,6 +303,11 @@ public class InsertView implements Observer {
         insertController.setImagesList(immagini);
     }
 
+    /**
+     * metodo per il controllo dell'input nella textfield per il massimo numero di spettatori
+     *
+     * @param newValue nuovo valore inserito
+     */
     private void maxVisitorControl(String newValue) {
         try {
             if (!newValue.matches("\\d*")) {
@@ -215,18 +321,27 @@ public class InsertView implements Observer {
         }
     }
 
+    /**
+     * metodo chiamato quando si inizia a scrivere nella textfield della location o quando si sposta il focus su un altro oggetto
+     *
+     * @param newPropertyValue flag per identificare il tipo di focus
+     */
     private void focusLocation(Boolean newPropertyValue) {
         try {
             if (!newPropertyValue) {
-                String[] parts = insertLocationLabel.getText().split("\\-");
+                String[] parts = insertLocationLabel.getText().split("-");
                 oldVal[0] = Integer.parseInt(insertController.getMaxVisitors(parts[0]));
                 insertMaxGuestsLabel.setText(insertController.getMaxVisitors(parts[0]));
             }
         } catch (NumberFormatException ignored) {
         }
-
     }
 
+    /**
+     * metodo chiamato quando si inizia a scrivere nella textfield per il numero di spettatori o quando si sposta il focus su un altro oggetto
+     *
+     * @param newPropertyValue flag per identificare il tipo di focus
+     */
     private void focusGuests(Boolean newPropertyValue) {
         if (!newPropertyValue) {
             Integer newVal = Integer.parseInt(insertMaxGuestsLabel.getText());
@@ -236,6 +351,12 @@ public class InsertView implements Observer {
         }
     }
 
+    /**
+     * metodo per il popolamento della view
+     *
+     * @param o   model dal quale prelevare i dati
+     * @param arg null
+     */
     @Override
     public void update(Observable o, Object arg) {
         EventModel eventModel = (EventModel) o;

@@ -51,11 +51,12 @@ public class InsertTicketTypeView implements Observer {
 
     /**
      * costruttore per il poplamento della view
-     * @param insertController istanza di {@link InsertController}
-     * @param newEvent model contenente i dati dell'evento
-     * @param insertTicketVbox vbox principale
-     * @param ticketTypeBackButton tasto per tornare indietro
-     * @param ticketTypeNextButton bottone per andare allo step successivo
+     *
+     * @param insertController              istanza di {@link InsertController}
+     * @param newEvent                      model contenente i dati dell'evento
+     * @param insertTicketVbox              vbox principale
+     * @param ticketTypeBackButton          tasto per tornare indietro
+     * @param ticketTypeNextButton          bottone per andare allo step successivo
      * @param insertTicketPlaybillImageView imageview per la locandina
      */
     public InsertTicketTypeView(InsertController insertController, EventModel newEvent, VBox insertTicketVbox,
@@ -79,6 +80,7 @@ public class InsertTicketTypeView implements Observer {
 
     /**
      * inizializza la view creandone gli elementi
+     *
      * @param eventModel model per il prelievo dei dati
      */
     private void init(EventModel eventModel) {
@@ -132,8 +134,9 @@ public class InsertTicketTypeView implements Observer {
 
     /**
      * inizializza i listener per il controllo dei caratteri inseriti nelle textfield
-     * @param textField textfield contenente i posti
-     * @param seats posti a sedere
+     *
+     * @param textField  textfield contenente i posti
+     * @param seats      posti a sedere
      * @param textField1 textfuield contenente il prezzo
      */
     private void initListeners(TextField textField, String seats, TextField textField1) {
@@ -152,8 +155,9 @@ public class InsertTicketTypeView implements Observer {
 
     /**
      * metodo che effettua il controllo dei caratteri inseriti
+     *
      * @param textField textfield da controllare
-     * @param newValue nuovo valore inserito
+     * @param newValue  nuovo valore inserito
      */
     private void textFieldControl(TextField textField, String newValue) {
         try {
@@ -171,9 +175,10 @@ public class InsertTicketTypeView implements Observer {
 
     /**
      * metodo chiamato quando si inizia a scrivere nella textfield o quando si sposta il focus su un altro oggetto
-     * @param textField TextField utilizzata per i posti a sedere
-     * @param oldVal valore precedente
-     * @param newVal nuovo valore
+     *
+     * @param textField        TextField utilizzata per i posti a sedere
+     * @param oldVal           valore precedente
+     * @param newVal           nuovo valore
      * @param newPropertyValue flag per identificare il tipo di focus
      */
     private void focusText(TextField textField, int oldVal, Integer newVal, Boolean newPropertyValue) {
@@ -194,8 +199,9 @@ public class InsertTicketTypeView implements Observer {
 
     /**
      * metodo chiamato quando si inizia a scrivere nella textfield o quando si sposta il focus su un altro oggetto
-     * @param textField1 TextField utilizzata per il prezzo
-     * @param newVal nuovo valore
+     *
+     * @param textField1       TextField utilizzata per il prezzo
+     * @param newVal           nuovo valore
      * @param newPropertyValue flag per identificare il tipo di focus
      */
     private void focusText1(TextField textField1, Integer newVal, Boolean newPropertyValue) {
@@ -245,8 +251,9 @@ public class InsertTicketTypeView implements Observer {
 
     /**
      * metodo chiamato per il popolamento della view
-     * @param o
-     * @param arg
+     *
+     * @param o   model dal quale prelevare i dati
+     * @param arg null
      */
     @Override
     public void update(Observable o, Object arg) {
