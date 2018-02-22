@@ -134,6 +134,7 @@ public class StorageController {
     public void deleteFolder(DataSnapshot eventiSnap) {
 
         StorageController storageController = new StorageController();
+        bucket = StorageClient.getInstance().bucket();
 
         //Parte di stringa da eliminare dall'indirizzo
         String link = "https://storage.googleapis.com/ingws-20.appspot.com/";
@@ -152,7 +153,6 @@ public class StorageController {
 
         //Eliminazione della cartella ormai vuota
         try {
-            bucket = StorageClient.getInstance().bucket();
 
             BlobId blobId = BlobId.of(bucket.getName(), eventiSnap.getKey() + "/");
 
@@ -169,6 +169,8 @@ public class StorageController {
 
     //Eliminazione del file specifico
     private void deleteFile(String key) {
+
+        bucket = StorageClient.getInstance().bucket();
 
         bucket.get(key).delete();
     }
