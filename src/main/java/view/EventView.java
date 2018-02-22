@@ -166,22 +166,17 @@ public class EventView implements Observer {
         EventListModel eventListModel = (EventListModel) o;
         List<EventModel> eventModels = eventListModel.getListaEventi();
         int i = 0;
-        boolean founded = false;
-        for (i =0; i< eventModels.size(); i++){
+        boolean found = false;
+
+        do {
             if (eventModels.get(i).getEventKey().equals(eventKey)) {
-                founded = true;
-                break;
-            }
-        }
-       /* do {
-            if (eventModels.get(i).getEventKey().equals(eventKey)) {
-                founded = true;
+                found = true;
             } else {
                 i++;
             }
-        } while (i < eventModels.size()-1 || !eventModels.get(i).getEventKey().equals(eventKey));*/
-        if (founded) {
+        } while (i < eventModels.size()-1 && !found);
 
+        if (found) {
             viewSourceController.turnBack();
             viewSourceController.toEventView(i);
         } else {

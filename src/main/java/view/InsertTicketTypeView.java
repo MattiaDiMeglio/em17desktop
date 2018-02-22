@@ -14,17 +14,50 @@ import model.EventModel;
 import javax.swing.*;
 import java.util.*;
 
+/**
+ * la classe si occupa dell'inserimento delle informazioni sui biglietti
+ *
+ * @author ingsw20
+ */
 public class InsertTicketTypeView implements Observer {
-//todo continuare da qua la doc
+    /**
+     * istanza di {@link InsertController}
+     */
     private InsertController insertController;
+    /**
+     * VBox principale
+     */
     private VBox form;
-   // private List<String> sectors = new ArrayList<>();
+    /**
+     * lista di settori
+     */
     private List<EventModel.Sectors> sectorsList;
+    /**
+     * lista con il massimo numero di posti a sedere
+     */
     private List<TextField> seatsFieldsList = new ArrayList<>();
+    /**
+     * lista con i prezzi per settore
+     */
     private List<TextField> priceList = new ArrayList<>();
+    /**
+     * lista contenente le checkbox per l'abilitazione delle riduzioni
+     */
     private List<CheckBox> reductionCheckList = new ArrayList<>();
+    /**
+     * ImageView per la locandina
+     */
     private ImageView insertTicketPlaybillImageView;
 
+    /**
+     * costruttore per il poplamento della view
+     * @param insertController istanza di {@link InsertController}
+     * @param newEvent model contenente i dati dell'evento
+     * @param insertTicketVbox vbox principale
+     * @param ticketTypeBackButton tasto per tornare indietro
+     * @param ticketTypeNextButton bottone per andare allo step successivo
+     * @param insertTicketPlaybillImageView imageview per la locandina
+     */
     public InsertTicketTypeView(InsertController insertController, EventModel newEvent, VBox insertTicketVbox,
                                 Button ticketTypeBackButton, Button ticketTypeNextButton, ImageView insertTicketPlaybillImageView) {
         form = insertTicketVbox;
@@ -44,10 +77,13 @@ public class InsertTicketTypeView implements Observer {
         });
     }
 
+    /**
+     * inizializza la view creandone gli elementi
+     * @param eventModel model per il prelievo dei dati
+     */
     private void init(EventModel eventModel) {
         int i = 2;
         int j = 0;
-       // sectors = insertController.getSectorName(eventModel.getLocationName(), eventModel.getLocationAddress());
         sectorsList = eventModel.getSectorList();
         List<String> seats = insertController.getSteatsList(eventModel.getLocationName(), eventModel.getLocationAddress());
         GridPane gridPane = new GridPane();
@@ -94,13 +130,19 @@ public class InsertTicketTypeView implements Observer {
         form.getChildren().add(0, gridPane);
     }
 
-    private void initListeners(TextField textField, String s, TextField textField1) {
+    /**
+     * inizializza i listener per il controllo dei caratteri inseriti nelle textfield
+     * @param textField textfield contenente i posti
+     * @param seats posti a sedere
+     * @param textField1 textfuield contenente il prezzo
+     */
+    private void initListeners(TextField textField, String seats, TextField textField1) {
         textField.textProperty().addListener((ov, oldValue, newValue) -> textFieldControl(textField, newValue));
 
         textField1.textProperty().addListener((ov, oldValue, newValue) -> textFieldControl(textField1, newValue));
 
         textField.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) ->
-                focusText(textField, Integer.parseInt(s), Integer.parseInt(textField.getText()), newPropertyValue));
+                focusText(textField, Integer.parseInt(seats), Integer.parseInt(textField.getText()), newPropertyValue));
 
         textField1.focusedProperty().addListener((arg0, oldPropertyValue, newPropertyValue) ->
                 focusText1(textField1, Integer.parseInt(textField.getText()), newPropertyValue));
@@ -108,6 +150,11 @@ public class InsertTicketTypeView implements Observer {
     }
 
 
+    /**
+     * metodo che effettua il controllo dei caratteri inseriti
+     * @param textField textfield da controllare
+     * @param newValue nuovo valore inserito
+     */
     private void textFieldControl(TextField textField, String newValue) {
         try {
             if (!newValue.matches("\\d*\\.?\\d+")) {
@@ -122,6 +169,13 @@ public class InsertTicketTypeView implements Observer {
         }
     }
 
+    /**
+     * metodo chiamato quando si inizia a scrivere nella textfield o quando si sposta il focus su un altro oggetto
+     * @param textField TextField utilizzata per i posti a sedere
+     * @param oldVal valore precedente
+     * @param newVal nuovo valore
+     * @param newPropertyValue flag per identificare il tipo di focus
+     */
     private void focusText(TextField textField, int oldVal, Integer newVal, Boolean newPropertyValue) {
         if (!newPropertyValue) {
             if (newVal > oldVal) {
@@ -138,6 +192,12 @@ public class InsertTicketTypeView implements Observer {
 
     }
 
+    /**
+     * metodo chiamato quando si inizia a scrivere nella textfield o quando si sposta il focus su un altro oggetto
+     * @param textField1 TextField utilizzata per il prezzo
+     * @param newVal nuovo valore
+     * @param newPropertyValue flag per identificare il tipo di focus
+     */
     private void focusText1(TextField textField1, Integer newVal, Boolean newPropertyValue) {
         if (newPropertyValue) {
             if (newVal.equals("0")) {
@@ -147,6 +207,9 @@ public class InsertTicketTypeView implements Observer {
     }
 
 
+    /**
+     * metodo che porta allo step successivo
+     */
     private void next() {
         try {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -154,12 +217,6 @@ public class InsertTicketTypeView implements Observer {
             alert.setHeaderText("I seguenti settori non avranno riduzioni:");
             //List<EventModel.Sectors> sectorsList = new ArrayList<>();
             for (int i = 0; i < sectorsList.size(); i++) {
-               /* EventModel.Sectors sector = new EventModel().new Sectors();
-                sector.setName(sectors.get(i));
-                sector.setPrice(Integer.parseInt(priceList.get(i).getText()));
-                sector.setReduction(reductionCheckList.get(i).isSelected());
-                sector.setSeats(Integer.parseInt(seatsFieldsList.get(i).getText()));
-                sectorsList.add(sector);*/
                 if (!reductionCheckList.get(i).isSelected()) {
                     alert.setContentText(alert.getContentText() + "-" + sectorsList.get(i).getName() + "\n");
                 }
@@ -174,7 +231,6 @@ public class InsertTicketTypeView implements Observer {
                 alert.setHeaderText("Tutti i settori avranno riduzioni");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    //insertController.toInsertReduction(sectorsList);
                     insertController.toInsertReduction(priceList, reductionCheckList, seatsFieldsList);
                 }
             }
@@ -187,6 +243,11 @@ public class InsertTicketTypeView implements Observer {
 
     }
 
+    /**
+     * metodo chiamato per il popolamento della view
+     * @param o
+     * @param arg
+     */
     @Override
     public void update(Observable o, Object arg) {
         EventModel eventModel = (EventModel) o;
