@@ -120,8 +120,8 @@ public class SearchController {
     for (EventModel eventModel : eventList) {
       if ((eventModel.getPrice() >= prezzoMin)
           && (eventModel.getPrice() <= prezzoMax)
-          && LocalDate.parse(eventModel.getStartingDate(), formatter).isBefore(endDate)
-          && LocalDate.parse(eventModel.getStartingDate(), formatter).isAfter(startDate)
+          && LocalDate.parse(eventModel.getStartingDate(), formatter).isAfter(startDate.minusDays(1))
+          && LocalDate.parse(eventModel.getEndingDate(), formatter).isBefore(endDate.plusDays(1))
           && (locationName.isEmpty()) || (eventModel.getLocationName() + " - " + eventModel
           .getLocationAddress()).equals(locationName)) {
 

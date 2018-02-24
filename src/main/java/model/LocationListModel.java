@@ -12,7 +12,7 @@ import javafx.application.Platform;
  *
  * @author ingSW20
  */
-public class LocationListModel extends Observable {
+public class LocationListModel {
 
   /**
    * istanza della classe corrente.
@@ -54,11 +54,6 @@ public class LocationListModel extends Observable {
    */
   public void setListaLocation(LocationModel location) {
     this.locationList.add(location);
-    Platform.runLater(() -> {
-      setChanged();
-      notifyObservers(locationList.size());
-    });
-
   }
 }
 
