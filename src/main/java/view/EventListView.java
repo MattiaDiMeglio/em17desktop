@@ -443,7 +443,7 @@ public class EventListView implements Observer {
   /**
    * sottoclasse per il popolamento della tabella.
    */
-  private class EventTable {
+  public class EventTable {
 
     /**
      * nome dell'evento.

@@ -87,7 +87,7 @@ public class InsertTicketTypeView implements Observer {
         int i = 2;
         int j = 0;
         sectorsList = eventModel.getSectorList();
-        List<String> seats = insertController.getSteatsList(eventModel.getLocationName(), eventModel.getLocationAddress());
+        List<String> seats = insertController.getSeatsList(eventModel.getLocationName(), eventModel.getLocationAddress());
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);

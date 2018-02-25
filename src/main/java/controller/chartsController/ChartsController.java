@@ -33,6 +33,11 @@ public class ChartsController {
   private static ChartsController ourInstance = new ChartsController();
 
   /**
+   * variabile per effettuare la query al database
+   */
+  private Query database;
+
+  /**
    * getter dell'istanza corrente della classe
    *
    * @return {@link #ourInstance}
@@ -46,11 +51,6 @@ public class ChartsController {
    */
   private ChartsController() {
   }
-
-  /**
-   * variabile per effettuare la query al database
-   */
-  private Query database;
 
   /**
    * il metodo si occupa di scorrere il database al fine di prelevare i dati utili per i grafici per

@@ -153,7 +153,7 @@ public class InsertController {
       if ((location.getLocationAddress().equals(address)) && (location.getLocationName()
           .equals(name))) {
         List<EventModel.Sectors> sectorsList = new ArrayList<>();
-        List<String> seats = getSteatsList(newEvent.getLocationName(),
+        List<String> seats = getSeatsList(newEvent.getLocationName(),
             newEvent.getLocationAddress());
         for (String s : location.getSectorList()) {
           EventModel.Sectors sectors = new EventModel().new Sectors();
@@ -194,7 +194,7 @@ public class InsertController {
    * @param address indirizzo della location
    * @return numero di posti dei settori collegati alla location selezionata
    */
-  public List<String> getSteatsList(String name, String address) {
+  public List<String> getSeatsList(String name, String address) {
     for (LocationModel location : locationListModel.getLocationList()) {
       //se la location corrente ha nome e indirizzo uguale a quelli passati al metodo,
       // restituisce la lista dei posti per settore

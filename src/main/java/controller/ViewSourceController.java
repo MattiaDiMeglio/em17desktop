@@ -101,7 +101,7 @@ public class ViewSourceController extends Application {
    * toolbar presente nella dashboard
    */
   @FXML
-  private ToolBar searchToolBar;
+  private ToolBar dashBoardsearchToolBar;
   /**
    * TabPane della schermata eventList
    */
@@ -116,22 +116,22 @@ public class ViewSourceController extends Application {
    * toolbar presente in eventListView
    */
   @FXML
-  private ToolBar searchToolBarEventListView;
+  private ToolBar eventListSearchToolBar;
   /**
    * bottone toInsertView della schermata di visualizzazione evento
    */
   @FXML
-  private Button eventoBackButton;
+  private Button eventBackButton;
   /**
    * Tab pane della schermata evento
    */
   @FXML
-  private TabPane eventoTabPane;
+  private TabPane eventTabPane;
   /**
    * Lbel del titollo nella schermata visualizzazione evento
    */
   @FXML
-  private Label eventoTitleLabel;
+  private Label eventTitleLabel;
   /**
    * Text della location nella schermata visualizzazione evento
    */
@@ -141,12 +141,12 @@ public class ViewSourceController extends Application {
    * Text della data di inizio nella schermata visualizzazione evento
    */
   @FXML
-  private Text eventoDataInizioText;
+  private Text eventDataInizioText;
   /**
    * Text della data di fine nella schermata visualizzazione evento
    */
   @FXML
-  private Text eventoDataFineText;
+  private Text eventDataFineText;
   /**
    * * TextArea della descrizione nella schermata visualizzazione evento
    */
@@ -156,17 +156,17 @@ public class ViewSourceController extends Application {
    * Text del prezzo nella schermata visualizzazione evento
    */
   @FXML
-  private Text eventoPrezzoText;
+  private Text eventPrezzoText;
   /**
    * Text del massimo dei visitatori nella schermata visualizzazione evento
    */
   @FXML
-  private Text eventoMaxVisitatoriText;
-  /**
+  private Text evenoMaxVisitorsText;
+   /**
    * Text del numero di biglietti venduti nella schermata visualizzazione evento
    */
   @FXML
-  private Text eventoBigliettiVendutiText;
+  private Text eventTicketSoldText;
   /**
    * Imageview della copertina nella schermata visualizzazione evento
    */
@@ -176,7 +176,7 @@ public class ViewSourceController extends Application {
    * bottone delete della schermata visualizzazione evento
    */
   @FXML
-  private Button eventoDeleteButton;
+  private Button eventDeleteButton;
   /**
    * Hbox in cui si inseriranno le foto per lo slideshow nella schermata visualizzazione evento
    */
@@ -192,6 +192,11 @@ public class ViewSourceController extends Application {
    */
   @FXML
   private Button eventSlideShowRightButton;
+  /**
+   * bottone per la modifica di un evento
+   */
+  @FXML
+  private Button eventModifyButton;
   /**
    * TextField del nome nella scheramta di inserimento
    */
@@ -236,7 +241,7 @@ public class ViewSourceController extends Application {
    * TextField del massimo di posti della schermata di inserimento
    */
   @FXML
-  private TextField insertMaxGuestsTextArea;
+  private TextField insertMaxGuestsTextField;
   /**
    * Button per l'inserimento della copertaina della schermata di inserimento
    */
@@ -256,7 +261,7 @@ public class ViewSourceController extends Application {
    * Vbox in cui si inseriranno i textField per i dati dei settori, nella schermata ticketType
    */
   @FXML
-  private VBox insertTicketVbox;
+  private VBox ticketTypeVbox;
   /**
    * bottone indietro per la schermata ticketType
    */
@@ -271,28 +276,28 @@ public class ViewSourceController extends Application {
    * ImageView che andrà a contenere l'immagine selezionata nella schermata TicketType
    */
   @FXML
-  private ImageView insertTicketPlaybillImageView;
+  private ImageView ticketTypePlaybillImageView;
   /**
    * Vbox in cui verranno inseriti i textField in cui si inseriranno i dati relativi alle riduzioni,
    * schermata Reduction
    */
   @FXML
-  private VBox InsertReductionVbox;
+  private VBox reductionVbox;
   /**
    * bottone indietro della schermata di Reduction
    */
   @FXML
-  private Button ticketReductionBackButton;
+  private Button reductionBackButton;
   /**
    * bottone confermadella schermata di Reduction
    */
   @FXML
-  private Button ticketReductionNextButton;
+  private Button reductionNextButton;
   /**
    * ImageView contenente la locandina nella schermata Reduction
    */
   @FXML
-  private ImageView insertReductionPlaybillImageView;
+  private ImageView reductionPlaybillImageView;
   /**
    * Vbox che contiene il center della schermata Recap, da cui verranno presi i vari nodi necessari
    */
@@ -302,12 +307,8 @@ public class ViewSourceController extends Application {
    * ImageView della copertina nella schermata Recap
    */
   @FXML
-  private ImageView RecapPlaybillImageView;
-  /**
-   * bottone per la modifica di un evento
-   */
-  @FXML
-  private Button eventModifyButton;
+  private ImageView recapPlaybillImageView;
+
   /**
    * Schermata Dasboard
    */
@@ -498,7 +499,7 @@ public class ViewSourceController extends Application {
    */
   public void toDashBoardView() {
     new DashBoardView(dashSlide, dashBoardSlideShowLeftButton, dashBoardSlideShowRightButton,
-        dashBoardTabPane, dashBoardInsertButton, this, searchToolBar);
+        dashBoardTabPane, dashBoardInsertButton, this, dashBoardsearchToolBar);
 
     changeView(dashBoardBox);
     DBController.getInstance(); // inizializza il database
@@ -513,17 +514,17 @@ public class ViewSourceController extends Application {
     //si crea una lista di Text, delle parti della schermata
     List<Text> texts = new ArrayList<>();
     texts.add(eventLocationText);
-    texts.add(eventoDataInizioText);
-    texts.add(eventoDataFineText);
-    texts.add(eventoPrezzoText);
-    texts.add(eventoMaxVisitatoriText);
-    texts.add(eventoBigliettiVendutiText);
+    texts.add(eventDataInizioText);
+    texts.add(eventDataFineText);
+    texts.add(eventPrezzoText);
+    texts.add(evenoMaxVisitorsText);
+    texts.add(eventTicketSoldText);
     EventController eventController = new EventController();
 
-    new EventView(eventController, eventoDeleteButton, eventPlaybillImageView,
-        eventoTabPane, index, texts, eventoTitleLabel, eventTextArea, eventSlide,
+    new EventView(eventController, eventDeleteButton, eventPlaybillImageView,
+        eventTabPane, index, texts, eventTitleLabel, eventTextArea, eventSlide,
         eventSlideShowLeftButton,
-        eventSlideShowRightButton, eventoBackButton, this, eventModifyButton);
+        eventSlideShowRightButton, eventBackButton, this, eventModifyButton);
     changeView(eventBox);
 
   }
@@ -535,7 +536,7 @@ public class ViewSourceController extends Application {
    */
   public void toEventListView(List<EventModel> foundedEventInSearch) {
     new EventListView(eventListTabPane, foundedEventInSearch, eventListViewVBox,
-        searchToolBarEventListView, this);
+        eventListSearchToolBar, this);
 
     changeView(eventListBox);
   }
@@ -558,7 +559,7 @@ public class ViewSourceController extends Application {
 
     texts.add(insertNameTextField);
     texts.add(insertLocationTextField);
-    texts.add(insertMaxGuestsTextArea);
+    texts.add(insertMaxGuestsTextField);
 
     new InsertView(insertController, buttonList, texts, insertTextArea, insertSlideshow,
         insertInizioDataPicker,
@@ -587,7 +588,7 @@ public class ViewSourceController extends Application {
 
     texts.add(insertNameTextField);
     texts.add(insertLocationTextField);
-    texts.add(insertMaxGuestsTextArea);
+    texts.add(insertMaxGuestsTextField);
 
     new InsertView(insertController, buttonList, texts, insertTextArea, insertSlideshow,
         insertInizioDataPicker,
@@ -603,8 +604,8 @@ public class ViewSourceController extends Application {
    * @param newEvent model dell'evento
    */
   public void toInsetTicketTypeView(InsertController insertController, EventModel newEvent) {
-    new InsertTicketTypeView(insertController, newEvent, insertTicketVbox, ticketTypeBackButton,
-        ticketTypeNextButton, insertTicketPlaybillImageView);
+    new InsertTicketTypeView(insertController, newEvent, ticketTypeVbox, ticketTypeBackButton,
+        ticketTypeNextButton, ticketTypePlaybillImageView);
 
     changeView(insertTicketTypeBox);
   }
@@ -617,8 +618,8 @@ public class ViewSourceController extends Application {
    */
   public void toInsertReductionView(InsertController insertController, EventModel newEvent) {
     new InsertReductionView(insertController, newEvent,
-        InsertReductionVbox, ticketReductionBackButton, ticketReductionNextButton,
-        insertReductionPlaybillImageView);
+        reductionVbox, reductionBackButton, reductionNextButton,
+        reductionPlaybillImageView);
     changeView(insertReductionBox);
   }
 
@@ -631,7 +632,7 @@ public class ViewSourceController extends Application {
    */
   public void toInsertRecapView(InsertController insertController, List<Image> imagesList,
       EventModel newEvent) {
-    new InsertRecapView(insertController, newEvent, imagesList, recapVBox, RecapPlaybillImageView);
+    new InsertRecapView(insertController, newEvent, imagesList, recapVBox, recapPlaybillImageView);
     changeView(insertRecapBox);
   }
 
