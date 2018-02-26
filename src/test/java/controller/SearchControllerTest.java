@@ -18,8 +18,9 @@ class SearchControllerTest {
     private EventListModel eventListModel = EventListModel.getInstance();
     private LocationListModel locationListModel = LocationListModel.getInstance();
 
+    // implementazione parziale di componenti da cui il test dipende
     @BeforeEach
-    void setUp() {
+    void testStub() {
         eventListModel.getListaEventi().clear();
         for (int i = 0; i < 4; i++) {
             EventModel eventModel = new EventModel();
@@ -49,8 +50,7 @@ class SearchControllerTest {
 
     // test per elemento NON trovato nel database
     @Test
-    void searchTestElementoNonTrovato() {
-        System.out.println("Test per elemento non trovato: evento non trovato");
+    void searchTest1() {
         boolean b;
         b = new SearchController().search("evento non trovato").size() != 0;
         assertFalse(b);
@@ -58,26 +58,42 @@ class SearchControllerTest {
 
     // test per elemento trovato nel database
     @Test
-    void searchTestElementoTrovato() {
-        System.out.println("Test per elemento trovato: cerco evento1");
-        assertEquals("evento1", new SearchController().search("evento1").get(0).getEventName());
+    void searchTest2() {
+        boolean b;
+        b = new SearchController().search("evento1").size() != 0;
+        assertTrue(b);
     }
 
-    // test per il get della lista dei nomi degli eventi
+    // test per la stringa vuota
     @Test
-    void getEventsNameTest() {
+    void searchTest3() {
+        boolean b;
+        b = new SearchController().search("").size() == 4;
+        assertTrue(b);
+    }
+
+    // test per la dimensione della lista tornata da getEventsName
+    @Test
+    void getEventsNameTest1() {
         System.out.println("test per getEventName()");
         boolean b;
         List<String> eventNames = new SearchController().getEventsName();
         b = eventNames.size() == 4;
-        for (int i = 0; i < eventNames.size(); i++) {
-            assertEquals(eventNames.get(i), "evento" + i);
-        }
         assertTrue(b);
     }
 
+    // test per la stampa della lista tornata da getEventsName
     @Test
-    void getLocationNamesTest() {
+    void getEventsNameTest2() {
+        List<String> eventNames = new SearchController().getEventsName();
+        for (int i = 0; i < eventNames.size(); i++) {
+            assertEquals(eventNames.get(i), "evento" + i);
+        }
+    }
+
+    // test per la dimensione della lista tornata da getLocationName()
+    @Test
+    void getLocationNamesTest1() {
         System.out.println("test per getLocationName()");
         boolean b;
         List<String> locationNames = new SearchController().getLocationNames();
@@ -88,45 +104,13 @@ class SearchControllerTest {
         assertTrue(b);
     }
 
-    //test per la ricerca avanzata
+    // test per la stampa della lista tornata da getLocationName ()
     @Test
-    void advancedSearchTest() {
-        System.out.println("test per la ricerca avanzata");
-        List<EventModel> eventModels = advancedSearch("1.0", "60.0",
-                LocalDate.parse("10/01/2018", DateTimeFormatter.ofPattern("d/M/yyyy")),
-                LocalDate.parse("11/01/2018", DateTimeFormatter.ofPattern("d/M/yyyy")),
-                "location0 - address0");
-
-        assertTrue(eventModels.size() == 1);
-    }
-
-    private List<EventModel> advancedSearch(String prezzoMinString, String prezzoMaxString, LocalDate startDate,
-                                            LocalDate endDate, String locationName) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-        List<EventModel> listFound = new ArrayList<>();
-        Double prezzoMin = 0.0;
-        Double prezzoMax = Double.MAX_VALUE;
-        if (!prezzoMinString.equals("")) {
-            prezzoMin = Double.valueOf(prezzoMinString);
+    void getLocationNamesTest2() {
+        System.out.println("test per getLocationName()");
+        List<String> locationNames = new SearchController().getLocationNames();
+        for (int i = 0; i < locationNames.size(); i++) {
+            assertEquals(locationNames.get(i), "Location" + i + " - " + "Address" + i);
         }
-
-        if (!prezzoMaxString.equals("")) {
-            prezzoMax = Double.valueOf(prezzoMaxString);
-        }
-
-        List<EventModel> eventList = eventListModel.getListaEventi();
-        for (EventModel eventModel : eventList) {
-            if ((eventModel.getPrice() >= prezzoMin)
-                    && (eventModel.getPrice() <= prezzoMax)
-                    && LocalDate.parse(eventModel.getStartingDate(), formatter).isAfter(startDate.minusDays(1))
-                    && LocalDate.parse(eventModel.getEndingDate(), formatter).isBefore(endDate.plusDays(1))
-                    && (locationName.isEmpty()) || (eventModel.getLocationName() + " - " + eventModel
-                    .getLocationAddress()).equals(locationName)) {
-
-                listFound.add(eventModel);
-            }
-
-        }
-        return listFound;
     }
 }
