@@ -509,7 +509,7 @@ public class DBController {
             eventListModel.setEventList(event);
             i++;
           }
-          locationListModel.setListaLocation(locationModel);
+          locationListModel.setLocationList(locationModel);
 
         }
       } catch (Exception e) {

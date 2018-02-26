@@ -52,7 +52,7 @@ public class LocationListModel {
    *
    * @param location location da aggiungere a {@link #locationList}
    */
-  public void setListaLocation(LocationModel location) {
+  public void setLocationList(LocationModel location) {
     this.locationList.add(location);
   }
 }

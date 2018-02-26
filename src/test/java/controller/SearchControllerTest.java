@@ -43,7 +43,7 @@ class SearchControllerTest {
             locationModel.setLocationID("locationID" + i);
             locationModel.setLocationName("Location" + i);
             locationModel.setLocationAddress("Address" + i);
-            locationListModel.setListaLocation(locationModel);
+            locationListModel.setLocationList(locationModel);
         }
     }
 
