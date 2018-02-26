@@ -76,8 +76,8 @@ public class LineChartView implements Observer, ChartInterface {
     initializeCharts();
     lineChart.setTitle("Vendita biglietti");
 
-    EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
-    update(EventListModel.getInstance().getListaEventi().get(index), null);
+    EventListModel.getInstance().getEventList().get(index).addObserver(this);
+    update(EventListModel.getInstance().getEventList().get(index), null);
   }
 
   /**
@@ -116,8 +116,8 @@ public class LineChartView implements Observer, ChartInterface {
     initializeCharts();
     stackedAreaChart.setTitle("Guadagni nel tempo");
 
-    EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
-    update(EventListModel.getInstance().getListaEventi().get(index), null);
+    EventListModel.getInstance().getEventList().get(index).addObserver(this);
+    update(EventListModel.getInstance().getEventList().get(index), null);
   }
 
   /**
@@ -146,7 +146,7 @@ public class LineChartView implements Observer, ChartInterface {
       vendite = lineChartModel.getTicketsSold();
     } else if (o instanceof StackedAreaChartModel) {
       StackedAreaChartModel salesModel = (StackedAreaChartModel) o;
-      vendite = salesModel.getEaringsFromTicketsSold();
+      vendite = salesModel.getEarningsFromTicketsSold();
     } else if (o instanceof EventModel) {
       EventModel eventModel = (EventModel) o;
       if (chart instanceof LineChart) {

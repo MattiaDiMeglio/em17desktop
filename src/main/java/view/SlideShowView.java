@@ -289,12 +289,12 @@ public class SlideShowView implements Observer {
             }
         }
 
-        if (listModel.getListaEventi().size() > buttonList.size()) {
+        if (listModel.getEventList().size() > buttonList.size()) {
             for (int i = 0; i < buttonList.size(); i++) {
                 createButton(listModel, i);
             }
         } else {
-            for (int i = 0; i < listModel.getListaEventi().size(); i++) {
+            for (int i = 0; i < listModel.getEventList().size(); i++) {
                 createButton(listModel, i);
             }
         }
@@ -307,7 +307,7 @@ public class SlideShowView implements Observer {
      * @param i         indice
      */
     private void createButton(EventListModel listModel, int i) {
-        Image image = listModel.getListaEventi().get(i).getBillboard();
+        Image image = listModel.getEventList().get(i).getBillboard();
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(300.0);
         imageView.setFitHeight(280.0);

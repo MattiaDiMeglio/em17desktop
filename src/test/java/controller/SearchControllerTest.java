@@ -21,7 +21,7 @@ class SearchControllerTest {
     // implementazione parziale di componenti da cui il test dipende
     @BeforeEach
     void testStub() {
-        eventListModel.getListaEventi().clear();
+        eventListModel.getEventList().clear();
         for (int i = 0; i < 4; i++) {
             EventModel eventModel = new EventModel();
             eventModel.setStartingDate("10/01/2018");
@@ -35,7 +35,7 @@ class SearchControllerTest {
             eventModel.setEventName("evento" + i);
             eventModel.setLocationName("location" + i);
             eventModel.setLocationAddress("address" + i);
-            eventListModel.setListaEventi(eventModel);
+            eventListModel.setEventList(eventModel);
         }
 
         locationListModel.getLocationList().clear();
@@ -94,20 +94,15 @@ class SearchControllerTest {
     // test per la dimensione della lista tornata da getLocationName()
     @Test
     void getLocationNamesTest1() {
-        System.out.println("test per getLocationName()");
         boolean b;
         List<String> locationNames = new SearchController().getLocationNames();
         b = locationNames.size() == 4;
-        for (int i = 0; i < locationNames.size(); i++) {
-            assertEquals(locationNames.get(i), "Location" + i + " - " + "Address" + i);
-        }
         assertTrue(b);
     }
 
     // test per la stampa della lista tornata da getLocationName ()
     @Test
     void getLocationNamesTest2() {
-        System.out.println("test per getLocationName()");
         List<String> locationNames = new SearchController().getLocationNames();
         for (int i = 0; i < locationNames.size(); i++) {
             assertEquals(locationNames.get(i), "Location" + i + " - " + "Address" + i);

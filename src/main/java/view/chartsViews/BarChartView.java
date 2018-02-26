@@ -56,8 +56,8 @@ public class BarChartView implements Observer, ChartInterface {
   public BarChartView(BarChart barChart, int index) {
     this.barChart = barChart;
     initializeCharts();
-    EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
-    update(EventListModel.getInstance().getListaEventi().get(index), null);
+    EventListModel.getInstance().getEventList().get(index).addObserver(this);
+    update(EventListModel.getInstance().getEventList().get(index), null);
   }
 
   /**

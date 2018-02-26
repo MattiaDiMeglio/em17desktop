@@ -163,7 +163,7 @@ public class ViewSourceController extends Application {
   @FXML
   private Text evenoMaxVisitorsText;
    /**
-   * Text del numero di biglietti venduti nella schermata visualizzazione evento
+   * Text del numero di biglietti venduti nella schermata visualizzazione evento.
    */
   @FXML
   private Text eventTicketSoldText;

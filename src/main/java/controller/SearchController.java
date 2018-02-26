@@ -31,25 +31,26 @@ public class SearchController {
      */
     private EventListView eventListView;
 
-    /**
-     * il contruttore inizializza i paramtri {@link #eventList}, {@link #locationList} e {@link
-     * #eventListView}.
-     *
-     * @param eventListView view
-     */
-    public SearchController(EventListView eventListView) {
-        this.eventListView = eventListView;
-        eventList = EventListModel.getInstance().getListaEventi();
-        locationList = LocationListModel.getInstance().getLocationList();
-    }
 
-    /**
-     * costruttore utilizzato in {@link view.DashBoardView DashBoardView}.
-     */
-    public SearchController() {
-        eventList = EventListModel.getInstance().getListaEventi();
-        locationList = LocationListModel.getInstance().getLocationList();
-    }
+  /**
+   * il contruttore inizializza i paramtri {@link #eventList}, {@link #locationList} e {@link
+   * #eventListView}.
+   *
+   * @param eventListView view
+   */
+  public SearchController(EventListView eventListView) {
+    this.eventListView = eventListView;
+    eventList = EventListModel.getInstance().getEventList();
+    locationList = LocationListModel.getInstance().getLocationList();
+  }
+
+  /**
+   * costruttore utilizzato in {@link view.DashBoardView DashBoardView}.
+   */
+  public SearchController() {
+    eventList = EventListModel.getInstance().getEventList();
+    locationList = LocationListModel.getInstance().getLocationList();
+  }
 
     /**
      * effettua la ricerca della stringa passata come parametro e restituisce una lista di risultati.

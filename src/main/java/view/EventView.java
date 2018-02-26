@@ -76,7 +76,7 @@ public class EventView implements Observer {
     EventListModel eventListModel = EventListModel.getInstance();
     eventListModel.addObserver(this);
     this.viewSourceController = viewSourceController;
-    EventModel eventModel = eventListModel.getListaEventi()
+    EventModel eventModel = eventListModel.getEventList()
         .get(index); //ottendo l'evento a cui la schermata riferisce
     eventKey = eventModel.getEventKey();
     initializeCharts(eventoTabPane, index); //inizializzazione dei charts
@@ -177,7 +177,7 @@ public class EventView implements Observer {
   @Override
   public void update(Observable o, Object arg) {
     EventListModel eventListModel = (EventListModel) o;
-    List<EventModel> eventModels = eventListModel.getListaEventi();
+    List<EventModel> eventModels = eventListModel.getEventList();
     int i = 0;
     boolean found = false;
 
