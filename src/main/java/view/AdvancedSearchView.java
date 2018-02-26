@@ -47,17 +47,9 @@ class AdvancedSearchView {
     TextField prezzoMaxText = new TextField();
     TextField prezzoMinText = new TextField();
     prezzoMaxText.setPromptText("Max");
-    prezzoMaxText.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (!newValue.matches("\\d*")) {
-        prezzoMaxText.setText(newValue.replaceAll("[^\\d]", ""));
-      }
-    });
+    prezzoMaxText.textProperty().addListener((observable, oldValue, newValue) -> textFieldControl(prezzoMaxText, newValue));
     prezzoMinText.setPromptText("Min");
-    prezzoMinText.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (!newValue.matches("\\d*")) {
-        prezzoMinText.setText(newValue.replaceAll("[^\\d]", ""));
-      }
-    });
+    prezzoMinText.textProperty().addListener((observable, oldValue, newValue) -> textFieldControl(prezzoMinText, newValue));
 
     DatePicker startDatePicker = new DatePicker();
     startDatePicker.setPromptText("Data inizio");
@@ -121,6 +113,26 @@ class AdvancedSearchView {
           startDatePicker.getValue(),
           endDatePicker.getValue(),
           locationName.getText());
+    }
+  }
+
+  /**
+   * metodo che effettua il controllo dei caratteri inseriti
+   *
+   * @param textField textfield da controllare
+   * @param newValue  nuovo valore inserito
+   */
+  private void textFieldControl(TextField textField, String newValue) {
+    try {
+      if (!newValue.matches("\\d*\\.?\\d+")) {
+        textField.setText(newValue.replaceAll("[^\\d.?\\d+]", ""));
+      }
+      if (textField.getText().length() > 7) {
+        String s = textField.getText().substring(0, 7);
+        textField.setText(s);
+      }
+      textField.getText();
+    } catch (NullPointerException ignored) {
     }
   }
 }
