@@ -46,6 +46,7 @@ class SearchControllerTest {
             locationModel.setLocationAddress("Address" + i);
             locationListModel.setLocationList(locationModel);
         }
+
     }
 
     // test per elemento NON trovato nel database
@@ -106,5 +107,38 @@ class SearchControllerTest {
         for (int i = 0; i < locationNames.size(); i++) {
             assertEquals(locationNames.get(i), "Location" + i + " - " + "Address" + i);
         }
+    }
+
+     //test per la ricerca avanzata
+    @Test
+    void advancedSearchTest1() {
+        List<EventModel> eventModels = new SearchController().advancedSearch("1.0", "60.0",
+                LocalDate.parse("10/01/2018", DateTimeFormatter.ofPattern("d/M/yyyy")),
+                LocalDate.parse("11/01/2018", DateTimeFormatter.ofPattern("d/M/yyyy")),
+                "location0 - address0");
+
+        assertTrue(eventModels.size() > 0);
+    }
+
+    //test per la ricerca avanzata
+    @Test
+    void advancedSearchTest2() {
+        List<EventModel> eventModels = new SearchController().advancedSearch("", "",
+                LocalDate.MIN,
+                LocalDate.MAX,
+                "");
+
+        assertTrue(eventModels.size() > 0);
+    }
+
+    //test per la ricerca avanzata
+    @Test
+    void advancedSearchTest3() {
+        List<EventModel> eventModels = new SearchController().advancedSearch("-1.0", "-5.0",
+                LocalDate.MIN,
+                LocalDate.MAX,
+                "");
+
+        assertTrue(eventModels.size() > 0);
     }
 }
