@@ -18,18 +18,19 @@ import java.util.List;
  */
 public class SearchController {
 
-  /**
-   * lista con tutti gli elementi del database.
-   */
-  private List<EventModel> eventList;
-  /**
-   * lista con tutte le location del database.
-   */
-  private List<LocationModel> locationList;
-  /**
-   * parametro per la comunicazione con la view.
-   */
-  private EventListView eventListView;
+    /**
+     * lista con tutti gli elementi del database.
+     */
+    private List<EventModel> eventList;
+    /**
+     * lista con tutte le location del database.
+     */
+    private List<LocationModel> locationList;
+    /**
+     * parametro per la comunicazione con la view.
+     */
+    private EventListView eventListView;
+
 
   /**
    * il contruttore inizializza i paramtri {@link #eventList}, {@link #locationList} e {@link
@@ -51,83 +52,89 @@ public class SearchController {
     locationList = LocationListModel.getInstance().getLocationList();
   }
 
-  /**
-   * effettua la ricerca della stringa passata come parametro e restituisce una lista di risultati.
-   *
-   * @param text testo da cercare
-   * @return lista di risultati trovati
-   */
-  public List<EventModel> search(String text) {
-    List<EventModel> listFound = new ArrayList<>();
-    for (EventModel eventModel : eventList) {
-      if (eventModel.getEventName().toLowerCase().contains(text.toLowerCase())) {
-        listFound.add(eventModel);
-      }
-    }
-    return listFound;
-  }
-
-  /**
-   * crea una lista con tutti i nomi degli eventi presenti nel database.
-   *
-   * @return lista con i nomi degli eventi
-   */
-  public List<String> getEventsName() {
-    List<String> eventsName = new ArrayList<>();
-    for (EventModel eventModel : eventList) {
-      eventsName.add(eventModel.getEventName());
-    }
-    return eventsName;
-  }
-
-  /**
-   * crea una lista con tutti i nomi delle location presenti nel database.
-   *
-   * @return lista con i nomi delle location
-   */
-  public List<String> getLocationNames() {
-    List<String> locationNames = new ArrayList<>();
-    for (LocationModel locationModel : locationList) {
-      locationNames
-          .add(locationModel.getLocationName() + " - " + locationModel.getLocationAddress());
-    }
-    return locationNames;
-  }
-
-  /**
-   * metodo per la ricerca avanzata.
-   *
-   * @param prezzoMinString prezzo minimo
-   * @param prezzoMaxString prezzo massimo
-   * @param startDate data di inizio evento
-   * @param endDate data di fine evento
-   * @param locationName nome della location
-   */
-  public void advancedSearch(String prezzoMinString, String prezzoMaxString, LocalDate startDate,
-      LocalDate endDate, String locationName) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-    List<EventModel> listFound = new ArrayList<>();
-    Double prezzoMin = 0.0;
-    Double prezzoMax = Double.MAX_VALUE;
-    if (!prezzoMinString.equals("")) {
-      prezzoMin = Double.valueOf(prezzoMinString);
+    /**
+     * effettua la ricerca della stringa passata come parametro e restituisce una lista di risultati.
+     *
+     * @param text testo da cercare
+     * @return lista di risultati trovati
+     */
+    public List<EventModel> search(String text) {
+        List<EventModel> listFound = new ArrayList<>();
+        for (EventModel eventModel : eventList) {
+            if (eventModel.getEventName().toLowerCase().contains(text.toLowerCase())) {
+                listFound.add(eventModel);
+            }
+        }
+        return listFound;
     }
 
-    if (!prezzoMaxString.equals("")) {
-      prezzoMax = Double.valueOf(prezzoMaxString);
+    /**
+     * crea una lista con tutti i nomi degli eventi presenti nel database.
+     *
+     * @return lista con i nomi degli eventi
+     */
+    public List<String> getEventsName() {
+        List<String> eventsName = new ArrayList<>();
+        for (EventModel eventModel : eventList) {
+            eventsName.add(eventModel.getEventName());
+        }
+        return eventsName;
     }
 
-    for (EventModel eventModel : eventList) {
-      if ((eventModel.getPrice() >= prezzoMin)
-          && (eventModel.getPrice() <= prezzoMax)
-          && LocalDate.parse(eventModel.getStartingDate(), formatter).isAfter(startDate.minusDays(1))
-          && LocalDate.parse(eventModel.getEndingDate(), formatter).isBefore(endDate.plusDays(1))
-          && (locationName.isEmpty()) || (eventModel.getLocationName() + " - " + eventModel
-          .getLocationAddress()).equals(locationName)) {
-
-        listFound.add(eventModel);
-      }
+    /**
+     * crea una lista con tutti i nomi delle location presenti nel database.
+     *
+     * @return lista con i nomi delle location
+     */
+    public List<String> getLocationNames() {
+        List<String> locationNames = new ArrayList<>();
+        for (LocationModel locationModel : locationList) {
+            locationNames
+                    .add(locationModel.getLocationName() + " - " + locationModel.getLocationAddress());
+        }
+        return locationNames;
     }
-    eventListView.advancedSearch(listFound);
-  }
+
+    /**
+     * metodo per la ricerca avanzata.
+     *
+     * @param prezzoMinString prezzo minimo
+     * @param prezzoMaxString prezzo massimo
+     * @param startDate       data di inizio evento
+     * @param endDate         data di fine evento
+     * @param locationName    nome della location
+     */
+    public void advancedSearch(String prezzoMinString, String prezzoMaxString, LocalDate startDate,
+                               LocalDate endDate, String locationName) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+        List<EventModel> listFound = new ArrayList<>();
+        Double prezzoMin = 0.0;
+        Double prezzoMax = Double.MAX_VALUE;
+        if (!prezzoMinString.equals("")) {
+            if (Double.valueOf(prezzoMinString)>0){
+                prezzoMin = Double.valueOf(prezzoMinString);
+            }
+        }
+
+        if (!prezzoMaxString.equals("")) {
+            if (Double.valueOf(prezzoMaxString)>0) {
+                prezzoMax = Double.valueOf(prezzoMaxString);
+            }
+        }
+
+        for (EventModel eventModel : eventList) {
+            if ((eventModel.getPrice() >= prezzoMin)
+                    && (eventModel.getPrice() <= prezzoMax)
+                    && (startDate.isEqual(LocalDate.MIN) ||
+                        LocalDate.parse(eventModel.getStartingDate(), formatter).isAfter(startDate.minusDays(1)))
+                    && (endDate.equals(LocalDate.MAX) ||
+                        LocalDate.parse(eventModel.getEndingDate(), formatter).isBefore(endDate.plusDays(1)))
+                    && (locationName.isEmpty()) || (eventModel.getLocationName() + " - " + eventModel
+                    .getLocationAddress()).equals(locationName)) {
+
+                listFound.add(eventModel);
+            }
+        }
+        eventListView.advancedSearch(listFound);
+    }
 }
