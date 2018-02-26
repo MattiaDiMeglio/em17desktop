@@ -21,15 +21,6 @@ public class PieChartModel extends Observable {
   private static PieChartModel ourInstance = new PieChartModel();
 
   /**
-   * getter per l'istanza corrente della classe.
-   *
-   * @return {@link #ourInstance}
-   */
-  public static PieChartModel getInstance() {
-    return ourInstance;
-  }
-
-  /**
    * numero massimo di biglietti.
    */
   private Double maxTickets;
@@ -38,6 +29,15 @@ public class PieChartModel extends Observable {
    * biglietti venduti.
    */
   private Double ticketsSold;
+
+  /**
+   * getter per l'istanza corrente della classe.
+   *
+   * @return {@link #ourInstance}
+   */
+  public static PieChartModel getInstance() {
+    return ourInstance;
+  }
 
   /**
    * contruttore vuoto e privato.

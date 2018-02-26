@@ -333,7 +333,7 @@ public class DBController {
         //si ottiene un iterable con le location
         Iterable<DataSnapshot> location = snapshot.getChildren();
         eventListModel = EventListModel.getInstance(); //si ottiene l'instanza di eventListModel
-        eventListModel.getListaEventi().clear();
+        eventListModel.getEventList().clear();
         //si ottiene l'instanza di locationlistModel
         locationListModel = LocationListModel.getInstance();
         locationListModel.getLocationList().clear();
@@ -506,7 +506,7 @@ public class DBController {
             }
 
             latch1.await();
-            eventListModel.setListaEventi(event);
+            eventListModel.setEventList(event);
             i++;
           }
           locationListModel.setListaLocation(locationModel);

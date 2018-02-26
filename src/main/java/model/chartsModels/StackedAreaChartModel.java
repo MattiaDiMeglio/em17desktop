@@ -23,7 +23,7 @@ public class StackedAreaChartModel extends Observable {
    * Array di interi di 12 elementi (uno per mese) contenente i ricavi dovuti alla vendita dei
    * biglietti divisi per mese.
    */
-  private Integer[] earingsFromTicketsSold = new Integer[12];
+  private Integer[] earningsFromTicketsSold = new Integer[12];
 
   /**
    * getter per l'istanza corrente della classe.
@@ -47,27 +47,27 @@ public class StackedAreaChartModel extends Observable {
    * @param accesses ricavo da aggiungere
    */
   public void add(Integer num, Integer accesses) {
-    earingsFromTicketsSold[num] = earingsFromTicketsSold[num] + accesses;
+    earningsFromTicketsSold[num] = earningsFromTicketsSold[num] + accesses;
     setChanged();
     Platform.runLater(this::notifyObservers);
   }
 
   /**
-   * getter per la variabile {@link #earingsFromTicketsSold}.
+   * getter per la variabile {@link #earningsFromTicketsSold}.
    *
-   * @return {@link #earingsFromTicketsSold}
+   * @return {@link #earningsFromTicketsSold}
    */
-  public Integer[] getEaringsFromTicketsSold() {
-    return earingsFromTicketsSold;
+  public Integer[] getEarningsFromTicketsSold() {
+    return earningsFromTicketsSold;
   }
 
   /**
-   * inizializza la variabile {@link #earingsFromTicketsSold} impostando il valore 0 in tutte le sue
+   * inizializza la variabile {@link #earningsFromTicketsSold} impostando il valore 0 in tutte le sue
    * posizioni.
    */
   public void initializeArray() {
-    for (int i = 0; i < earingsFromTicketsSold.length; i++) {
-      earingsFromTicketsSold[i] = 0;
+    for (int i = 0; i < earningsFromTicketsSold.length; i++) {
+      earningsFromTicketsSold[i] = 0;
     }
     setChanged();
     notifyObservers();

@@ -127,7 +127,8 @@ public class EventListView implements Observer {
     Button backButton = (Button) searchToolBarEventListView.getItems().get(0);
     backButton.setOnAction(event -> {
       completionBinding.dispose();
-      viewSourceController.turnBack();
+      viewSourceController.toDash();
+      //viewSourceController.turnBack();
       backButton.onActionProperty().unbind();
     });
     EventListModel.getInstance().addObserver(this);

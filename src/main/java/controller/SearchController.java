@@ -39,7 +39,7 @@ public class SearchController {
    */
   public SearchController(EventListView eventListView) {
     this.eventListView = eventListView;
-    eventList = EventListModel.getInstance().getListaEventi();
+    eventList = EventListModel.getInstance().getEventList();
     locationList = LocationListModel.getInstance().getLocationList();
   }
 
@@ -47,7 +47,7 @@ public class SearchController {
    * costruttore utilizzato in {@link view.DashBoardView DashBoardView}.
    */
   public SearchController() {
-    eventList = EventListModel.getInstance().getListaEventi();
+    eventList = EventListModel.getInstance().getEventList();
     locationList = LocationListModel.getInstance().getLocationList();
   }
 

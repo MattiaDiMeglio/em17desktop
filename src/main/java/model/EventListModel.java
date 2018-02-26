@@ -43,7 +43,7 @@ public class EventListModel extends Observable {
    *
    * @return {@link #listaEventi}
    */
-  public List<EventModel> getListaEventi() {
+  public List<EventModel> getEventList() {
     return listaEventi;
   }
 
@@ -52,7 +52,7 @@ public class EventListModel extends Observable {
    *
    * @param evento evento da aggiungere a {@link #listaEventi}
    */
-  public void setListaEventi(EventModel evento) {
+  public void setEventList(EventModel evento) {
     this.listaEventi.add(evento);
   }
 

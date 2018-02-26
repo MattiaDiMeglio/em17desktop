@@ -20,7 +20,7 @@ class SearchControllerTest {
 
     @BeforeEach
     void setUp() {
-        eventListModel.getListaEventi().clear();
+        eventListModel.getEventList().clear();
         for (int i = 0; i < 4; i++) {
             EventModel eventModel = new EventModel();
             eventModel.setStartingDate("10/01/2018");
@@ -34,7 +34,7 @@ class SearchControllerTest {
             eventModel.setEventName("evento" + i);
             eventModel.setLocationName("location" + i);
             eventModel.setLocationAddress("address" + i);
-            eventListModel.setListaEventi(eventModel);
+            eventListModel.setEventList(eventModel);
         }
 
         locationListModel.getLocationList().clear();
@@ -114,7 +114,7 @@ class SearchControllerTest {
             prezzoMax = Double.valueOf(prezzoMaxString);
         }
 
-        List<EventModel> eventList = eventListModel.getListaEventi();
+        List<EventModel> eventList = eventListModel.getEventList();
         for (EventModel eventModel : eventList) {
             if ((eventModel.getPrice() >= prezzoMin)
                     && (eventModel.getPrice() <= prezzoMax)

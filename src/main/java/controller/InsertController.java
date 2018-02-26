@@ -214,11 +214,11 @@ public class InsertController {
    */
   public String getMaxVisitors(String location) {
     int i = 0;
-    while (i < eventListModel.getListaEventi().size() - 1) {
+    while (i < eventListModel.getEventList().size() - 1) {
       //se la location corrisponde a quella dell'eventlistmodel ritorna il massimo di visitatori
       if (location.toLowerCase()
-          .equals(eventListModel.getListaEventi().get(i).getLocationName().toLowerCase())) {
-        return eventListModel.getListaEventi().get(i).getMaxVisitors().toString();
+          .equals(eventListModel.getEventList().get(i).getLocationName().toLowerCase())) {
+        return eventListModel.getEventList().get(i).getMaxVisitors().toString();
       }
       i++;
     }

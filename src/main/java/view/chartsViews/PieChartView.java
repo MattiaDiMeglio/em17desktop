@@ -59,8 +59,8 @@ public class PieChartView implements Observer, ChartInterface {
   public PieChartView(PieChart pieChart, int index) {
     this.pieChart = pieChart;
     initializeCharts();
-    EventListModel.getInstance().getListaEventi().get(index).addObserver(this);
-    update(EventListModel.getInstance().getListaEventi().get(index), null);
+    EventListModel.getInstance().getEventList().get(index).addObserver(this);
+    update(EventListModel.getInstance().getEventList().get(index), null);
   }
 
   /**
