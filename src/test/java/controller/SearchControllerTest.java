@@ -52,15 +52,15 @@ class SearchControllerTest {
     @Test
     void searchTest1() {
         boolean b;
-        b = new SearchController().search("evento non trovato").size() != 0;
-        assertFalse(b);
+        b = new SearchController().search("evento non trovato").isEmpty();
+        assertTrue(b);
     }
 
     // test per elemento trovato nel database
     @Test
     void searchTest2() {
         boolean b;
-        b = new SearchController().search("evento1").size() != 0;
+        b = new SearchController().search("evento1").size() > 0;
         assertTrue(b);
     }
 
@@ -75,7 +75,6 @@ class SearchControllerTest {
     // test per la dimensione della lista tornata da getEventsName
     @Test
     void getEventsNameTest1() {
-        System.out.println("test per getEventName()");
         boolean b;
         List<String> eventNames = new SearchController().getEventsName();
         b = eventNames.size() == 4;
