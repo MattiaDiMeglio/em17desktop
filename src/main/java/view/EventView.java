@@ -111,6 +111,7 @@ public class EventView implements Observer {
         if (result.get() == ButtonType.OK) {
           eventController.delete(eventModel.getEventKey());
           eventListModel.deleteObserver(this);
+          viewSourceController.toDash();
         }
       } else {
 
