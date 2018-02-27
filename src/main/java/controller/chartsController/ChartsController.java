@@ -57,6 +57,7 @@ public class ChartsController {
    * poi scriverli nei rispettivi model
    *
    * @param year anno del quale prelevare le statistiche
+   * @param latch latch per la sincronizzazione
    */
   public void populateCharts(String year, CountDownLatch latch) {
     System.out.println("chartsController");

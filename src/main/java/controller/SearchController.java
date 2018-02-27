@@ -103,6 +103,7 @@ public class SearchController {
      * @param startDate       data di inizio evento
      * @param endDate         data di fine evento
      * @param locationName    nome della location
+     * @return lista con gli elementi trovati
      */
     public List<EventModel> advancedSearch(String prezzoMinString, String prezzoMaxString, LocalDate startDate,
                                LocalDate endDate, String locationName) {

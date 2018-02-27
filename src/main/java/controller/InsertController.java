@@ -93,6 +93,7 @@ public class InsertController {
   /**
    * metodo chiamato dal listener del bottone conferma della prima schermata di isnerimento.
    *
+   * @param eventModel model al quale fare riferimento
    * @param strings lista contenente i dati con il quale popolare il model
    * @param insertPlaybillImageView immagine di copertina da settare nel model
    */
@@ -134,6 +135,8 @@ public class InsertController {
 
   /**
    * metodo chiamato dal listener del bottone conferma della terza schermata di isnerimento.
+   *
+   * @param reductions lista con le riduzione per settore
    */
   public void toInsertRecap(List<Double> reductions) {
     newEvent.setChildrenReduction(reductions.get(0));

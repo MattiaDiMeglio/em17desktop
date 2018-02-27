@@ -153,6 +153,7 @@ public class DBController {
    * @param newEvent evento da inserire
    * @param latchUpload latch per la sincronizzazione per 'upload delle foto
    * @param latchInsert latch per la sincronizzazione con l'inserimento nel database
+   * @param latchLoading latch per il popup del caricamento
    */
   public void insert(EventModel newEvent, CountDownLatch latchUpload, CountDownLatch latchInsert, CountDownLatch latchLoading) {
 
