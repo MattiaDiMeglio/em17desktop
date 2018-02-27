@@ -1,2 +1,6 @@
 controller
+controller.chartsController
+model
+model.chartsModels
 view
+view.chartsViews

@@ -1,4 +1,4 @@
-version '1.0-SNAPSHOT'
+version '1.0'
 
 apply plugin: 'java'
 
@@ -10,26 +10,16 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    //compile 'com.google.firebase:firebase-admin:5.8.0'
-
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.0.0'
     compile('com.google.firebase:firebase-admin:5.8.0') {
         exclude group: 'com.google.guava'//by both name and group
     }
-    compile 'com.google.code.gson:gson:2.2.4'
 
     // https://mvnrepository.com/artifact/com.google.guava/guava
     compile group: 'com.google.guava', name: 'guava', version: '23.6-jre'
 
-
-}
-
-jar {
-    manifest {
-        attributes(
-                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-                'Main-Class': 'view.DashBoardView'
-        )
-    }
-
+    // https://mvnrepository.com/artifact/org.controlsfx/controlsfx
+    compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.14'
+    
+    compile 'com.google.cloud:google-cloud-storage:1.14.0'
 }
