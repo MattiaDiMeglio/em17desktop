@@ -203,7 +203,6 @@ public class InsertRecapView implements Observer {
 
     }
 
-
     /**
      * costruttore per la generazione della view
      *
@@ -368,7 +367,7 @@ public class InsertRecapView implements Observer {
     private void initSlide(Button left, Button right, HBox slide, EventModel eventModel) {
         Platform.runLater(() -> {
             slide.getChildren().clear();
-            slideShowController.createSlide(insertController, left, slide, right, eventModel.getSlideshow());
+            slideShowController.createSlide(insertController, left, slide, right, eventModel);
         });
     }
 

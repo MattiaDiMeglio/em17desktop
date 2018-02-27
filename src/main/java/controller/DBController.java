@@ -154,59 +154,63 @@ public class DBController {
    * @param latchUpload latch per la sincronizzazione per 'upload delle foto
    * @param latchInsert latch per la sincronizzazione con l'inserimento nel database
    */
-  public void insert(EventModel newEvent, CountDownLatch latchUpload, CountDownLatch latchInsert) {
+  public void insert(EventModel newEvent, CountDownLatch latchUpload, CountDownLatch latchInsert, CountDownLatch latchLoading) {
+
     database.removeEventListener(childEventListener);
     database.child("luogo").addListenerForSingleValueEvent(new ValueEventListener() {
 
       @Override
       public void onDataChange(DataSnapshot snapshot) {
-        try {
-          Iterable<DataSnapshot> location = snapshot.getChildren();
-          while (location.iterator().hasNext()) {
-            DataSnapshot locationSnap = location.iterator().next();
-            if ((locationSnap.child("nome").getValue().toString()
-                .equals(newEvent.getLocationName()))
-                && locationSnap.child("indirizzo").getValue().toString()
-                .equals(newEvent.getLocationAddress())) {
-              DatabaseReference insert = locationSnap.getRef().child("Eventi").push().getRef();
-              newEvent.setActive(true);
-              newEvent.setEventKey(insert.getKey());
-              latchUpload
-                  .countDown(); // notifico la creazione dell'id dell'evento per l'upload delle foto
-              latchInsert.await(); // attendo il termine dell'upload delle foto
-              insert.child("attivo").setValueAsync(newEvent.isActive());
-              DatabaseReference data = insert.child("data").getRef();
-              data.child("inizio").setValueAsync(newEvent.getStartingDate());
-              data.child("fine").setValueAsync(newEvent.getStartingDate());
-              insert.child("nome").setValueAsync(newEvent.getEventName());
-              insert.child("descrizione").setValueAsync(newEvent.getEventDescription());
-              insert.child("prezzo").setValueAsync(newEvent.getPrice());
-              insert.child("copertina").setValueAsync(newEvent.getBillboard().impl_getUrl());
-              DatabaseReference reduction = insert.child("riduzioni").getRef();
-              reduction.child("Anziani").setValueAsync(newEvent.getEldersReduction());
-              reduction.child("Bambini").setValueAsync(newEvent.getChildrenReduction());
-              reduction.child("Studenti").setValueAsync(newEvent.getStudentReduction());
-              DatabaseReference sectors = insert.child("settori").getRef();
-              for (int i = 0; i < newEvent.getSectorList().size(); i++) {
-                sectors.child(newEvent.getSectorList().get(i).getName());
-                String nome = newEvent.getSectorList().get(i).getName();
-                DatabaseReference inSector = sectors.child(nome).getRef();
-                inSector.child("posti").setValueAsync(newEvent.getSectorList().get(i).getSeats());
-                inSector.child("prezzo").setValueAsync(newEvent.getSectorList().get(i).getPrice());
-                inSector.child("riduzione")
-                    .setValueAsync(newEvent.getSectorList().get(i).isReduction());
-              }
-              DatabaseReference gallery = insert.child("galleria").getRef();
-              for (Integer i = 0; i < newEvent.getSlideshow().size(); i++) {
-                gallery.child(i.toString())
-                    .setValueAsync(newEvent.getSlideshow().get(i).impl_getUrl());
+        new Thread(()->{
+          try {
+            Iterable<DataSnapshot> location = snapshot.getChildren();
+            while (location.iterator().hasNext()) {
+              DataSnapshot locationSnap = location.iterator().next();
+              if ((locationSnap.child("nome").getValue().toString()
+                      .equals(newEvent.getLocationName()))
+                      && locationSnap.child("indirizzo").getValue().toString()
+                      .equals(newEvent.getLocationAddress())) {
+                DatabaseReference insert = locationSnap.getRef().child("Eventi").push().getRef();
+                newEvent.setActive(true);
+                newEvent.setEventKey(insert.getKey());
+                latchUpload
+                        .countDown(); // notifico la creazione dell'id dell'evento per l'upload delle foto
+                latchInsert.await(); // attendo il termine dell'upload delle foto
+                insert.child("attivo").setValueAsync(newEvent.isActive());
+                DatabaseReference data = insert.child("data").getRef();
+                data.child("inizio").setValueAsync(newEvent.getStartingDate());
+                data.child("fine").setValueAsync(newEvent.getStartingDate());
+                insert.child("nome").setValueAsync(newEvent.getEventName());
+                insert.child("descrizione").setValueAsync(newEvent.getEventDescription());
+                insert.child("prezzo").setValueAsync(newEvent.getPrice());
+                insert.child("copertina").setValueAsync(newEvent.getBillboard().impl_getUrl());
+                DatabaseReference reduction = insert.child("riduzioni").getRef();
+                reduction.child("Anziani").setValueAsync(newEvent.getEldersReduction());
+                reduction.child("Bambini").setValueAsync(newEvent.getChildrenReduction());
+                reduction.child("Studenti").setValueAsync(newEvent.getStudentReduction());
+                DatabaseReference sectors = insert.child("settori").getRef();
+                for (int i = 0; i < newEvent.getSectorList().size(); i++) {
+                  sectors.child(newEvent.getSectorList().get(i).getName());
+                  String nome = newEvent.getSectorList().get(i).getName();
+                  DatabaseReference inSector = sectors.child(nome).getRef();
+                  inSector.child("posti").setValueAsync(newEvent.getSectorList().get(i).getSeats());
+                  inSector.child("prezzo").setValueAsync(newEvent.getSectorList().get(i).getPrice());
+                  inSector.child("riduzione")
+                          .setValueAsync(newEvent.getSectorList().get(i).isReduction());
+                }
+                DatabaseReference gallery = insert.child("galleria").getRef();
+                for (Integer i = 0; i < newEvent.getSlideshow().size(); i++) {
+                  gallery.child(i.toString())
+                          .setValueAsync(newEvent.getSlideshow().get(i).impl_getUrl());
+                }
               }
             }
+            databaseListener();
+            latchLoading.countDown();
+          } catch (Exception e) {
+            e.printStackTrace();
           }
-          databaseListener();
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
+        }).start();
       }
 
       @Override
@@ -326,7 +330,6 @@ public class DBController {
    * @param snapshot istantanea del database sul server
    */
   private void updateLocalDatabase(DataSnapshot snapshot) {
-    //if (flag){
     CountDownLatch latch = new CountDownLatch(2);
     new Thread(() -> {
       try {
@@ -438,7 +441,6 @@ public class DBController {
                 e.printStackTrace();
                 latch1.countDown();
               }
-
             }).start();
 
             //snap per data e ora

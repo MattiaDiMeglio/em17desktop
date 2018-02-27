@@ -2,10 +2,7 @@ package view;
 
 import controller.InsertController;
 import controller.SlideShowController;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -33,7 +30,6 @@ public class InsertView implements Observer {
      * istanza di {@link InsertController}.
      */
     private InsertController insertController;
-
     /**
      * textfield per il nome dell'evento.
      */
@@ -236,20 +232,25 @@ public class InsertView implements Observer {
      * metodo per andare allo step successivo.
      */
     private void next() {
-        try {
-            String pattern = "dd/MM/yyy";
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-            texts.clear();
-            texts.add(insertNameLabel.getText());
-            texts.add(insertLocationLabel.getText());
-            texts.add(insertMaxGuestsLabel.getText());
-            texts.add(insertTextArea.getText());
-            texts.add(dateFormatter.format(insertInizioDataPicker.getValue()));
-            texts.add(dateFormatter.format(insertFineDataPicker.getValue()));
-            binding.dispose();
-            insertController.toTicketType(eventModel, texts, insertPlaybillImageView.getImage());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (insertController.getImagesList().size() != 0) {
+            try {
+                String pattern = "dd/MM/yyy";
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+                texts.clear();
+                texts.add(insertNameLabel.getText());
+                texts.add(insertLocationLabel.getText());
+                texts.add(insertMaxGuestsLabel.getText());
+                texts.add(insertTextArea.getText());
+                texts.add(dateFormatter.format(insertInizioDataPicker.getValue()));
+                texts.add(dateFormatter.format(insertFineDataPicker.getValue()));
+                binding.dispose();
+                insertController.toTicketType(eventModel, texts, insertPlaybillImageView.getImage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Si devono prima inserire le immagini");
+            alert.showAndWait();
         }
     }
 
@@ -277,7 +278,7 @@ public class InsertView implements Observer {
      */
     private void slideshow() {
         Stage stage = new Stage();
-        List<Image> immaginiUri = new ArrayList<>();
+        List<Image> immaginiUri = insertController.getImagesList();
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
@@ -299,8 +300,6 @@ public class InsertView implements Observer {
 
             slideShowController.createSlide(insertController, left, slide, right, immaginiUri);
         }
-        immagini.addAll(immaginiUri);
-        insertController.setImagesList(immagini);
     }
 
     /**

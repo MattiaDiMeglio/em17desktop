@@ -59,7 +59,7 @@ public class SlideShowController {
 
   /**
    * metodo per la creazione dello slideshow all'interno di
-   * {@link view.InsertRecapView InsertRecapView}.
+   * {@link view.InsertView InsertView}.
    *
    * @param hbox HBox contenente le immagini
    * @param insertController variabile per la valorizzazione di {@link #insertController}
@@ -71,6 +71,22 @@ public class SlideShowController {
       Button rightButton, List<Image> immagini) {
     this.insertController = insertController;
     new SlideShowView(hbox, leftButton, rightButton, this, immagini);
+  }
+
+  /**
+   * metodo per la creazione dello slideshow all'interno di
+   * {@link view.InsertRecapView InsertRecapView}.
+   *
+   * @param hbox HBox contenente le immagini
+   * @param insertController variabile per la valorizzazione di {@link #insertController}
+   * @param leftButton bottone per scorrere la lista di immagini verso sinistra
+   * @param rightButton bottone per scorrere la lista di immagini verso destra
+   * @param eventModel model con le immagini da impostare nello slideshow
+   */
+  public void createSlide(InsertController insertController, Button leftButton, HBox hbox,
+                          Button rightButton, EventModel eventModel) {
+    this.insertController = insertController;
+    new SlideShowView(hbox, leftButton, rightButton, this, eventModel);
   }
 
 

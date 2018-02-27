@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -7,6 +9,7 @@ import model.EventListModel;
 import model.EventModel;
 import model.LocationListModel;
 import model.LocationModel;
+import view.LoadingPopupView;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -257,36 +260,41 @@ public class InsertController {
    */
   public void insert(List<Image> image) {
     StorageController sg = new StorageController();//instanzia lo storageController
+    CountDownLatch latchLoading = new CountDownLatch(1);
     CountDownLatch latchUpload = new CountDownLatch(1);//crea un latch per il thread di upload
-    CountDownLatch latchInsert = new CountDownLatch(
-        1);// latch per l'inserimento dell'evento nel database
+    CountDownLatch latchInsert = new CountDownLatch(1);// latch per l'inserimento dell'evento nel database
 
-    try {
-      if (newEvent.getLocationID().equals("")) {
-        dbController.insert(newEvent, latchUpload,
-            latchInsert); //finito il thread di upload si inserisce l'evento nel db
-      } else {
-        newEvent.setLocationID(
-            getLocationID(newEvent.getLocationName(), newEvent.getLocationAddress()));
-        latchUpload.countDown();
-        if (newEvent.getLocationID().equals(oldLocationID)) {
-          dbController.updateChild(newEvent, latchInsert);
+    new Thread(()->{
+      try {
+        if (newEvent.getLocationID().equals("")) {
+          dbController.insert(newEvent, latchUpload,
+                  latchInsert, latchLoading); //finito il thread di upload si inserisce l'evento nel db
         } else {
-          dbController.updateChild(newEvent, oldLocationID, latchInsert);
+          newEvent.setLocationID(
+                  getLocationID(newEvent.getLocationName(), newEvent.getLocationAddress()));
+          latchUpload.countDown();
+          if (newEvent.getLocationID().equals(oldLocationID)) {
+            dbController.updateChild(newEvent, latchInsert);
+          } else {
+            dbController.updateChild(newEvent, oldLocationID, latchInsert);
+          }
         }
+        //crea la lista con i link delle immagini caricate
+        List<Image> imageList = sg
+                .upload(newEvent, image, newEvent.getBillboard(), latchUpload, latchInsert);
+        //la prima immagine della lista è la copertina
+        newEvent.setBillboard(imageList.get(0));
+        imageList.remove(0);//si rimuove la copertina dalla lista di immagini
+        newEvent.setSlideshow(imageList);//si setta la lista rimanente come lista di immagini
+
+        latchLoading.countDown();
+        //Platform.runLater(mylert::hide);
+        Platform.runLater(viewSourceController::toDash);//cambio schermata
+      } catch (InterruptedException e) {
+        e.printStackTrace(); // todo mettere un alert per riavviare l'inserimento
       }
-      //crea la lista con i link delle immagini caricate
-      List<Image> imageList = sg
-          .upload(newEvent, image, newEvent.getBillboard(), latchUpload, latchInsert);
-      //la prima immagine della lista è la copertina
-      newEvent.setBillboard(imageList.get(0));
-      imageList.remove(0);//si rimuove la copertina dalla lista di immagini
-      newEvent.setSlideshow(imageList);//si setta la lista rimanente come lista di immagini
-      //new LoadingPopupView(latch); //si crea il popup di caricamento
-      viewSourceController.toDash();//cambio schermata
-    } catch (InterruptedException e) {
-      e.printStackTrace(); // todo mettere un alert per riavviare l'inserimento
-    }
+    }).start();
+    new LoadingPopupView(latchLoading);
   }
 
   /**
@@ -328,5 +336,9 @@ public class InsertController {
     //setta il minore dei prezzi per settore come prezzo dell'evento
     newEvent.setPrice(price);
     viewSourceController.toInsertReductionView(this, newEvent);//cambio di schermata
+  }
+
+  public List<Image> getImagesList() {
+    return imagesList;
   }
 }
