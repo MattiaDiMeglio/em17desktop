@@ -174,8 +174,7 @@ public class DBController {
                 DatabaseReference insert = locationSnap.getRef().child("Eventi").push().getRef();
                 newEvent.setActive(true);
                 newEvent.setEventKey(insert.getKey());
-                latchUpload
-                        .countDown(); // notifico la creazione dell'id dell'evento per l'upload delle foto
+                latchUpload.countDown(); // notifico la creazione dell'id dell'evento per l'upload delle foto
                 latchInsert.await(); // attendo il termine dell'upload delle foto
                 insert.child("attivo").setValueAsync(newEvent.isActive());
                 DatabaseReference data = insert.child("data").getRef();
@@ -306,10 +305,14 @@ public class DBController {
                 .setValueAsync(eventModel.getSectorList().get(i).isReduction());
           }
           DatabaseReference gallery = insert.child("galleria").getRef();
-          for (Integer i = 0; i < eventModel.getSlideshow().size(); i++) {
-            gallery.child(i.toString())
-                .setValueAsync(eventModel.getSlideshow().get(i).impl_getUrl());
-          }
+          gallery.setValue(null, (error, ref) -> {
+                if (error == null) {
+                    for (Integer i = 0; i < eventModel.getSlideshow().size(); i++) {
+                        gallery.child(i.toString())
+                                .setValueAsync(eventModel.getSlideshow().get(i).impl_getUrl());
+                    }
+                }
+            });
         } catch (Exception e) {
           e.printStackTrace();
         } finally {
