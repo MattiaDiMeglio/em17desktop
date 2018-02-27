@@ -27,7 +27,7 @@ class AdvancedSearchView {
    *
    * @param searchController controller per la ricerca
    */
-  AdvancedSearchView(SearchController searchController) {
+  AdvancedSearchView(SearchController searchController, EventListView eventListView) {
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
     alert.setTitle("Ricerca Avanzata");
     alert.setHeaderText("Ricerca avanzata");
@@ -108,11 +108,11 @@ class AdvancedSearchView {
       }
 
       error.setVisible(false);
-      searchController.advancedSearch(prezzoMinText.getText(),
+      eventListView.advancedSearch(searchController.advancedSearch(prezzoMinText.getText(),
           prezzoMaxText.getText(),
           startDatePicker.getValue(),
           endDatePicker.getValue(),
-          locationName.getText());
+          locationName.getText()));
     }
   }
 

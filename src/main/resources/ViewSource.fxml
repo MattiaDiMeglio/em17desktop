@@ -300,7 +300,7 @@
                 <!-- TabPane dove andranno inseriti i grafici e le eventuali tabelle -->
                 <TabPane fx:id="eventTabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" >
                     <!-- Tab1 -->
-                    <Tab fx:id="eventoTab1Tab" style="-fx-header-color: white" text="Vendite">
+                    <Tab fx:id="eventoTab1Tab" style="-fx-header-color: white" text="Biglietti venduti">
                         <!-- In questa prima tab c'è un VBOX contenente una linechart come segnaposto -->
                         <VBox alignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <LineChart fx:id="eventoGrafico1LineChart" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -313,14 +313,14 @@
                             </LineChart>
                         </VBox>
                     </Tab>
-                    <Tab style="-fx-header-color: white" text="primo">
+                    <Tab style="-fx-header-color: white" text="Percentuale biglietti venditi">
 
                             <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <PieChart VBox.vgrow="ALWAYS" fx:id="eventGraph2PieChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 </PieChart>
                             </VBox>
                     </Tab>
-                    <Tab style="-fx-header-color: white" text="primo">
+                    <Tab style="-fx-header-color: white" text="Biglietti venduti per location">
                         <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <BarChart  VBox.vgrow="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <xAxis>

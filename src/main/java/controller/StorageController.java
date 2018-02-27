@@ -172,12 +172,15 @@ public class StorageController {
 
       blob.delete();
 
-      System.out.println("fatto");
     } catch (Exception ignored) {
     }
   }
 
-  //Eliminazione del file specifico
+  /**
+   * Eliminazione del file specifico
+   *
+   * @param key nome del file
+   */
   private void deleteFile(String key) {
 
     bucket = StorageClient.getInstance().bucket();

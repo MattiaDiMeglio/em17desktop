@@ -210,7 +210,7 @@ public class EventListView implements Observer {
     button.setOnAction(event -> search(searchTextField.getText()));
 
     Button advancedSearchButton = (Button) toolBar.getItems().get(4);
-    advancedSearchButton.setOnAction(event -> new AdvancedSearchView(searchController));
+    advancedSearchButton.setOnAction(event -> new AdvancedSearchView(searchController, this));
 
     //bottone settato a defalt, per essere premuto con invio
     button.setDefaultButton(true);

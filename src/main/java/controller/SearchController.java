@@ -104,7 +104,7 @@ public class SearchController {
      * @param endDate         data di fine evento
      * @param locationName    nome della location
      */
-    public void advancedSearch(String prezzoMinString, String prezzoMaxString, LocalDate startDate,
+    public List<EventModel> advancedSearch(String prezzoMinString, String prezzoMaxString, LocalDate startDate,
                                LocalDate endDate, String locationName) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
         List<EventModel> listFound = new ArrayList<>();
@@ -135,6 +135,6 @@ public class SearchController {
                 listFound.add(eventModel);
             }
         }
-        eventListView.advancedSearch(listFound);
+        return listFound;
     }
 }
