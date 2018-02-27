@@ -75,8 +75,9 @@ public class StorageController {
           latchUpload.await();
           System.out.println("finito di aspettare e stampo la key: " + newEvent.getEventKey());
           String blobName = newEvent.getEventKey() + "/" + name[name.length
-              - 1]; //si setta il nome del blob col nome del file (ultima parte dello slpit
-          String[] type = image.impl_getUrl().split(
+              - 1].replaceAll("%20", "-"); //si setta il nome del blob col nome del file (ultima parte dello slpit
+            System.out.println("stampo il blob: " + blobName);
+            String[] type = image.impl_getUrl().split(
               "\\.");//si splitta nuovamente il percorso, dai punti, per ottenere il tipo del file
           BlobId blobId = BlobId.of(bucket.getName(), blobName);//si setta l'id del blob
 

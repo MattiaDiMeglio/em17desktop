@@ -533,9 +533,7 @@ public class DBController {
         firstDatabaseUpdate = false;
       } else {
         try {
-          System.out.println("aspetto");
           latch.await();
-          System.out.println("finito di aspettare");
           ViewSourceController.showNotificationPane();
         } catch (InterruptedException e) {
           e.printStackTrace();
