@@ -39,7 +39,7 @@ public class DashBoardView {
   /**
    * lista degli eventi trovati nella ricerca.
    */
-  private List<EventModel> foundedEventInSearch;
+  private List<EventModel> eventsFoundInSearch;
 
   /**
    * lista per i suggerimenti della ricerca.
@@ -93,8 +93,8 @@ public class DashBoardView {
 
     Button button = (Button) toolBar.getItems().get(1);
     button.setOnAction(event -> {
-      foundedEventInSearch = searchController.search(textField.getText());
-      viewSourceController.toEventListView(foundedEventInSearch);
+      eventsFoundInSearch = searchController.search(textField.getText());
+      viewSourceController.toEventListView(eventsFoundInSearch);
     });
     //bottone settato a defalt, per essere premuto con invio
     button.setDefaultButton(true);

@@ -52,7 +52,7 @@ public class EventListView implements Observer {
   /**
    * VBox contenente i risultati della ricerca.
    */
-  private VBox foundedElementsVBox;
+  private VBox foundElementsVBox;
 
   /**
    * controller per la ricerca.
@@ -62,7 +62,7 @@ public class EventListView implements Observer {
   /**
    * Lista di eventi trovati.
    */
-  private List<EventModel> foundedEventInSearch;
+  private List<EventModel> eventFoundInSearch;
 
   /**
    * istanza di viewSourceController utile per il passaggio da una view all'altra.
@@ -110,16 +110,16 @@ public class EventListView implements Observer {
    * costruttore per inizializzare la classe.
    *
    * @param eventListTabPane TabPane contenente i grafici
-   * @param foundedEventInSearch elementi trovati
+   * @param eventFoundInSearch elementi trovati
    * @param eventListViewVBox VBox popolata con i risultati della ricerca
    * @param searchToolBarEventListView ToolBar con gli elementi per la ricerca
    * @param viewSourceController istanza di {@link ViewSourceController} per il cambio di view
    */
-  public EventListView(TabPane eventListTabPane, List<EventModel> foundedEventInSearch,
+  public EventListView(TabPane eventListTabPane, List<EventModel> eventFoundInSearch,
       VBox eventListViewVBox,
       ToolBar searchToolBarEventListView, ViewSourceController viewSourceController) {
-    this.foundedElementsVBox = eventListViewVBox;
-    this.foundedEventInSearch = foundedEventInSearch;
+    this.foundElementsVBox = eventListViewVBox;
+    this.eventFoundInSearch = eventFoundInSearch;
     this.viewSourceController = viewSourceController;
     checkBoxList = new ArrayList<>();
     selectedItems = new HashMap<>();
@@ -137,8 +137,8 @@ public class EventListView implements Observer {
     initializeCharts(eventListTabPane); // inizializzo i grafici
     initalizeTableView(eventListTabPane); // inizializzo la tabella
 
-    if (foundedEventInSearch.isEmpty()) {
-      foundedElementsVBox.getChildren().add(notFoundLabel);
+    if (eventFoundInSearch.isEmpty()) {
+      foundElementsVBox.getChildren().add(notFoundLabel);
     } else {
       createResult();
     }
@@ -227,9 +227,9 @@ public class EventListView implements Observer {
         }
       }
     });
-    foundedElementsVBox.getChildren().clear();
-    foundedElementsVBox.paddingProperty().setValue(new Insets(5.0, 5.0, 2.0, 12.0));
-    foundedElementsVBox.getChildren().add(selectAllCheckBox);
+    foundElementsVBox.getChildren().clear();
+    foundElementsVBox.paddingProperty().setValue(new Insets(5.0, 5.0, 2.0, 12.0));
+    foundElementsVBox.getChildren().add(selectAllCheckBox);
   }
 
   /**
@@ -239,10 +239,10 @@ public class EventListView implements Observer {
    */
   private void search(String string) {
     resetSearch();
-    foundedEventInSearch.addAll(searchController.search(string));
-    if (foundedEventInSearch.isEmpty()) {
+    eventFoundInSearch.addAll(searchController.search(string));
+    if (eventFoundInSearch.isEmpty()) {
       resetSearch();
-      foundedElementsVBox.getChildren().add(notFoundLabel);
+      foundElementsVBox.getChildren().add(notFoundLabel);
       populateWithSelectedItems();
     } else {
       createResult();
@@ -256,7 +256,7 @@ public class EventListView implements Observer {
    */
   public void advancedSearch(List<EventModel> foundedEventInSearch) {
     resetSearch();
-    this.foundedEventInSearch = foundedEventInSearch;
+    this.eventFoundInSearch = foundedEventInSearch;
     createResult();
   }
 
@@ -265,10 +265,10 @@ public class EventListView implements Observer {
    */
   private void resetSearch() {
     checkBoxList.clear();
-    foundedEventInSearch.clear();
-    foundedElementsVBox.getChildren().clear();
-    foundedElementsVBox.paddingProperty().setValue(new Insets(5.0, 5.0, 2.0, 12.0));
-    foundedElementsVBox.getChildren().add(selectAllCheckBox);
+    eventFoundInSearch.clear();
+    foundElementsVBox.getChildren().clear();
+    foundElementsVBox.paddingProperty().setValue(new Insets(5.0, 5.0, 2.0, 12.0));
+    foundElementsVBox.getChildren().add(selectAllCheckBox);
   }
 
   /**
@@ -276,7 +276,7 @@ public class EventListView implements Observer {
    */
   private void createResult() {
     checkBoxList.clear();
-    for (EventModel eventModel : foundedEventInSearch) {
+    for (EventModel eventModel : eventFoundInSearch) {
       if (!selectedItems.containsKey(eventModel.getIndex())) {
         HBox hBox = new HBox();
         hBox.setSpacing(20);
@@ -386,7 +386,7 @@ public class EventListView implements Observer {
         VBox vBox = new VBox();
         vBox.setSpacing(20);
         vBox.getChildren().addAll(hBox, separator);
-        foundedElementsVBox.getChildren().add(vBox);
+        foundElementsVBox.getChildren().add(vBox);
       }
     }
     populateWithSelectedItems();
@@ -421,7 +421,7 @@ public class EventListView implements Observer {
       Map.Entry entry = (Map.Entry) o;
       HBox tmp = (HBox) entry.getValue();
       checkBoxList.add((CheckBox) tmp.getChildren().get(0));
-      foundedElementsVBox.getChildren().add((Node) entry.getValue());
+      foundElementsVBox.getChildren().add((Node) entry.getValue());
     }
   }
 

@@ -1,8 +1,6 @@
 package view;
 
 import controller.InsertController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
@@ -27,15 +25,15 @@ public class InsertReductionView implements Observer {
     /**
      * textfield per la riduzione per bambini
      */
-    private TextField bambiniReduction = new TextField("0");
+    private TextField childrenReduction = new TextField("0");
     /**
      * textfield per la riduzione per anziani
      */
-    private TextField anzianiReduction = new TextField("0");
+    private TextField eldersReduction = new TextField("0");
     /**
      * textfield per la riduzione per studenti
      */
-    private TextField studentiReduction = new TextField("0");
+    private TextField studentsReduction = new TextField("0");
     /**
      * imageview per la locandina
      */
@@ -96,35 +94,35 @@ public class InsertReductionView implements Observer {
         //Riga con gli elementi per la riduzione per i Bambini
         Label bambini = new Label("Bambini");
         gridPane.add(bambini, 0, 2);
-        bambiniReduction.setMaxSize(80.0, bambiniReduction.getHeight());
-        bambiniReduction.setText(String.valueOf(eventModel.getChildrenReduction()));
+        childrenReduction.setMaxSize(80.0, childrenReduction.getHeight());
+        childrenReduction.setText(String.valueOf(eventModel.getChildrenReduction()));
         HBox hBox1 = new HBox();
-        hBox1.getChildren().add(bambiniReduction);
+        hBox1.getChildren().add(childrenReduction);
         hBox1.getChildren().add(new Label("%"));
         gridPane.add(hBox1, 1, 2);
 
         //Riga con gli elementi per la riduzione per i Anziani
         Label anziani = new Label("Anziani");
         gridPane.add(anziani, 0, 3);
-        anzianiReduction.setMaxSize(80.0, anzianiReduction.getHeight());
-        anzianiReduction.setText(String.valueOf(eventModel.getEldersReduction()));
+        eldersReduction.setMaxSize(80.0, eldersReduction.getHeight());
+        eldersReduction.setText(String.valueOf(eventModel.getEldersReduction()));
         HBox hBox2 = new HBox();
-        hBox2.getChildren().add(anzianiReduction);
+        hBox2.getChildren().add(eldersReduction);
         hBox2.getChildren().add(new Label("%"));
         gridPane.add(hBox2, 1, 3);
 
         //Riga con gli elementi per la riduzione per i Studenti
         Label studenti = new Label("Studenti");
         gridPane.add(studenti, 0, 4);
-        studentiReduction.setMaxSize(80.0, studentiReduction.getHeight());
-        studentiReduction.setText(String.valueOf(eventModel.getStudentReduction()));
+        studentsReduction.setMaxSize(80.0, studentsReduction.getHeight());
+        studentsReduction.setText(String.valueOf(eventModel.getStudentReduction()));
         HBox hBox3 = new HBox();
-        hBox3.getChildren().add(studentiReduction);
+        hBox3.getChildren().add(studentsReduction);
         hBox3.getChildren().add(new Label("%"));
         gridPane.add(hBox3, 1, 4);
 
         //inizializzazione dei listener per gli elementi creati
-        initListeners(bambiniReduction, anzianiReduction, studentiReduction);
+        initListeners(childrenReduction, eldersReduction, studentsReduction);
 
         //si aggiunge la gridpane creata nella Vbox principale
         insertReductionVbox.getChildren().add(0, gridPane);
@@ -188,14 +186,14 @@ public class InsertReductionView implements Observer {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Attenzione!");
             alert.setHeaderText("Verranno applicate le seguenti riduzioni:");
-            alert.setContentText("Bambini: " + bambiniReduction.getText() + "% \n");
-            alert.setContentText(alert.getContentText() + "Anziani: " + anzianiReduction.getText() + "% \n");
-            alert.setContentText(alert.getContentText() + "Studenti: " + studentiReduction.getText() + "% \n");
+            alert.setContentText("Bambini: " + childrenReduction.getText() + "% \n");
+            alert.setContentText(alert.getContentText() + "Anziani: " + eldersReduction.getText() + "% \n");
+            alert.setContentText(alert.getContentText() + "Studenti: " + studentsReduction.getText() + "% \n");
 
             List<Double> reductions = new ArrayList<>();
-            reductions.add(Double.valueOf(bambiniReduction.getText()));
-            reductions.add(Double.valueOf(anzianiReduction.getText()));
-            reductions.add(Double.valueOf(studentiReduction.getText()));
+            reductions.add(Double.valueOf(childrenReduction.getText()));
+            reductions.add(Double.valueOf(eldersReduction.getText()));
+            reductions.add(Double.valueOf(studentsReduction.getText()));
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
