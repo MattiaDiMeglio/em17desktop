@@ -144,6 +144,7 @@ public class InsertView implements Observer {
         eventModel.addObserver(this);
         this.eventModel = eventModel;
         insertController.update(eventModel);
+        insertController.setImagesList(eventModel.getSlideshow());
     }
 
     /**
@@ -232,7 +233,7 @@ public class InsertView implements Observer {
      * metodo per andare allo step successivo.
      */
     private void next() {
-        if (insertController.getImagesList().size() != 0) {
+        if (insertController.getImagesList().size() != 0 || eventModel.getSlideshow().size()!=0) {
             try {
                 String pattern = "dd/MM/yyy";
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
