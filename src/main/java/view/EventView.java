@@ -191,6 +191,7 @@ public class EventView implements Observer {
 
     if (found) {
       viewSourceController.turnBack();
+      eventListModel.deleteObserver(this);
       viewSourceController.toEventView(i);
     } else {
       Alert alert = new Alert(Alert.AlertType.WARNING);
