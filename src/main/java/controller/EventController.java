@@ -1,7 +1,12 @@
 package controller;
 
+/**
+ * questa classe viene invocata dalla view {@link view.EventView} per
+ * la comunicazione con il database
+ *
+ * @author ingsw20
+ */
 public class EventController {
-
 
   /**
    * Metodo per la cancellazione di un evento.

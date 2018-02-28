@@ -26,6 +26,7 @@ class AdvancedSearchView {
    * SearchController che farà i controlli per i risultati.
    *
    * @param searchController controller per la ricerca
+   * @param eventListView view alla quale fare riferimento
    */
   AdvancedSearchView(SearchController searchController, EventListView eventListView) {
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

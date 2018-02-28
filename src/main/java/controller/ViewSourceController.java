@@ -151,7 +151,7 @@ public class ViewSourceController extends Application {
    * * TextArea della descrizione nella schermata visualizzazione evento
    */
   @FXML
-  private TextArea eventTextArea;
+  private Text eventTextArea;
   /**
    * Text del prezzo nella schermata visualizzazione evento
    */

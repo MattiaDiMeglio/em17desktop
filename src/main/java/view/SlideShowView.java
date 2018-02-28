@@ -1,6 +1,7 @@
 package view;
 
 import controller.SlideShowController;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -248,7 +249,15 @@ public class SlideShowView implements Observer {
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(300.0);
                 imageView.setFitHeight(280.0);
-                buttonList.get(i).setGraphic(imageView);
+                int finalI = i;
+                Platform.runLater(() -> {
+                    try {
+                        buttonList.get(finalI).setGraphic(imageView);
+                    }catch (Exception e){
+                        eventModel.deleteObserver(this);
+                    }
+                });
+
                 i++;
             }
         }

@@ -203,7 +203,6 @@ public class InsertRecapView implements Observer {
 
     }
 
-
     /**
      * costruttore per la generazione della view
      *
@@ -247,7 +246,8 @@ public class InsertRecapView implements Observer {
         startDate.setText(eventModel.getStartingDate());
         endDate.setText(eventModel.getEndingDate());
 
-        TextArea eventDescription = (TextArea) textAreaVbox.getChildren().get(0);
+        ScrollPane scrollPane = (ScrollPane) textAreaVbox.getChildren().get(0);
+        Text eventDescription = (Text) scrollPane.getContent();
         eventDescription.setDisable(true);
         eventDescription.setText(eventModel.getEventDescription());
 
@@ -368,7 +368,7 @@ public class InsertRecapView implements Observer {
     private void initSlide(Button left, Button right, HBox slide, EventModel eventModel) {
         Platform.runLater(() -> {
             slide.getChildren().clear();
-            slideShowController.createSlide(insertController, left, slide, right, eventModel.getSlideshow());
+            slideShowController.createSlide(insertController, left, slide, right, eventModel);
         });
     }
 
