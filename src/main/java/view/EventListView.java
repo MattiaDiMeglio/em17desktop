@@ -200,7 +200,7 @@ public class EventListView implements Observer {
     notFoundLabel = new Label();
     notFoundLabel.setText("non è stato trovato nessun elemento");
     notFoundLabel.fontProperty().setValue(new Font(20));
-    searchController = new SearchController(this);
+    searchController = new SearchController();
 
     searchTextField = (TextField) toolBar.getItems().get(2);
     eventsName.addAll(searchController.getEventsName());

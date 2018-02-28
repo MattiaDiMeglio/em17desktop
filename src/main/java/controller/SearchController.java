@@ -26,23 +26,6 @@ public class SearchController {
      * lista con tutte le location del database.
      */
     private List<LocationModel> locationList;
-    /**
-     * parametro per la comunicazione con la view.
-     */
-    private EventListView eventListView;
-
-
-  /**
-   * il contruttore inizializza i paramtri {@link #eventList}, {@link #locationList} e {@link
-   * #eventListView}.
-   *
-   * @param eventListView view
-   */
-  public SearchController(EventListView eventListView) {
-    this.eventListView = eventListView;
-    eventList = EventListModel.getInstance().getEventList();
-    locationList = LocationListModel.getInstance().getLocationList();
-  }
 
   /**
    * costruttore utilizzato in {@link view.DashBoardView DashBoardView}.
