@@ -60,9 +60,9 @@ public class LoginView implements Observer {
   public LoginView(TextField usernameField, PasswordField passwordField, Button loginButton,
       Button recoveryButton, ViewSourceController viewSourceController) {
     this.usernameField = usernameField;
-    usernameField.setText("mat.dimeglio@gmail.com");
+    usernameField.setText("");
     this.passwordField = passwordField;
-    passwordField.setText("SaltaPicchio3");
+    passwordField.setText("");
     this.viewSourceController = viewSourceController;
     loginModel = LoginModel.getInstance(); //ottiene l'instanza del model
     loginModel.addObserver(this); //si setta la view come observer del model
