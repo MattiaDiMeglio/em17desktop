@@ -186,23 +186,26 @@ public class SlideShowView implements Observer {
      */
     private void right() {
         //in caso si possa ancora fare slide a destra
-        if (activeList.get(3) < (buttonList.size() - 1)) {
-            //slide della active list
-            activeList.set(0, activeList.get(0) + 1);
-            activeList.set(1, activeList.get(1) + 1);
-            activeList.set(2, activeList.get(2) + 1);
-            activeList.set(3, activeList.get(3) + 1);
-            //si rimuovono gli elementi dell'hbox
-            hBox.getChildren().remove(3);
-            hBox.getChildren().remove(2);
-            hBox.getChildren().remove(1);
-            hBox.getChildren().remove(0);
-            //si inseriscono i nuovi elementi
-            hBox.getChildren().add(0, buttonList.get(activeList.get(0)));
-            hBox.getChildren().add(1, buttonList.get(activeList.get(1)));
-            hBox.getChildren().add(2, buttonList.get(activeList.get(2)));
-            hBox.getChildren().add(3, buttonList.get(activeList.get(3)));
-        }
+       try {
+           if (activeList.get(3) < (buttonList.size() - 1)) {
+               //slide della active list
+               activeList.set(0, activeList.get(0) + 1);
+               activeList.set(1, activeList.get(1) + 1);
+               activeList.set(2, activeList.get(2) + 1);
+               activeList.set(3, activeList.get(3) + 1);
+               //si rimuovono gli elementi dell'hbox
+               hBox.getChildren().remove(3);
+               hBox.getChildren().remove(2);
+               hBox.getChildren().remove(1);
+               hBox.getChildren().remove(0);
+               //si inseriscono i nuovi elementi
+               hBox.getChildren().add(0, buttonList.get(activeList.get(0)));
+               hBox.getChildren().add(1, buttonList.get(activeList.get(1)));
+               hBox.getChildren().add(2, buttonList.get(activeList.get(2)));
+               hBox.getChildren().add(3, buttonList.get(activeList.get(3)));
+           }
+       }catch (IndexOutOfBoundsException ignored){
+       }
 
     }
 
