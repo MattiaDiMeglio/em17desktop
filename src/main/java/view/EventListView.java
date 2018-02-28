@@ -253,11 +253,11 @@ public class EventListView implements Observer {
   /**
    * lista con i risultati trivati dalla ricerca avanzata.
    *
-   * @param foundedEventInSearch lita con i risultati
+   * @param foundEventInSearch lita con i risultati
    */
-  public void advancedSearch(List<EventModel> foundedEventInSearch) {
+  public void advancedSearch(List<EventModel> foundEventInSearch) {
     resetSearch();
-    this.eventFoundInSearch = foundedEventInSearch;
+    this.eventFoundInSearch = foundEventInSearch;
     createResult();
   }
 
