@@ -19,7 +19,7 @@ public class SlideShowController {
   /**
    * variabile per l'utilizzo di {@link InsertController}.
    *
-   * @see #setImageList(List)
+   * @see #addRemovedLink(String)
    */
   private InsertController insertController;
   /**
@@ -99,13 +99,7 @@ public class SlideShowController {
     viewSourceController.toEventView(index);
   }
 
-  /**
-   * Il metodo setta all'interno di {@link InsertController} la imagelist che verrà caricata sul
-   * server.
-   *
-   * @param imageList lista di immagini che verrà caricata sul server
-   */
-  public void setImageList(List<Image> imageList) {
-    insertController.setImagesList(imageList);
+  public void addRemovedLink(String s) {
+    insertController.verifyAndDeleteImage(s);
   }
 }

@@ -364,6 +364,7 @@ public class InsertRecapView implements Observer {
      * @param left  freccia sinistra
      * @param right freccia destra
      * @param slide hbox contenente le foto
+     * @param eventModel model al quale fare riferimento
      */
     private void initSlide(Button left, Button right, HBox slide, EventModel eventModel) {
         Platform.runLater(() -> {

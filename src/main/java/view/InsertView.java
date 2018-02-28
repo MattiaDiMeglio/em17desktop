@@ -87,10 +87,6 @@ public class InsertView implements Observer {
      */
     private SlideShowController slideShowController = new SlideShowController();
     /**
-     * lista con le immagini dell'evento.
-     */
-    private List<Image> immagini = new ArrayList<>();
-    /**
      * lista che rccoglierà tutte le informazioni per poi passarle al controller.
      */
     private List<String> texts = new ArrayList<>();
@@ -143,12 +139,12 @@ public class InsertView implements Observer {
 
         eventModel.addObserver(this);
         this.eventModel = eventModel;
-        insertController.update(eventModel);
         insertController.setImagesList(eventModel.getSlideshow());
+        insertController.update(eventModel);
     }
 
     /**
-     * costruttore per la modifica di evento.
+     * costruttore per l'inserimento di un nuovo evento.
      * Viene anche chiamato nell'inserimento di un nuovo evento alla pressione del tasto indietro in {@link InsertTicketTypeView}.
      *
      * @param insertController        istanza di {@link InsertController}
@@ -177,7 +173,7 @@ public class InsertView implements Observer {
         this.insertFineDataPicker = insertFineDataPicker;
         this.insertPlaybillImageView = insertPlaybillImageView;
 
-
+        insertLocationLabel.setText("");
         List<String> locations = insertController.getLocations();
         binding = TextFields.bindAutoCompletion(insertLocationLabel, locations);
         initListeners();
@@ -226,6 +222,7 @@ public class InsertView implements Observer {
      * metodo per tornare indietro.
      */
     private void back() {
+        binding.dispose();
         insertController.toDash();
     }
 
@@ -233,7 +230,14 @@ public class InsertView implements Observer {
      * metodo per andare allo step successivo.
      */
     private void next() {
-        if (insertController.getImagesList().size() != 0 || eventModel.getSlideshow().size()!=0) {
+        List<String> locations = insertController.getLocations();
+        boolean b = false;
+        for (String location : locations) {
+            if (location.equals(insertLocationLabel.getText())) {
+                b = true;
+            }
+        }
+        if (b && (insertController.getImagesList().size() != 0 || eventModel.getSlideshow().size()!=0)) {
             try {
                 String pattern = "dd/MM/yyy";
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
@@ -246,12 +250,19 @@ public class InsertView implements Observer {
                 texts.add(dateFormatter.format(insertFineDataPicker.getValue()));
                 binding.dispose();
                 insertController.toTicketType(eventModel, texts, insertPlaybillImageView.getImage());
+                eventModel.deleteObserver(this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Si devono prima inserire le immagini");
-            alert.showAndWait();
+            if (!b){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Inserire il nome di una location esistente");
+                alert.showAndWait();
+            }else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Si devono prima inserire le immagini");
+                alert.showAndWait();
+            }
+
         }
     }
 
@@ -329,9 +340,9 @@ public class InsertView implements Observer {
     private void focusLocation(Boolean newPropertyValue) {
         try {
             if (!newPropertyValue) {
-                String[] parts = insertLocationLabel.getText().split("-");
-                oldVal[0] = Integer.parseInt(insertController.getMaxVisitors(parts[0]));
-                insertMaxGuestsLabel.setText(insertController.getMaxVisitors(parts[0]));
+                //String[] parts = insertLocationLabel.getText().split("-");
+                oldVal[0] = Integer.parseInt(insertController.getMaxVisitors(insertLocationLabel.getText()));
+                insertMaxGuestsLabel.setText(String.valueOf(oldVal[0]));
             }
         } catch (NumberFormatException ignored) {
         }
@@ -389,6 +400,6 @@ public class InsertView implements Observer {
         HBox slide = (HBox) insertSlideshow.getChildren().get(1);
         slide.getChildren().clear();
         Button right = (Button) insertSlideshow.getChildren().get(2);
-        slideShowController.createSlide(insertController, left, slide, right, eventModel.getSlideshow());
+        slideShowController.createSlide(insertController, left, slide, right, insertController.getImagesList());
     }
 }

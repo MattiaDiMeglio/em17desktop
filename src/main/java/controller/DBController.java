@@ -88,6 +88,10 @@ public class DBController {
       System.out.println(error.getMessage());
     }
   };
+  /**
+   * latch per la sincronizzazione con l'eliminazione
+   */
+  private CountDownLatch latchDelete;
 
   /**
    * metodo che restituisce l'instanza
@@ -525,6 +529,10 @@ public class DBController {
       latch.countDown();
       eventListModel.notifyMyObservers();
       ChartsController.getInstance().updateChart("2018", latch, snapshot);
+
+      if (latchDelete !=null && (latchDelete.getCount() == 1)){
+        latchDelete.countDown();
+      }
     }).start();
 
     try {
@@ -546,40 +554,45 @@ public class DBController {
 
   /**
    * @param key id dell'evento da cancellare
+   * @param latch latch per il popup del caricamento
    */
-  public void delete(String key) {
+  public void delete(String key, CountDownLatch latch) {
+    database.removeEventListener(childEventListener);
+    new Thread(()->{
+      database.child("luogo").addListenerForSingleValueEvent(new ValueEventListener() {
 
-    database.child("luogo").addListenerForSingleValueEvent(new ValueEventListener() {
-
-      @Override
-      public void onDataChange(DataSnapshot snapshot) {
-        try {
-          Iterable<DataSnapshot> location = snapshot.getChildren();
-          while (location.iterator().hasNext()) {
-            DataSnapshot locationSnap = location.iterator().next();
-            Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
-            while (eventi.iterator().hasNext()) {
-              DataSnapshot eventiSnap = eventi.iterator().next();
-              if (key.equals(eventiSnap.getKey())) {
-
-                StorageController storageController = new StorageController();
-
-                storageController.deleteFolder(eventiSnap);
-                eventiSnap.getRef().removeValue();
+        @Override
+        public void onDataChange(DataSnapshot snapshot) {
+          try {
+            Iterable<DataSnapshot> location = snapshot.getChildren();
+            while (location.iterator().hasNext()) {
+              DataSnapshot locationSnap = location.iterator().next();
+              Iterable<DataSnapshot> eventi = locationSnap.child("Eventi").getChildren();
+              while (eventi.iterator().hasNext()) {
+                DataSnapshot eventiSnap = eventi.iterator().next();
+                if (key.equals(eventiSnap.getKey())) {
+                  StorageController storageController = new StorageController();
+                  storageController.deleteFolder(eventiSnap);
+                  eventiSnap.getRef().setValue(null, (error, ref) -> {
+                    if (error == null) {
+                      latchDelete = latch;
+                      databaseListener();
+                    }
+                  });
+                  //eventiSnap.getRef().removeValue();
+                }
               }
             }
+          } catch (Exception e) {
+            e.printStackTrace();
           }
-        } catch (Exception e) {
-          e.printStackTrace();
         }
-      }
 
-      @Override
-      public void onCancelled(DatabaseError error) {
-        System.out.println(error.getMessage());
-      }
-    });
+        @Override
+        public void onCancelled(DatabaseError error) {
+          System.out.println(error.getMessage());
+        }
+      });
+    }).start();
   }
-
-
 }

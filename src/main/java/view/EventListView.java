@@ -30,6 +30,7 @@ import view.chartsViews.LineChartView;
 import view.chartsViews.PieChartView;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Classe View per la schermata Event List. Implementa Observer, come definito dall'architettura MVC
@@ -361,7 +362,9 @@ public class EventListView implements Observer {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == ButtonType.OK) {
-              eventController.delete(eventModel.getEventKey());
+              CountDownLatch latch = new CountDownLatch(1);
+              eventController.delete(eventModel.getEventKey(), latch);
+              new LoadingPopupView(latch);
             }
           } else {
 

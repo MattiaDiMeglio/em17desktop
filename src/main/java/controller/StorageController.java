@@ -175,7 +175,7 @@ public class StorageController {
   /**
    * Eliminazione del file specifico
    *
-   * @param key nome del file
+   * @param key link al file
    */
   public void deleteFile(String key) {
 

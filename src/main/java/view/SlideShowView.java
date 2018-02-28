@@ -167,9 +167,9 @@ public class SlideShowView implements Observer {
                     if (deleteConfirm()) {
                         buttonList.remove(button);
                         activeList.remove(finalI);
+                        slideShowController.addRemovedLink(immagini.get(finalI).impl_getUrl());
                         immagini.remove(finalI);
                         hBox.getChildren().remove(button);
-                        slideShowController.setImageList(immagini);
                     }
                 });
                 //si crea la lista di immagini che verrà caricata nello storage

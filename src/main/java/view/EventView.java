@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
@@ -110,8 +112,10 @@ public class EventView implements Observer {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK) {
-          eventController.delete(eventModel.getEventKey());
+          CountDownLatch latch = new CountDownLatch(1);
+          eventController.delete(eventModel.getEventKey(), latch);
           eventListModel.deleteObserver(this);
+          new LoadingPopupView(latch);
           viewSourceController.toDash();
         }
       } else {

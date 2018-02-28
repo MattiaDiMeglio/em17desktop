@@ -166,14 +166,14 @@ public class InsertReductionView implements Observer {
                 textField.setText(s);
             }
             //se il valore è maggiore di 100, torna al valore subito precedente
-            if (Integer.parseInt(textField.getText()) > 100) {
+            if (Double.valueOf(textField.getText()) > 100d) {
                 textField.setText(oldValue);
             }
             //se il valore è meno di 0 torna al valore subito precedente
-            if (Integer.parseInt(textField.getText()) < 0) {
+            if (Double.valueOf(textField.getText()) < 0d) {
                 textField.setText(oldValue);
             }
-        } catch (NullPointerException ignored) {
+        } catch (Exception ignored) {
         }
     }
 
