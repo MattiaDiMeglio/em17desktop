@@ -2,14 +2,13 @@ package view;
 
 import controller.LoginController;
 import controller.ViewSourceController;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import model.LoginModel;
 
-import javax.swing.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -119,20 +118,52 @@ public class LoginView implements Observer {
           .auth(username, password);//ottiene il token univoco dell'account
       if (token != null) {
         if (token.contains("java.io.IOException")) {
-          System.out.println(token); //todo togliere i joption
-          JOptionPane.showMessageDialog(null,
-              "I dati inseriti non sono corretti", "login Error", JOptionPane.ERROR_MESSAGE);
+          Alert alert = new Alert(Alert.AlertType.ERROR);
+          alert.setTitle("Errore");
+          alert.setHeaderText(null);
+          alert.setContentText("I dati inseriti non sono corretti");
+          alert.showAndWait();
         } else if (token.contains("java.net.UnknownHostException")) {
-          System.out.println(token);
-          JOptionPane.showMessageDialog(null, "Errore di Connessione", "login Error",
-              JOptionPane.ERROR_MESSAGE);
+          Alert alert = new Alert(Alert.AlertType.ERROR);
+          alert.setTitle("Errore");
+          alert.setHeaderText(null);
+          alert.setContentText("Errore di Connessione");
+          alert.showAndWait();
         } else {
           viewSourceController.toDashBoardView();
         }
       }
     } catch (Exception e) {
-      JOptionPane.showMessageDialog(null, e.toString(), "Error",
-          JOptionPane.ERROR_MESSAGE);
+
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Errore");
+      alert.setHeaderText("Errore imprevisto!");
+      alert.setContentText("Si prega di contattare l'amministratore");
+
+      // crea un pannello espandibile per l'eccezione.
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
+      e.printStackTrace(pw);
+      String exceptionText = sw.toString();
+
+      Label label = new Label("Errore:");
+
+      TextArea textArea = new TextArea(exceptionText);
+      textArea.setEditable(false);
+      textArea.setWrapText(true);
+
+      textArea.setMaxWidth(Double.MAX_VALUE);
+      textArea.setMaxHeight(Double.MAX_VALUE);
+      GridPane.setVgrow(textArea, Priority.ALWAYS);
+      GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+      GridPane expContent = new GridPane();
+      expContent.setMaxWidth(Double.MAX_VALUE);
+      expContent.add(label, 0, 0);
+      expContent.add(textArea, 0, 1);
+      alert.getDialogPane().setExpandableContent(expContent);
+
+      alert.showAndWait();
       e.printStackTrace();
     }
   }
