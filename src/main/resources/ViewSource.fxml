@@ -22,7 +22,7 @@
                                prefWidth="0.0"/>
                     <!-- Bottone di inserimento nuovo evento -->
                     <Button fx:id="dashBoardInsertButton" mnemonicParsing="false"
-                            style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
+                            style="-fx-background-color: inherit" text="Nuovo Evento" textFill="white">
                         <graphic>
                             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -157,7 +157,7 @@
 
                     <!-- Bottone di inserimento nuovo evento -->
                     <Button fx:id="eventListInsertButton" mnemonicParsing="false"
-                            style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
+                            style="-fx-background-color: inherit" text="Nuovo Evento" textFill="white">
                         <graphic>
                             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -251,10 +251,9 @@
                     </HBox>
                     <!-- TextArea che andrà ad ospitare la descrizione dell'evento -->
                     <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                        <VBox  alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <TextArea disable="true" VBox.vgrow="ALWAYS" fx:id="eventTextArea" text="piripiripillo"></TextArea>
-
-                        </VBox>
+                        <ScrollPane style="-fx-background-color:white; -fx-border-color: black" AnchorPane.rightAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <Text disable="true" VBox.vgrow="ALWAYS" fx:id="eventTextArea" text="piripiripillo"/>
+                        </ScrollPane>
                     </AnchorPane>
                     <!-- Hbox contenente le label, rispettivamente, di prezzo, max visitatori
                      e biglietti venduti-->
@@ -313,7 +312,7 @@
                             </LineChart>
                         </VBox>
                     </Tab>
-                    <Tab style="-fx-header-color: white" text="Percentuale biglietti venditi">
+                    <Tab style="-fx-header-color: white" text="Percentuale biglietti venduti">
 
                             <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <PieChart VBox.vgrow="ALWAYS" fx:id="eventGraph2PieChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -509,7 +508,7 @@
                     <!-- TextArea che andrà ad ospitare la descrizione dell'evento -->
                     <AnchorPane AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <VBox  alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <TextArea VBox.vgrow="ALWAYS" fx:id="insertTextArea"></TextArea>
+                            <TextArea VBox.vgrow="ALWAYS" fx:id="insertTextArea"/>
                         </VBox>
                     </AnchorPane>
                     <!-- Hbox contenente lo slideshow -->
@@ -698,7 +697,9 @@
                     </HBox>
                     <!-- TextArea che andrà ad ospitare la descrizione dell'evento -->
                     <VBox spacing="20"  alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-                        <TextArea disable="true" VBox.vgrow="ALWAYS" fx:id="riepilogoTextArea" text="piripiripillo"></TextArea>
+                        <ScrollPane style="-fx-background-color:white; -fx-border-color: black" AnchorPane.rightAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <Text disable="true" VBox.vgrow="ALWAYS" text="piripiripillo"/>
+                        </ScrollPane>
                     </VBox>
                     <!-- Hbox contenente le label, rispettivamente, di prezzo, max visitatori
                      e biglietti venduti-->
@@ -738,7 +739,7 @@
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </padding>
-                    <HBox VBox.vgrow="ALWAYS"></HBox>
+                    <HBox VBox.vgrow="ALWAYS"/>
                     <HBox spacing="20" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                         <Button fx:id="recapBackButton" text="Indietro" ></Button>
                         <VBox HBox.hgrow="ALWAYS"></VBox>

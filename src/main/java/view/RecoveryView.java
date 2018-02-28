@@ -67,9 +67,6 @@ public class RecoveryView implements Observer {
             recoveryEmail.setStyle("-fx-background-color: red");
         } else {
             recoveryEmail.setStyle("-fx-background-color: white; -fx-border-color: black");
-        }
-
-        if (!email.isEmpty()) {
             Recovery();
         }
     }

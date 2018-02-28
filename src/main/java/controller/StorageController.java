@@ -61,7 +61,7 @@ public class StorageController {
 
     List<Image> imagesUploaded = new ArrayList<>(); //lista di immagini caricate.
     CountDownLatch latch1 = new CountDownLatch(1);
-    imageList.add(0, playbill); //si inscerisce la copertina alla prima posizione della lista
+    imageList.add(0, playbill); //si inserisce la copertina alla prima posizione della lista
     //inizio thread
     uploadThread.execute(new Thread(() -> {
       Thread.currentThread().setName("uploadThread");
@@ -75,8 +75,9 @@ public class StorageController {
           latchUpload.await();
           System.out.println("finito di aspettare e stampo la key: " + newEvent.getEventKey());
           String blobName = newEvent.getEventKey() + "/" + name[name.length
-              - 1]; //si setta il nome del blob col nome del file (ultima parte dello slpit
-          String[] type = image.impl_getUrl().split(
+              - 1].replaceAll("%20", "-"); //si setta il nome del blob col nome del file (ultima parte dello slpit
+            System.out.println("stampo il blob: " + blobName);
+            String[] type = image.impl_getUrl().split(
               "\\.");//si splitta nuovamente il percorso, dai punti, per ottenere il tipo del file
           BlobId blobId = BlobId.of(bucket.getName(), blobName);//si setta l'id del blob
 
@@ -148,19 +149,14 @@ public class StorageController {
     StorageController storageController = new StorageController();
     bucket = StorageClient.getInstance().bucket();
 
-    //Parte di stringa da eliminare dall'indirizzo
-    String link = "https://storage.googleapis.com/ingws-20.appspot.com/";
-
     //Eliminazione dell'immagine di copertina
     storageController.deleteFile(
-        eventiSnap.child("copertina").getValue().toString()
-            .replace(link, ""));
+        eventiSnap.child("copertina").getValue().toString());
 
     //Eliminazione delle immagini nella galleria
     for (Integer i = 0; i < eventiSnap.child("galleria").getChildrenCount(); i++) {
       storageController.deleteFile(
-          eventiSnap.child("galleria").child(i.toString()).getValue().toString()
-              .replace(link, ""));
+          eventiSnap.child("galleria").child(i.toString()).getValue().toString());
     }
 
     //Eliminazione della cartella ormai vuota
@@ -179,12 +175,15 @@ public class StorageController {
   /**
    * Eliminazione del file specifico
    *
-   * @param key nome del file
+   * @param key link al file
    */
-  private void deleteFile(String key) {
+  public void deleteFile(String key) {
+
+    //Parte di stringa da eliminare dall'indirizzo
+    String link = "https://storage.googleapis.com/ingws-20.appspot.com/";
 
     bucket = StorageClient.getInstance().bucket();
 
-    bucket.get(key).delete();
+    bucket.get(key.replace(link, "")).delete();
   }
 }

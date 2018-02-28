@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
@@ -68,7 +70,7 @@ public class EventView implements Observer {
   public EventView(EventController eventController, Button eventoDeleteButton,
       ImageView eventPlaybillImageView,
       TabPane eventoTabPane, int index, List<Text> texts, Label eventoTitleLabel,
-      TextArea eventTextArea, HBox eventSlide, Button eventSlideShowLeftButton,
+      Text eventTextArea, HBox eventSlide, Button eventSlideShowLeftButton,
       Button eventSlideShowRightButton, Button eventoBackButton,
       ViewSourceController viewSourceController, Button eventModifyButton) {
 
@@ -83,6 +85,7 @@ public class EventView implements Observer {
     Image image = eventModel.getBillboard(); //valirizzo l'image con l'immagine della locandina
     eventPlaybillImageView.setImage(image); //creo l'imageView con l'image di cui sopra
     eventoTitleLabel.setText(eventModel.getEventName()); //setto il titolo nella label
+
     eventTextArea.setText(eventModel.getEventDescription()); //setto la descrizione della textarea
     texts.get(0).setText(eventModel
         .getLocationName()); //setto il nome location nel primo elemento della lista di text
@@ -109,8 +112,10 @@ public class EventView implements Observer {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() == ButtonType.OK) {
-          eventController.delete(eventModel.getEventKey());
+          CountDownLatch latch = new CountDownLatch(1);
+          eventController.delete(eventModel.getEventKey(), latch);
           eventListModel.deleteObserver(this);
+          new LoadingPopupView(latch);
           viewSourceController.toDash();
         }
       } else {

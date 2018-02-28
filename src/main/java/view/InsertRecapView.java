@@ -246,7 +246,8 @@ public class InsertRecapView implements Observer {
         startDate.setText(eventModel.getStartingDate());
         endDate.setText(eventModel.getEndingDate());
 
-        TextArea eventDescription = (TextArea) textAreaVbox.getChildren().get(0);
+        ScrollPane scrollPane = (ScrollPane) textAreaVbox.getChildren().get(0);
+        Text eventDescription = (Text) scrollPane.getContent();
         eventDescription.setDisable(true);
         eventDescription.setText(eventModel.getEventDescription());
 
@@ -363,7 +364,7 @@ public class InsertRecapView implements Observer {
      * @param left  freccia sinistra
      * @param right freccia destra
      * @param slide hbox contenente le foto
-     * @param eventModel model dal quale prelevare i dati
+     * @param eventModel model al quale fare riferimento
      */
     private void initSlide(Button left, Button right, HBox slide, EventModel eventModel) {
         Platform.runLater(() -> {

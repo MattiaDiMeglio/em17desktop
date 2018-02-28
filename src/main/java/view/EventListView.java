@@ -30,6 +30,7 @@ import view.chartsViews.LineChartView;
 import view.chartsViews.PieChartView;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Classe View per la schermata Event List. Implementa Observer, come definito dall'architettura MVC
@@ -200,7 +201,7 @@ public class EventListView implements Observer {
     notFoundLabel = new Label();
     notFoundLabel.setText("non è stato trovato nessun elemento");
     notFoundLabel.fontProperty().setValue(new Font(20));
-    searchController = new SearchController(this);
+    searchController = new SearchController();
 
     searchTextField = (TextField) toolBar.getItems().get(2);
     eventsName.addAll(searchController.getEventsName());
@@ -252,11 +253,11 @@ public class EventListView implements Observer {
   /**
    * lista con i risultati trivati dalla ricerca avanzata.
    *
-   * @param foundedEventInSearch lita con i risultati
+   * @param foundEventInSearch lita con i risultati
    */
-  public void advancedSearch(List<EventModel> foundedEventInSearch) {
+  public void advancedSearch(List<EventModel> foundEventInSearch) {
     resetSearch();
-    this.eventFoundInSearch = foundedEventInSearch;
+    this.eventFoundInSearch = foundEventInSearch;
     createResult();
   }
 
@@ -361,7 +362,9 @@ public class EventListView implements Observer {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == ButtonType.OK) {
-              eventController.delete(eventModel.getEventKey());
+              CountDownLatch latch = new CountDownLatch(1);
+              eventController.delete(eventModel.getEventKey(), latch);
+              new LoadingPopupView(latch);
             }
           } else {
 
