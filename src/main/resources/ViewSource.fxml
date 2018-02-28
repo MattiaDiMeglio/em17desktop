@@ -22,7 +22,7 @@
                                prefWidth="0.0"/>
                     <!-- Bottone di inserimento nuovo evento -->
                     <Button fx:id="dashBoardInsertButton" mnemonicParsing="false"
-                            style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
+                            style="-fx-background-color: inherit" text="Nuovo Evento" textFill="white">
                         <graphic>
                             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -157,7 +157,7 @@
 
                     <!-- Bottone di inserimento nuovo evento -->
                     <Button fx:id="eventListInsertButton" mnemonicParsing="false"
-                            style="-fx-background-color: inherit" text="Nuovo Elemento" textFill="white">
+                            style="-fx-background-color: inherit" text="Nuovo Evento" textFill="white">
                         <graphic>
                             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -312,7 +312,7 @@
                             </LineChart>
                         </VBox>
                     </Tab>
-                    <Tab style="-fx-header-color: white" text="Percentuale biglietti venditi">
+                    <Tab style="-fx-header-color: white" text="Percentuale biglietti venduti">
 
                             <VBox alignment="CENTER" fillWidth="true" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <PieChart VBox.vgrow="ALWAYS" fx:id="eventGraph2PieChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
