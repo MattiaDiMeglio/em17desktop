@@ -109,16 +109,18 @@ public class EventListView implements Observer {
 
   /**
    * costruttore per inizializzare la classe.
-   *
-   * @param eventListTabPane TabPane contenente i grafici
+   *  @param eventListTabPane TabPane contenente i grafici
    * @param eventFoundInSearch elementi trovati
    * @param eventListViewVBox VBox popolata con i risultati della ricerca
    * @param searchToolBarEventListView ToolBar con gli elementi per la ricerca
    * @param viewSourceController istanza di {@link ViewSourceController} per il cambio di view
+   * @param eventListInsertButton
    */
   public EventListView(TabPane eventListTabPane, List<EventModel> eventFoundInSearch,
-      VBox eventListViewVBox,
-      ToolBar searchToolBarEventListView, ViewSourceController viewSourceController) {
+                       VBox eventListViewVBox,
+                       ToolBar searchToolBarEventListView,
+                       ViewSourceController viewSourceController,
+                       Button eventListInsertButton) {
     this.foundElementsVBox = eventListViewVBox;
     this.eventFoundInSearch = eventFoundInSearch;
     this.viewSourceController = viewSourceController;
@@ -134,6 +136,9 @@ public class EventListView implements Observer {
     });
     EventListModel.getInstance().addObserver(this);
 
+    eventListInsertButton.setOnAction(event -> {
+      viewSourceController.toInsertView();
+    });
     initalizeSearch(searchToolBarEventListView); // inizializzo la barra di ricerca
     initializeCharts(eventListTabPane); // inizializzo i grafici
     initalizeTableView(eventListTabPane); // inizializzo la tabella

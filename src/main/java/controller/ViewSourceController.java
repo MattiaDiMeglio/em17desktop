@@ -308,6 +308,11 @@ public class ViewSourceController extends Application {
    */
   @FXML
   private ImageView recapPlaybillImageView;
+  /**
+   * tasto per l'inserimento di un evento da EventListView
+   */
+  @FXML
+  private Button eventListInsertButton;
 
   /**
    * Schermata Dasboard
@@ -536,7 +541,7 @@ public class ViewSourceController extends Application {
    */
   public void toEventListView(List<EventModel> foundedEventInSearch) {
     new EventListView(eventListTabPane, foundedEventInSearch, eventListViewVBox,
-        eventListSearchToolBar, this);
+        eventListSearchToolBar, this, eventListInsertButton);
 
     changeView(eventListBox);
   }
